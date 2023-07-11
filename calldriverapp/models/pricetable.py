@@ -9,6 +9,7 @@ class PriceTable(BaseModel):
 
     class Meta:
         app_label = "calldriverapp"
+        db_table = "price_table"
 
     def __str__(self):
         return str(self.calculated_price) 
