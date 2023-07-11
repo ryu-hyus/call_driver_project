@@ -7,42 +7,6 @@ from django.contrib.auth.models import BaseUserManager, AbstractUser
 
 
 class MyUserManager(BaseUserManager):
-    # def create_user(self, username, password, gear_type="auto", phone_number="1234"):
-    #     """
-    #     Creates and saves a User with the given email, date of
-    #     birth and password.
-    #     """
-    #     if not phone_number:
-    #         raise ValueError("Users must have an phone number")
-    #     if not gear_type:
-    #         raise ValueError("Users must have an gear type")
-
-
-    #     user = self.model(
-    #         username = username,
-    #         gear_type = gear_type,
-    #         phone_number = phone_number,
-    #     )
-
-    #     user.set_password(password)
-    #     user.save(using=self._db)
-    #     return user
-
-    # def create_superuser(self, username, password):
-    #     """
-    #     Creates and saves a superuser with the given email, date of
-    #     birth and password.
-    #     """
-    #     user = self.create_user(
-    #         username=username,
-    #         password=password,
-    #         phone_number= "1234",
-    #         gear_type='auto'
-    #     )
-    #     user.is_staff = True
-    #     user.is_superuser = True
-    #     user.save(using=self._db)
-    #     return user
     def create_user(self, username, password, phone_number, gear_type, **extra_fields):
 
         if not username:
@@ -67,9 +31,6 @@ class MyUserManager(BaseUserManager):
 
 class MyUser(AbstractUser):
     email = None
-    # username = models.CharField(max_length=50, unique=True)
-    # is_active = models.BooleanField(default=True)
-    # is_admin = models.BooleanField(default=False)
     phone_number = models.CharField(max_length=50, null=True, blank= True)
     gear_type = models.CharField(max_length=50, choices=(('auto','자동'),('manual','수동')), default='auto')
 
