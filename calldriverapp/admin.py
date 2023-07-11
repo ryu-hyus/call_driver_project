@@ -11,4 +11,3 @@ admin.site.register(OperationDay)
 admin.site.register(AddressHistory)
 admin.site.register(OrderData)
 admin.site.register(PriceTable)
-
