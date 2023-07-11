@@ -9,3 +9,6 @@ python version 3.8.2
  - venv\Scripts\activate ## 가상환경 실행
  - cd call_driver_project
  - pip install -r requirements.txt ## 라이브러리 설치
+
+
+juri live...
