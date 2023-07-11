@@ -13,6 +13,7 @@ class OperationOnOff(BaseModel):
 
     class Meta:
         app_label = "calldriverapp"
+        db_table = "operation"
 
     def __str__(self):
         return str(self.operation_onoff) 
