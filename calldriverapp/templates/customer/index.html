@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'customer/layout/head.html' %}
+    <style>
+        .btn-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .btn-row {
+            padding: 10px 0; /* Adjust the padding as needed */
+        }
+
+        .btn-custom {
+            width: 130%; /* Ensure all buttons have the same width */
+            height: 60px; /* Set the desired height for the buttons */
+        }
+    </style>
+</head>
+
+<body>
+{% include 'customer/layout/header.html' %}
+<div class="container">
+    <div class="row btn-row">
+        <div class="col-4">
+            <button type="button" class="btn btn-primary btn-block btn-custom">Order</button>
+        </div>
+    </div>
+    <div class="row btn-row">
+        <div class="col-4">
+            <button type="button" class="btn btn-primary btn-block btn-custom">Modify</button>
+        </div>
+    </div>
+    <div class="row btn-row">
+        <div class="col-4">
+            <button type="button" class="btn btn-danger btn-block btn-custom">Cancel</button>
+        </div>
+    </div>
+</div>
+{% include 'customer/layout/footer.html' %}
+</body>
+</html>
