@@ -3,33 +3,37 @@
 <head>
     {% include 'customer/layout/head.html' %}
     <style>
-    .btn-row {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-  </style>
+        .btn-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .btn-row {
+            padding: 10px 0 ; /* Adjust the padding as needed */
+        }
+    </style>
 </head>
 
 <body>
 {% include 'customer/layout/header.html' %}
 <div class="container">
     <div class="row btn-row">
-      <div class="col-4">
-        <button type="button" class="btn btn-primary btn-block">Order</button>
-      </div>
+        <div class="col-4">
+            <button type="button" class="btn btn-primary btn-block">Order</button>
+        </div>
     </div>
     <div class="row btn-row">
-      <div class="col-4">
-        <button type="button" class="btn btn-primary btn-block">Modify</button>
-      </div>
+        <div class="col-4">
+            <button type="button" class="btn btn-primary btn-block">Modify</button>
+        </div>
     </div>
     <div class="row btn-row">
-      <div class="col-4">
-        <button type="button" class="btn btn-danger btn-block">Cancel</button>
-      </div>
+        <div class="col-4">
+            <button type="button" class="btn btn-danger btn-block">Cancel</button>
+        </div>
     </div>
-  </div>
+</div>
 {% include 'customer/layout/footer.html' %}
 </body>
 </html>
