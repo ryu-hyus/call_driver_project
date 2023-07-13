@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
 
 class MainView(TemplateView):
-    template_name = "center/layout/area.html"
+    template_name = "center/layout/base.html"
 
 # class SuperuserLoginView(TemplateView):
 #     template_name = "superuser_login_template.html"  
