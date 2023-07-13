@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% include 'customer/layout/head.html' %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        .search-bar {
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding-right: 30px;
+            /* X 버튼을 위한 여백 */
+        }
+
+        .search-bar .search-history {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-top: none;
+            display: none;
+            z-index: 999;
+            /* 팝업을 다른 요소들보다 위에 오도록 설정 */
+        }
+
+        .search-bar .search-history .history-item {
+            position: relative;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .search-bar .search-history .history-item:hover {
+            background-color: #f4f4f4;
+            color: #007bff;
+            /* primary 색상으로 강조 */
+        }
+
+        .search-bar .search-history .delete-history {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            transform: translateY(-50%);
+            color: #999;
+            cursor: pointer;
+        }
+    </style>
+
+    <title>주문 화면</title>
+</head>
+
+<body>
+    {% include 'customer/layout/header.html' %}
+
+    <div>Map Section</div>
+
+    <!-- 출발지 검색창 -->
+
+    <div class="container">
+        <div class="search-bar input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">출발지</span>
+            <input type="text" class="form-control" id="search-input-top" placeholder="출발지를 입력하세요">
+            <div class="search-history">
+                <div class="history-item">위쪽 검색 기록 1<span class="delete-history">x</span></div>
+                <div class="history-item">위쪽 검색 기록 2<span class="delete-history">x</span></div>
+                <div class="history-item">위쪽 검색 기록 3<span class="delete-history">x</span></div>
+            </div>
+        </div>
+
+        <div class="search-bar input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">도착지</span>
+            <input type="text" class="form-control" id="search-input-bottom" placeholder="도착지를 입력하세요">
+            <div class="search-history">
+                <div class="history-item">아래쪽 검색 기록 1<span class="delete-history">x</span></div>
+                <div class="history-item">아래쪽 검색 기록 2<span class="delete-history">x</span></div>
+                <div class="history-item">아래쪽 검색 기록 3<span class="delete-history">x</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // 위쪽 서치바 클릭 시 검색 기록 보이기
+            $('#search-input-top').click(function (event) {
+                event.stopPropagation();
+                $(this).siblings('.search-history').show();
+            });
+
+            // 위쪽 검색 기록 선택
+            $('.search-bar:nth-child(1) .search-history .history-item').click(function (event) {
+                var searchText = $(this).clone().children().remove().end().text().trim();
+                $('#search-input-top').val(searchText);
+                $('.search-bar:nth-child(1) .search-history').hide();
+            });
+
+            // 아래쪽 서치바 클릭 시 검색 기록 보이기
+            $('#search-input-bottom').click(function (event) {
+                event.stopPropagation();
+                $(this).siblings('.search-history').show();
+            });
+
+            // 아래쪽 검색 기록 선택
+            $('.search-bar:nth-child(2) .search-history .history-item').click(function (event) {
+                var searchText = $(this).clone().children().remove().end().text().trim();
+                $('#search-input-bottom').val(searchText);
+                $('.search-bar:nth-child(2) .search-history').hide();
+            });
+
+            // 검색 기록 삭제
+            $('.delete-history').click(function (event) {
+                event.stopPropagation();
+                $(this).parent().remove();
+            });
+
+            // 문서 클릭 시 검색 기록 숨기기
+            $(document).click(function () {
+                $('.search-history').hide();
+            });
+        });
+    </script>
+
+    <div style="display: flex; justify-content: center; align-items: center; height: 10vh;">
+        <div style="display: flex; align-items: center;">
+            <span class="badge bg-secondary">예상 요금</span>
+            <h3 style="margin: 0 0 0 10px;">10,000원</h3>
+        </div>
+    </div>
+
+    <div class="row btn-row justify-content-evenly">
+        <div class="col-11 align">
+            <button type="button" class="btn btn-primary btn-block btn-custom">접수하기</button>
+        </div>
+    </div>
+
+    {% include 'customer/layout/footer.html' %}
+</body>
+
+</html>
