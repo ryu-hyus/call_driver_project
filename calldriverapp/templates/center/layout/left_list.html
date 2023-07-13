@@ -1,25 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    {% include 'center/layout/head.html' %}     
+  <meta charset="UTF-8">
+  <title>Document</title>
+  {% include 'center/layout/head.html' %}     
+
+  <style>
+    .categoryList { padding-top: 170px;  padding-left: 30px; width: 250px; }
+    .tableList { width: 200px; }
+    tr { height:60px; font-size: 19px; border: 2px solid black; text-align: center;
+          font-family: 'Noto Serif KR', serif; }
+    a { color: black;  text-decoration: none;}
+    tr:hover { background-color: rgb(234, 234, 240); }
+  </style>
+
 </head>
 <body>
 
-    <div class="row">
-        <div class="col-4">
-          <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action active" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home">회원 목록</a>
-            <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="list-profile">실시간 접수 목록</a>
-            <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab" aria-controls="list-messages">접수 완료 목록</a>
-            <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">전체 주문 목록</a>
-          </div>
-        </div>
-      </div>
-
-      
-
+    <div class="categoryList">
+      <table class="tableList">
+        <tbody>
+          <tr>
+            <th scope="row"><a href="#">실시간 접수 상황</a></th>
+          </tr>
+          <tr>
+            <th scope="row"><a href="#">접수 완료 목록</a></th>
+          </tr>
+          <tr>
+            <th scope="row"><a href="#">전체 주문 목록</a></th>
+          </tr>
+          <tr>
+            <th scope="row"><a href="#">전체 회원 목록</a></th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
 </body>
 </html>
