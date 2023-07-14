@@ -6,11 +6,14 @@ from calldriverapp.models.operation import OperationDay, OperationOnOff
 from calldriverapp.models.orderdata import OrderData
 from calldriverapp.models.pricetable import PriceTable
 
+class PriceAdmin(admin.ModelAdmin):
+  list_display = ("start_section", "end_section", "calculated_price",)
+
 # Register your models here.
 admin.site.register(OperationOnOff)
 admin.site.register(OperationDay)
 admin.site.register(AddressHistory)
 admin.site.register(OrderData)
-admin.site.register(PriceTable)
+admin.site.register(PriceTable, PriceAdmin)
 admin.site.register(MyUser)
 
