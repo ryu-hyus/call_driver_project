@@ -13,8 +13,8 @@ class MainView(TemplateView):
 # class SuperuserLoginView(TemplateView):
 #     template_name = "center/superuser_login_template.html"  
 
-# class CustomerListView(TemplateView):
-#     template_name = "center/customer_list_template.html"
+class CustomerListView(TemplateView):
+    template_name = "center/customer_list_template.html"
 
 class RealtimeOrderView(TemplateView):
     template_name = "center/realtime_order_template.html"
@@ -22,5 +22,5 @@ class RealtimeOrderView(TemplateView):
 class TodayOrderView(TemplateView):
     template_name = "center/today_order_template.html"
 
-# class TotalOrderView(TemplateView):
-#     template_name = "center/total_order_template.html"
+class TotalOrderView(TemplateView):
+    template_name = "center/total_order_template.html"
