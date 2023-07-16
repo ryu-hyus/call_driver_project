@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>모든 주문 히스토리 확인 페이지</title>
+  <meta charset="UTF-8">
+  <title>모든 주문 히스토리 확인 페이지</title>
+  
+  {% include 'center/layout/head.html' %} 
+  {% include 'center/layout/base.html' %} 
 
 
-    {% include 'center/layout/head.html' %} 
-    {% include 'center/layout/base.html' %} 
-
-
-    <style>
-
+  <style>
     /* content*/
     .content {width: 83%; height: 80%; float: left; color: black; padding-top: 17px; 
     padding-right: 30px; font-size: 18px; font-family: 'Noto Sans KR', sans-serif; }
@@ -19,9 +17,37 @@
     
     /* footer */
     .basefooter { width: 100%; height: 5%; }
-    </style>
-    
+  </style>
+
+  <!-- <script>
+    $(function () {
+      function getOrderdataList() {
+          $.ajax({
+              url: "http://localhost:8000/center/realtimeorder/",
+              method: "GET",
+          }).done(function (response) {
+              console.log(response);
+              const tr_array = response.map(orderdata => $(
+                  `<tr>
+                      <td>${orderdata.index}</td>
+                      <td>${orderdata.customer}</td>
+                      <td>${orderdata.phone_number}</td>
+                      <td>${orderdata.gear_type}</td>
+                      <td>${orderdata.start_address}</td>
+                      <td>${orderdata.end_address}</a></td>
+                      <td>${orderdata.operation_day}</td>
+                      <td>${orderdata.order_type}</td>
+                  </tr>`
+              ))
+              $("#data_table > tbody").append(tr_array);
+          });
+      }
+      getOrderdataList();
+    });
+  </script>-->
+
 </head>
+
 <body>
     <div class="content">
         <table class="table table-hover"> 
@@ -37,7 +63,7 @@
                   <th scope="col">접수상황</th>
                 </tr>
               </thead>
-              <tbody class="table-group-divider">
+              <tbody class="table-group-divider" id="data_table">
                 <tr>
                   <th scope="row">1</th>
                   <td>Larry the Bird</td>

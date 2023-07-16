@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <title>실시간 접수 상황 확인 페이지</title>
 
-
     {% include 'center/layout/head.html' %} 
     {% include 'center/layout/base.html' %} 
 
 
-    <style>
-
+  <style>
     /* content*/
     .content {width: 83%; height: 80%; float: left; color: black; padding-top: 17px; 
     padding-right: 30px; font-size: 18px; font-family: 'Noto Sans KR', sans-serif; }
@@ -19,12 +17,44 @@
 
     /* footer */
     .basefooter { width: 100%; height: 5%; }
-    </style>
-    
+  </style>
+
+
+  <!-- <script>
+    $(function () {
+        function getOrderdataList() {
+            $.ajax({
+                url: "http://localhost:8000/customer/orderdata/",
+                method: "GET",
+            }).done(function (response) {
+                console.log(response);
+                const tr_array = response.map(orderdata => $(
+                    `<tr>
+                        <td>${orderdata.index}</td>
+                        <td>${orderdata.customer}</td>
+                        <td>${orderdata.phone_number}</td>
+                        <td>${orderdata.gear_type}</td>
+                        <td>${orderdata.start_address}</td>
+                        <td>${orderdata.end_address}</a></td>
+                        <td>${orderdata.operation_day}</td>
+                        <td>${orderdata.order_type}</td>
+                        <td>${orderdata.is_hide}</td>
+                    </tr>`
+                ))
+                $("#data_table > tbody").append(tr_array);
+            });
+        }
+
+        getOrderdataList();
+    });
+  </script> -->
+
+
 </head>
+
 <body>
     <div class="content">
-        <table class="table table-hover"> 
+        <table class="table table-hover" id="data_table"> 
             <thead class="table-warning">
                 <tr>
                   <th scope="col"></th>
@@ -38,8 +68,8 @@
                   <th scope="col">최종확인</th>
                 </tr>
               </thead>
-              <tbody class="table-group-divider">
-                <tr>
+              <tbody class="table-group-divider" id="data_table">
+                <!-- <tr>
                   <th scope="row">1</th>
                   <td>djfhd22</td>
                   <td>01012345678</td>
@@ -71,7 +101,7 @@
                   <td>2023-08-12</td>
                   <td><a><button type="button" class="btn btn-success">취소 요청</button></a></td>
                   <td><button type="button" class="btn btn-dark" disabled>Yes</button></td>
-                </tr>
+                </tr> -->
               </tbody>
         </table>
         
