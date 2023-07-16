@@ -3,6 +3,7 @@ from django.db import models
 from .operation import OperationDay
 from .basemodels.basemodels import BaseModel
 from .customer import MyUser
+from datetime import date
 
 class OrderData(BaseModel):
     ORDER_KIND = (
@@ -15,15 +16,15 @@ class OrderData(BaseModel):
     start_address = models.CharField(max_length=255, default='')
     end_address = models.CharField(max_length=255, default='')
     order_kind = models.CharField(max_length=255, choices= ORDER_KIND, default='주문')
-    operation_day = models.ForeignKey(OperationDay, related_name='set_operationday' ,on_delete=models.CASCADE)
+    operation_day = models.DateField(default= date.today())
     order_type = models.BooleanField(default=True)
-    is_hide = models.BooleanField(default=True)
+    is_hide = models.BooleanField(default=False)
 
     def OrderConfirm(self):
         self.order_type = False
 
     def OrderHide(self):
-        self.is_hide = False
+        self.is_hide = True
 
 
     class Meta:
