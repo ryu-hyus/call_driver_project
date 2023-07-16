@@ -19,10 +19,10 @@ class OperationOnOff(BaseModel):
         return str(self.operation_onoff) 
 
 class OperationDay(BaseModel):
-    operation_day = models.DateField(auto_now=True)
+    operation_day = models.DateField(default = date.today())
 
     def set_day(self):
-        self.operation_day = date.now()
+        self.operation_day = date.today()
 
     class Meta:
         app_label = "calldriverapp"

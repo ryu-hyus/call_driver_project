@@ -1,0 +1,13 @@
+POST http://127.0.0.1:8000/customer/orderdata/
+
+{
+  "start_address" : "노형동 1231",
+  "end_address": "연동 111",
+  "customer_id" : "1",
+}
+
+# GET http://127.0.0.1:8000/customer/orderdata/
+
+# GET http://127.0.0.1:8000/customer/orderdata/1
+
+# GET http://127.0.0.1:8000/customer/orderdata/customer/1
