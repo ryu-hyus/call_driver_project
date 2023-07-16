@@ -10,6 +10,10 @@ from django.views.decorators.csrf import csrf_exempt
 class MainView(TemplateView):
     template_name = "center/layout/left_list.html"
 
+
+
+    
+
 # class SuperuserLoginView(TemplateView):
 #     template_name = "superuser_login_template.html"  
 
