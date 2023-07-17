@@ -1,5 +1,5 @@
 from django.urls import path
-from calldriverapp.views import HomeTemplateView, OrderDetailTemplateView
+from calldriverapp.views.customer import HomeTemplateView, OrderDetailTemplateView
 from calldriverapp import views
 from calldriverapp.views.customer import OrderMainTemplateView, OrderChangeTemplateView
 from calldriverapp.views.orderdataCRUD import OrderdataView, CustomerOrderView
