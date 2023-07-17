@@ -1,5 +1,5 @@
 from django.contrib import admin
-from calldriverapp.models.adresshistory import AddressHistory
+from calldriverapp.models.addresshistory import AddressHistory
 from calldriverapp.models.customer import MyUser
 
 from calldriverapp.models.operation import OperationDay, OperationOnOff
