@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.common.CommonMiddleware', 
@@ -77,6 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'call_driver_project.wsgi.application'
 
+CSRF_TRUSTED_ORIGINS = ['http://localhost', 'http://127.0.0.1']
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

@@ -1,9 +1,6 @@
-POST http://127.0.0.1:8000/customer/signup/
+GET http://127.0.0.1:8000/customer/customerlogin/
 
 {
-  "username" : "good",
+  "username" : "smile",
   "password": "1234",
-  "name" : "사과",
-  "phone_number" : "010-9999-9999",
-  "gear_type" : "auto"
 }
