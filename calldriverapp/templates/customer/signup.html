@@ -39,46 +39,76 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body p-5 pt-0">
-            <form class="">
+            <form method="post">
               <div class="form-floating mb-3">
-                <input type="text" class="form-control rounded-4" id="name" placeholder="이름을 입력해주세요">
-                <label for="name">이름</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control rounded-4" id="username" placeholder="아이디를 입력해주세요">
+                <input type="text" name="username" class="form-control rounded-4" id="username" placeholder="아이디를 입력해주세요">
                 <label for="username">아이디</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="password" class="form-control rounded-4" id="password" placeholder="비밀번호를 입력해주세요">
+                <input type="password" name="password" class="form-control rounded-4" id="password" placeholder="비밀번호를 입력해주세요">
                 <label for="password">비밀번호</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="text" class="form-control rounded-4" id="phone" placeholder="전화번호를 입력해주세요">
-                <label for="phone">전화번호</label>
+                <input type="text" name="name" class="form-control rounded-4" id="name" placeholder="이름을 입력해주세요">
+                <label for="name">이름</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" name="phone_number" class="form-control rounded-4" id="phone_number" placeholder="전화번호를 입력해주세요">
+                <label for="phone_number">전화번호</label>
               </div>
               <fieldset class="row mb-3">
                 <legend class="col-form-label col-sm-2 pt-0">기어 선택</legend>
                 <div class="col-sm-10">
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="auto" id="auto" value="auto">
-                    <label class="form-check-label" for="auto">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="auto">
+                    <label class="form-check-label" for="flexRadioDefault1">
                       자동
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="manual" id="manual" value="manual">
-                    <label class="form-check-label" for="manual">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="manual">
+                    <label class="form-check-label" for="flexRadioDefault2">
                       수동
                     </label>
                   </div>
               </fieldset>
               <hr class="my-3">
-              <button class="w-100 mb-2 btn btn-lg btn-outline-success orange" type="submit">
+              <button id="signup" class="w-100 mb-2 btn btn-lg btn-outline-success orange" type="submit">
                 <a href="">회원가입</a>
               </button>
             </form>
           </div>
         </div>
       </div>
+      <script>
+        $('#signup').on('click', (e) => {
+          e.preventDefault();
+          let username = $('#username').val();
+          let password = $('#password').val();
+          let name = $('#name').val();
+          let phone_number = $('#phone_number').val();
+          let gear_type = $('input[type="radio"]:checked').val();
+          console.log(`아이디 : ${username}\n,비밀번호 : ${password}\n,이름 : ${name}\n,전화번호 : ${phone_number}\n,기어 종류 : ${gear_type}`);
+        
+          $.ajax({
+            method:"POST",
+            url:'http://127.0.0.1:8000/customer/signup/',
+            contentType:"application/json",
+            data: JSON.stringify({
+              "username" : username,
+              "password" : password,
+              "name" : name,
+              "phone_number" : phone_number,
+              "gear_type" : gear_type
+            }),
+          }).done(function(response) {
+            alert('회원가입 완료')
+            location.href='/customer/login/'
+          }).fail(function(response) {
+            alert('회원가입 실패')
+            location.reload()
+          });
+        })
+      </script>
 </body>
 </html>

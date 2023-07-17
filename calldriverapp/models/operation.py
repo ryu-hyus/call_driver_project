@@ -13,7 +13,7 @@ class OperationOnOff(BaseModel):
 
     class Meta:
         app_label = "calldriverapp"
-        db_table = "operation"
+        db_table = "operation_onoff"
 
     def __str__(self):
         return str(self.operation_onoff) 
@@ -26,6 +26,7 @@ class OperationDay(BaseModel):
 
     class Meta:
         app_label = "calldriverapp"
+        db_table = "operation_day"
 
     def __str__(self):
         return str(self.operation_day) 

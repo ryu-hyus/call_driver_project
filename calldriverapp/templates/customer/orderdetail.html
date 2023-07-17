@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {% include 'customer/layout/head.html' %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <style>
+    .search-bar {
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding-right: 30px;
+      /* X 버튼을 위한 여백 */
+    }
+
+    .search-bar .search-history {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-top: none;
+      display: none;
+      z-index: 999;
+      /* 팝업을 다른 요소들보다 위에 오도록 설정 */
+    }
+
+    .search-bar .search-history .history-item {
+      position: relative;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .search-bar .search-history .history-item:hover {
+      background-color: #f4f4f4;
+      color: #007bff;
+      /* primary 색상으로 강조 */
+    }
+
+    .search-bar .search-history .delete-history {
+      position: absolute;
+      top: 50%;
+      right: 8px;
+      transform: translateY(-50%);
+      color: #999;
+      cursor: pointer;
+    }
+  </style>
+
+  <title>주문 상세 화면</title>
+</head>
+
+<body>
+  {% include 'customer/layout/header.html' %}
+
+  <div id = "order-list">
+    <!-- 접수확인 창 -->
+    <div class="border m-2">
+      <!-- 주문번호 -->
+      <div style="display: flex; justify-content: left; align-items: center; height: 3vh;" class="mt-2 ml-3">
+        <div style="display: flex; align-items: center;">
+          <span class="badge bg-secondary">주문 번호</span>
+          <div style="margin: 0 0 0 10px; display: flex; align-items: center;">
+            <div id="expected price">order-id-number</div>
+          </div>
+        </div>
+      </div>
+      <!-- 주문 주소내역 및 변경/취소버튼 -->
+      <div style="align-items: center; display: flex;">
+        <div class="container mt-1 mb-2">
+          <div class="search-bar input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">출발지</span>
+            <input type="text" class="form-control" id="search-input-top" value="출발지 주소" disabled>
+          </div>
+          <div class="search-bar input-group">
+            <span class="input-group-text" id="inputGroup-sizing-default">도착지</span>
+            <input type="text" class="form-control" id="search-input-bottom" value="도착지 주소" disabled>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-danger mr-3" href="#">변경/취소</button>
+        </div>
+      </div>
+      <!-- 예상 요금 -->
+      <div style="display: flex; justify-content: left; align-items: center; height: 3vh;" class="ml-3 mb-2">
+        <div style="display: flex; align-items: center;">
+          <span class="badge bg-secondary">예상 요금</span>
+          <div style="margin: 0 0 0 10px; display: flex; align-items: center;">
+            <div id="expected price">10,000</div>
+            <div style="margin-left: 5px;">원</div>
+          </div>
+        </div>
+      </div>
+      <!-- 주문 상태 -->  
+      <div style="display: flex; justify-content: left; align-items: center; height: 3vh;" class="ml-3 mb-2">
+        <div style="display: flex; align-items: center;">
+          <span class="badge bg-primary">주문 상태</span>
+          <div style="margin: 0 0 0 10px; display: flex; align-items: center;">
+            <div id="expected price">주문이 접수되었습니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script>
+  </script>
+
+  <p style="text-align: center;" class="mb-0"><a href="#" class="link-info h6">추가로 접수하기</a></p>
+  <div class="row btn-row justify-content-evenly">
+    <div class="col-11 align">
+      <button type="button" class="btn btn-primary btn-block btn-custom mt-2 mb-2" href="#">확인</button>
+    </div>
+  </div>
+
+  {% include 'customer/layout/footer.html' %}
+</body>
+
+</html>
