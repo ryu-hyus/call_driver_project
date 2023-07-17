@@ -35,7 +35,7 @@
   </style>
 
 
-  <script>
+  <!-- <script>
     $(function () {
       function getOrderdataList() {
         $.ajax({
@@ -45,7 +45,7 @@
           console.log(response);
           const tr_array = response.map((orderdata, index) => $(
             `<tr>
-                        <td>${index+ 1}</td>
+                        <td>${index + 1}</td>
                         <td>${orderdata.customer_id}</td>
                         <td>${orderdata.start_address}</td>
                         <td>${orderdata.end_address}</td>
@@ -62,7 +62,38 @@
 
       getOrderdataList();
     });
-  </script>
+  </script> -->
+
+  <!-- <script>
+    $(function () {
+  function getOrderdataList() {
+    var url1 = "http://localhost:8000/customer/orderdata/";
+    var url2 = "http://localhost:8000/customer/orderdata2/";
+
+    var request1 = $.ajax({
+      url: url1,
+      method: "GET",
+    });
+
+    var request2 = $.ajax({
+      url: url2,
+      method: "GET",
+    });
+
+    $.when(request1, request2).done(function (response1, response2) {
+      var data1 = response1[0];
+      var data2 = response2[0];
+
+      // 응답 데이터를 처리하는 코드 작성
+      console.log(data1);
+      console.log(data2);
+    });
+  }
+
+  getOrderdataList();
+});
+
+  </script> -->
 
 </head>
 
