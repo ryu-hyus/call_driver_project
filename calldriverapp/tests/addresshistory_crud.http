@@ -1,0 +1,15 @@
+# POST   http://127.0.0.1:8000/customer/addresshistory/2/
+
+# {
+#     "raw_address" : "제주대학교",
+#     "trans_address": "제주시 아라동 111",
+#     "section_name" : "아라동",
+#     "address_type" : "start",
+#     "customer_id" : "1"
+# }
+
+# GET  http://127.0.0.1:8000/customer/addresshistory/1
+
+
+PUT http://127.0.0.1:8000/customer/addresshistory/delete/3/
+
