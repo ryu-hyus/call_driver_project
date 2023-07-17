@@ -35,7 +35,7 @@
   </style>
 
 
-  <!-- <script>
+  <script>
     $(function () {
       function getOrderdataList() {
         $.ajax({
@@ -62,44 +62,63 @@
 
       getOrderdataList();
     });
-  </script> -->
+  </script>
 
   <!-- <script>
     $(function () {
-  function getOrderdataList() {
-    var url1 = "http://localhost:8000/customer/orderdata/";
-    var url2 = "http://localhost:8000/customer/orderdata2/";
+      function getOrderdataList() {
+        var url1 = "http://localhost:8000/customer/orderdata/";
+        var url2 = "http://localhost:8000/customer/signup/";
 
-    var request1 = $.ajax({
-      url: url1,
-      method: "GET",
+        var request1 = $.ajax({
+          url: url1,
+          method: "GET",
+        });
+
+        var request2 = $.ajax({
+          url: url2,
+          method: "GET",
+        });
+
+        $.when(request1, request2).done(function (response1, response2) {
+          var data1 = response1[0];
+          var data2 = response2[0];
+
+          // data1과 data2를 조합하여 테이블 행 생성
+          var tr_array = [];
+
+          data1.forEach(function (orderdata1) {
+            var matchingData = data2.find(function (orderdata2) {
+              return orderdata2.username === orderdata1.customer_id;
+            });
+
+            if (matchingData) {
+              var tr = $(
+                `<tr>
+              <td>${orderdata1.customer_id}</td>
+              <td>${orderdata1.start_address}</td>
+              <td>${orderdata1.end_address}</td>
+              <td>${matchingData.additional_field}</td>
+              <td>${matchingData.another_field}</td>
+            </tr>`
+              );
+              tr_array.push(tr);
+            }
+          });
+
+          // 생성된 행을 테이블에 추가
+          $("#data_table > tbody").append(tr_array);
+        });
+      }
+
+      getOrderdataList();
     });
-
-    var request2 = $.ajax({
-      url: url2,
-      method: "GET",
-    });
-
-    $.when(request1, request2).done(function (response1, response2) {
-      var data1 = response1[0];
-      var data2 = response2[0];
-
-      // 응답 데이터를 처리하는 코드 작성
-      console.log(data1);
-      console.log(data2);
-    });
-  }
-
-  getOrderdataList();
-});
 
   </script> -->
 
+    
 </head>
 
-
-<!-- <td>${orderdata.phone_number}</td>
-<td>${orderdata.gear_type}</td> -->
 
 <body>
   <div class="content">
