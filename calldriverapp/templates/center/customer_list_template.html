@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>전체 회원 목록</title>
+  {% include 'center/layout/head.html' %} 
+  {% include 'center/layout/base.html' %} 
+  <style>
+  /* content*/
+  .content {width: 83%; height: 80%; float: left; color: black; padding-top: 17px; 
+  padding-right: 30px; font-size: 18px; font-family: 'Noto Sans KR', sans-serif; }
+  .table { border: 1.6px solid black;  text-align: center; } 
+  
+  /* footer */
+  .basefooter { width: 100%; height: 5%; }
+  </style>
+  
+  <!-- <script>
+    $(function () {
+        function getCustomerList() {
+          
+            $.ajax({
+                url: "http://localhost:8000/customer/signup/",
+                method: "GET",
+            }).done(function (response) {
+                console.log(response);
+                const tr_array = response.map(orderdata => $(
+                    `<tr>
+                        <td>${orderdata.index}</td>
+                        <td>${orderdata.customer}</td>
+                        <td>${orderdata.phone_number}</td>
+                        <td>${orderdata.gear_type}</td>
+                    </tr>`
+                ))
+                $("#data_table > tbody").append(tr_array);
+            });
+        }
+
+      getCustomerList();
+    });
+  </script> -->
+
+</head>
+
+<body>
+    <div class="content">
+        <table class="table table-hover"> 
+            <thead class="table-warning">
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">ID</th>
+                  <th scope="col">전화번호</th>
+                  <th scope="col">기어</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider" id="data_table">
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Jacob</td>
+                  <td>010338454</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>Larry the Bird</td>
+                  <td>010338454</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+        </table>
+        
+    </div>
+    
+
+    <footer class="basefooter"></footer>
+</body>
+</html>
+
+<!-- ID 별로 정렬하기 -->
+<!-- 전화번호 입력하면 search 가능..? (시간되면 하기) -->
