@@ -1,115 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>실시간 접수 상황 확인 페이지</title>
 
-    {% include 'center/layout/head.html' %} 
-    {% include 'center/layout/base.html' %} 
+<head>
+  <meta charset="UTF-8">
+  <title>실시간 접수 상황 확인 페이지</title>
+
+  {% include 'center/layout/head.html' %}
+  {% include 'center/layout/base.html' %}
 
 
   <style>
     /* content*/
-    .content {width: 83%; height: 80%; float: left; color: black; padding-top: 17px; 
-    padding-right: 30px; font-size: 18px; font-family: 'Noto Sans KR', sans-serif; }
+    .content {
+      width: 83%;
+      height: 80%;
+      float: left;
+      color: black;
+      padding-top: 17px;
+      padding-right: 30px;
+      font-size: 18px;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
 
-    .table { border: 1.6px solid black; text-align: center; } 
+    .table {
+      border: 1.6px solid black;
+      text-align: center;
+    }
 
     /* footer */
-    .basefooter { width: 100%; height: 5%; }
+    .basefooter {
+      width: 100%;
+      height: 5%;
+    }
   </style>
 
 
   <!-- <script>
     $(function () {
-        function getOrderdataList() {
-            $.ajax({
-                url: "http://localhost:8000/customer/orderdata/",
-                method: "GET",
-            }).done(function (response) {
-                console.log(response);
-                const tr_array = response.map(orderdata => $(
-                    `<tr>
-                        <td>${orderdata.index}</td>
-                        <td>${orderdata.customer}</td>
-                        <td>${orderdata.phone_number}</td>
-                        <td>${orderdata.gear_type}</td>
+      function getOrderdataList() {
+        $.ajax({
+          url: "http://localhost:8000/customer/orderdata/",
+          method: "GET",
+        }).done(function (response) {
+          console.log(response);
+          const tr_array = response.map((orderdata, index) => $(
+            `<tr>
+                        <td>${index + 1}</td>
+                        <td>${orderdata.customer_id}</td>
                         <td>${orderdata.start_address}</td>
-                        <td>${orderdata.end_address}</a></td>
+                        <td>${orderdata.end_address}</td>
                         <td>${orderdata.operation_day}</td>
                         <td>${orderdata.order_type}</td>
                         <td>${orderdata.is_hide}</td>
+                        <td>${orderdata.order_type}</td>
+                        <td>${orderdata.is_hide}</td>
                     </tr>`
-                ))
-                $("#data_table > tbody").append(tr_array);
-            });
-        }
+          ))
+          $("#data_table > tbody").append(tr_array);
+        });
+      }
 
-        getOrderdataList();
+      getOrderdataList();
     });
   </script> -->
 
+  <!-- <script>
+    $(function () {
+  function getOrderdataList() {
+    var url1 = "http://localhost:8000/customer/orderdata/";
+    var url2 = "http://localhost:8000/customer/orderdata2/";
+
+    var request1 = $.ajax({
+      url: url1,
+      method: "GET",
+    });
+
+    var request2 = $.ajax({
+      url: url2,
+      method: "GET",
+    });
+
+    $.when(request1, request2).done(function (response1, response2) {
+      var data1 = response1[0];
+      var data2 = response2[0];
+
+      // 응답 데이터를 처리하는 코드 작성
+      console.log(data1);
+      console.log(data2);
+    });
+  }
+
+  getOrderdataList();
+});
+
+  </script> -->
 
 </head>
 
-<body>
-    <div class="content">
-        <table class="table table-hover" id="data_table"> 
-            <thead class="table-warning">
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col">ID</th>
-                  <th scope="col">전화번호</th>
-                  <th scope="col">기어</th>
-                  <th scope="col">출발지</th>
-                  <th scope="col">목적지</th>
-                  <th scope="col">등록일</th>
-                  <th scope="col">접수상황</th>
-                  <th scope="col">최종확인</th>
-                </tr>
-              </thead>
-              <tbody class="table-group-divider" id="data_table">
-                <!-- <tr>
-                  <th scope="row">1</th>
-                  <td>djfhd22</td>
-                  <td>01012345678</td>
-                  <td>수동</td>
-                  <td>이도이동</td>
-                  <td>노형동</td>
-                  <td>2023-08-08</td>
-                  <td><a><button type="button" class="btn btn-danger">접수 요청</button></a></td>
-                  <td><button type="button" class="btn btn-dark" disabled>Yes</button></td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton010338454</td>
-                  <td>@fat</td>
-                  <td>삼도이동</td>
-                  <td>외도동</td>
-                  <td>2023-08-05</td>
-                  <td><a><button type="button" class="btn btn-primary">접수 요청</button></a></td>
-                  <td><button type="button" class="btn btn-dark" disabled>Yes</button></td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Larry the Bird</td>
-                  <td>Thornton010338454</td>
-                  <td>@twitter</td>
-                  <td>일도이동</td>
-                  <td>삼양동</td>
-                  <td>2023-08-12</td>
-                  <td><a><button type="button" class="btn btn-success">취소 요청</button></a></td>
-                  <td><button type="button" class="btn btn-dark" disabled>Yes</button></td>
-                </tr> -->
-              </tbody>
-        </table>
-        
-    </div>
-    
 
-    <footer class="basefooter"></footer>
+<!-- <td>${orderdata.phone_number}</td>
+<td>${orderdata.gear_type}</td> -->
+
+<body>
+  <div class="content">
+    <table class="table table-hover" id="data_table">
+      <thead class="table-warning">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">ID</th>
+          <th scope="col">전화번호</th>
+          <th scope="col">기어</th>
+          <th scope="col">출발지</th>
+          <th scope="col">목적지</th>
+          <th scope="col">등록일</th>
+          <th scope="col">접수상황</th>
+          <th scope="col">최종확인</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider"></tbody>
+    </table>
+
+  </div>
+
+
+  <footer class="basefooter"></footer>
 </body>
+
 </html>
 
 <!-- 접수상황 버튼 누르면 
