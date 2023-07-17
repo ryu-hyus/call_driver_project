@@ -10,7 +10,9 @@ class AddressHistory(BaseModel):
 
     customer = models.ForeignKey(MyUser, related_name='history_customer', on_delete=models.CASCADE, default='')
     raw_address = models.CharField(max_length=255, default='')
-    adress_type = models.CharField(max_length=255, choices = ADDRESS_TYPE)
+    trans_address = models.CharField(max_length=255, default='')
+    section_name = models.CharField(max_length=255, default='')
+    address_type = models.CharField(max_length=255, choices = ADDRESS_TYPE)
 
     class Meta:
         app_label = "calldriverapp"

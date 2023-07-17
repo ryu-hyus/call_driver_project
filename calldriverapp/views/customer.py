@@ -8,3 +8,12 @@ class OrderMainTemplateView(TemplateView):
 
 class OrderDetailTemplateView(TemplateView):
     template_name = "customer/orderdetail.html"
+
+class OrderChangeTemplateView(TemplateView):
+    template_name = "customer/orderchange.html"
+    
+class CustomerLoginView(TemplateView):
+    template_name = "customer/login.html"
+
+class SigUpView(TemplateView):
+    template_name = "customer/signup.html"
