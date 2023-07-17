@@ -9,3 +9,11 @@ python version 3.8.2
  - venv\Scripts\activate ## 가상환경 실행
  - cd call_driver_project
  - pip install -r requirements.txt ## 라이브러리 설치
+
+
+Price Table(요금표) DB업뎃 방법
+- calldriverapp/uploads 디렉토리에 fare_table.csv 파일 수정
+- 터미널에 python manage.py shell 입력
+- exec(open("./calldriverapp/makepricetable.py").read()) 명령어 입력
+
+

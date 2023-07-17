@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login Page</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+    <h1>로그인 페이지</h1>
+    <br>
+    {% if user.is_authenticated %}
+        로그인 성공!
+        {{ user.username }}님 환영합니다.
+    {% else %}
+    <form>
+        {% csrf_token %}
+        아이디 : <input name="username" type="text"><br>
+        비밀번호 : <input name="password" type="password"><br>
+        <input type="submit" value="로그인">
+    </form>
+    <a href="/customer/signup/">회원가입</a>
+    {% endif %}
+    <!-- <label>아이디 : 
+        <input name="username" type="text"><br>
+    </label>
+    <label>비밀번호 : 
+        <input name="password" type="password"><br>
+    </label>
+    <input id="login" type="submit" value="로그인">
+    <a href="/customer/signup/">회원가입</a>
+    <script>
+        $(function () {
+            $("#login").click(function () {
+                alert('로그인 성공!');
+                const cu_id = $("#id").val();
+                const cu_pw = $("#pw").val();
+
+                $.ajax({
+                    method: "POST",
+                    url: 'http://127.0.0.1:8000/customer/customerlogin/',
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        id: cu_id || null,
+                        pw: cu_pw || null
+                    })
+                })
+                $.get('http://127.0.0.1:8000/customer/customerlogin/')
+                    .done(function (response) {
+                        if (data == response)
+                            alert(cu_id + "님 환영합니다!");
+                    }).fail(function (response) {
+                        alert('다시 로그인해주세요ㅠㅠ')
+                    }).always(function (response) {
+                        console.log(response)
+                    })
+            })
+        }) -->
+    </script>
+</body>
+
+</html>

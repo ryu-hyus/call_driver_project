@@ -12,7 +12,6 @@ class MyUserManager(BaseUserManager):
         if not username:
             raise ValueError('must have user username')
        
-        
         user = self.model(username=username, **extra_fields)
         user.gear_type = gear_type
         user.phone_number = phone_number
@@ -33,6 +32,7 @@ class MyUser(AbstractUser):
     email = None
     phone_number = models.CharField(max_length=50, null=True, blank= True)
     gear_type = models.CharField(max_length=50, choices=(('auto','자동'),('manual','수동')), default='auto')
+    name = models.CharField(max_length=50, default="")
 
     objects = MyUserManager()
 
