@@ -20,3 +20,4 @@ class SigUpView(TemplateView):
 
 class MyPageView(TemplateView):
     template_name = "customer/mypage.html"
+
