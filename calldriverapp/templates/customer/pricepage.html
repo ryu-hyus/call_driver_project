@@ -1,53 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head><title>Welcome to 대리운전</title>
+    {% load static %}
+    <script src="{% static 'js/utils.js' %}"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.112.5">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/headers/">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            width: 100%;
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-bd-primary {
+            —bd-violet-bg: #712CF9;
+            —bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+            —bs-btn-font-weight: 600;
+            —bs-btn-color: var(—bs-white);
+            —bs-btn-bg: var(—bd-violet-bg);
+            —bs-btn-border-color: var(—bd-violet-bg);
+            —bs-btn-hover-color: var(—bs-white);
+            —bs-btn-hover-bg: #6528E0;
+            —bs-btn-hover-border-color: #6528E0;
+            —bs-btn-focus-shadow-rgb: var(—bd-violet-rgb);
+            —bs-btn-active-color: var(—bs-btn-hover-color);
+            —bs-btn-active-bg: #5A23C8;
+            —bs-btn-active-border-color: #5A23C8;
+        }
+
+        .bd-mode-toggle {
+            z-index: 1500;
+        }
+
+        /* Custom styles */
+        .center-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .center-buttons .btn {
+            width: 500px;
+            margin: 10 20px;
+        }
+
+        .container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 
 <body>
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <img src="logo.png" alt="Logo" width="100" height="40">
+        </div>
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-primary" href="mypage.html">My Page</a>
+        </div>
+    </div>
+</header>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+{% load static %}
+<script>
+    $(document).ready(function () {
+        $('#start_address').change(function () {
+            alert('hello')
+            const startAddressId = $('#start_address').val();
+            const endAddressId = $('#end_address').val();
+
+            const startImageUrl = `/mapimages/${startAddressId}.png`;
+            const endImageUrl = '/mapimages/' + endAddressId + '.png';
+            "{% static "photos/1.jpg" %}"
+
+            $('#start-map-image').attr('src', "{% static startImageUrl %}" );
+            $('#end-map-image').attr('src', "{% static endImageUrl%}");
+        });
+    });
+</script>
+
 <div class="dropdown-center">
-  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Centered dropdown
-  </button>
-  <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">구좌읍31</a></li>
-      <li><a class="dropdown-item" href="#">건입동17</a></li>
-      <li><a class="dropdown-item" href="#">내도동7</a></li>
-      <li><a class="dropdown-item" href="#">노형동10</a></li>
-      <li><a class="dropdown-item" href="#">도남동15</a></li>
-      <li><a class="dropdown-item" href="#">도두동11</a></li>
-      <li><a class="dropdown-item" href="#">도련동24</a></li>
-      <li><a class="dropdown-item" href="#">도평동6</a></li>
-      <li><a class="dropdown-item" href="#">봉개동27</a></li>
-      <li><a class="dropdown-item" href="#">삼도동14</a></li>
-      <li><a class="dropdown-item" href="#">삼양동22</a></li>
-      <li><a class="dropdown-item" href="#"></a>아라동20</li>
-      <li><a class="dropdown-item" href="#">애월읍3</a></li>
-      <li><a class="dropdown-item" href="#">연동13</a></li>
-      <li><a class="dropdown-item" href="#">영평동25</a></li>
-      <li><a class="dropdown-item" href="#">오등동23</a></li>
-      <li><a class="dropdown-item" href="#">오라동19</a></li>
-      <li><a class="dropdown-item" href="#"></a>용강동28</li>
-      <li><a class="dropdown-item" href="#">용담동12</a></li>
-      <li><a class="dropdown-item" href="#">외도동5</a></li>
-      <li><a class="dropdown-item" href="#">월산9</a></li>
-      <li><a class="dropdown-item" href="#">월평동26</a></li>
-      <li><a class="dropdown-item" href="#">이도동16</a></li>
-      <li><a class="dropdown-item" href="#">이호동8</a></li>
-      <li><a class="dropdown-item" href="#">일도동18</a></li>
-      <li><a class="dropdown-item" href="#">조천읍30</a></li>
-      <li><a class="dropdown-item" href="#">한경면1</a></li>
-      <li><a class="dropdown-item" href="#">한림읍2</a></li>
-      <li><a class="dropdown-item" href="#">해안동4</a></li>
-      <li><a class="dropdown-item" href="#">화북동21</a></li>
-      <li><a class="dropdown-item" href="#">회천동29</a></li>
-  </ul>
+    <label for="start_address">Start Address:</label>
+    <select id="start_address" class="address-dropdown">
+        <option value="31">구좌읍31</option>
+        <option value="17">건입동17</option>
+        <option value="7">내도동7</option>
+        <option value="10">노형동10</option>
+        <option value="15">도남동15</option>
+        <option value="11">도두동11</option>
+        <option value="24">도련동24</option>
+        <option value="6">도평동6</option>
+        <option value="27">봉개동27</option>
+        <option value="14">삼도동14</option>
+        <option value="22">삼양동22</option>
+        <option value="20">아라동20</option>
+        <option value="3">애월읍3</option>
+        <option value="13">연동13</option>
+        <option value="25">영평동25</option>
+        <option value="23">오등동23</option>
+        <option value="19">오라동19</option>
+        <option value="28">용강동28</option>
+        <option value="12">용담동12<</option>
+        <option value="5">외도동5</option>
+        <option value="9">월산9</option>
+        <option value="26">월평동26</option>
+        <option value="16">이도동16</option>
+        <option value="8">이호동8</option>
+        <option value="18">일도동18</option>
+        <option value="30">조천읍30</option>
+        <option value="1">한경면1</option>
+        <option value="2">한림읍2</option>
+        <option value="4">해안동4</option>
+        <option value="21">화북동21</option>
+        <option value="29">회천동29</option>
+    </select>
+    <img id="start-map-image" class="start-map-image" src="" alt="Start Address Map Image">
+
+    <label for="end_address">End Address:</label>
+    <select id="end_address" class="address-dropdown">
+        <option value="31">구좌읍31</option>
+        <option value="17">건입동17</option>
+        <option value="7">내도동7</option>
+        <option value="10">노형동10</option>
+        <option value="15">도남동15</option>
+        <option value="11">도두동11</option>
+        <option value="24">도련동24</option>
+        <option value="6">도평동6</option>
+        <option value="27">봉개동27</option>
+        <option value="14">삼도동14</option>
+        <option value="22">삼양동22</option>
+        <option value="20">아라동20</option>
+        <option value="3">애월읍3</option>
+        <option value="13">연동13</option>
+        <option value="25">영평동25</option>
+        <option value="23">오등동23</option>
+        <option value="19">오라동19</option>
+        <option value="28">용강동28</option>
+        <option value="12">용담동12<</option>
+        <option value="5">외도동5</option>
+        <option value="9">월산9</option>
+        <option value="26">월평동26</option>
+        <option value="16">이도동16</option>
+        <option value="8">이호동8</option>
+        <option value="18">일도동18</option>
+        <option value="30">조천읍30</option>
+        <option value="1">한경면1</option>
+        <option value="2">한림읍2</option>
+        <option value="4">해안동4</option>
+        <option value="21">화북동21</option>
+        <option value="29">회천동29</option>
+    </select>
+    <img id="end-map-image" class="end-map-image" src="default_image.png" alt="End Address Map Image">
 </div>
 </body>
 
 <footer class="bg-dark text-white pt-2 pb-2">
-  <div class="container mt-2 mb-1">
-    <div class="text-center">Phone: 064-000-0000</div>
-  </div>
-  <p style="text-align: center;" class="mb-1"><a href="#" class="link-info h6">요금 안내</a></p>
+    <div class="container mt-2 mb-1">
+        <div class="text-center">Phone: 064-000-0000</div>
+    </div>
+    <p style="text-align: center;" class="mb-1"><a href="pricepage.html" class="link-info h6">요금 안내</a></p>
 </footer>
 </html>
