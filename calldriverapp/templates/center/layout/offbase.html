@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>대리운전 홈페이지</title>
   {% include 'center/layout/head.html' %}
 
   <style>
@@ -110,6 +110,7 @@
         e.preventDefault();
 
         if (confirm("영업을 시작하시겠습니까?")) {
+
           alert("영업을 시작합니다.");
 
           const isOperationOn = true;
@@ -148,7 +149,7 @@
         <a class="navbar-brand" href="#">
           <img src="logo.png" alt="Logo" width="100" height="40" class="d-inline-block">
         </a>
-        <a class="headermidtext" href="#">대리운전</a>
+        <a class="headermidtext" href="/center/main/">대리운전</a>
         <ul class="nav justify-content-end">
           <li class="nav-item">
             <button type="button" class="btn  btn-outline-danger btn-lg" id="startclose">영업시작</button>

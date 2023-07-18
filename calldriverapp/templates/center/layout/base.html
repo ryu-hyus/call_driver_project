@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>대리운전 홈페이지</title>
   {% include 'center/layout/head.html' %}
 
   <style>
@@ -106,6 +106,7 @@
         e.preventDefault();
         
         if (confirm("영업을 종료하시겠습니까?")) {
+
           alert("영업을 종료합니다."); 
           
           const isOperationOn = false;
@@ -120,9 +121,9 @@
           }).fail(function (xhr, status, error) {
             alert('실패: ' + error);
           });
-          
             
         } else {
+          
           alert("영업을 종료하지 않고 유지합니다.");
 
         }
@@ -143,10 +144,10 @@
         <a class="navbar-brand" href="#">
           <img src="logo.png" alt="Logo" width="100" height="40" class="d-inline-block">
         </a>
-        <a class="headermidtext" href="#">대리운전</a>
+        <a class="headermidtext" href="/center/realtimeorder/">대리운전</a>
         <ul class="nav justify-content-end">
           <li class="nav-item">
-            <button type="button" class="btn btn-dark btn-lg" id="startclose">영업종료</button>
+            <button type="button" class="btn btn-outline-primary btn-lg" id="startclose">영업종료</button>
           </li>
         </ul>
       </div>
