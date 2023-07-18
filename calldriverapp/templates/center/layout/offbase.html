@@ -89,6 +89,14 @@
 
   <script>
 
+    function init() {
+      if (location.href.includes('offtotalorder')) {
+        document.getElementById('tr_totalorder').classList.add('selected')
+      } else if (location.href.includes('offcustomerlist')) {
+        document.getElementById('tr_customerlist').classList.add('selected')
+      }
+    }
+
     $(document).ready(function () {
       $('#realtime_atag, #todayorder_atag').on('click', function (e) {
         e.preventDefault();
@@ -116,19 +124,7 @@
           }).fail(function (xhr, status, error) {
             alert('실패: ' + error);
           });
-
-          // $('#startclose').removeClass('btn-outline-danger').addClass('btn-outline-primary').text('영업종료');
-
-          // $('#realtime_atag, #todayorder_atag').off('click');
-
-          // $("#realtime_atag").click(function () {
-          //   window.location.href = "/center/realtimeorder/";
-          // });
-
-          // $("#todayorder_atag").click(function () {
-          //   window.location.href = "/center/todayorder/";
-          // });
-
+          
         } else {
 
           alert("영업을 시작하지 않습니다.");
@@ -143,7 +139,7 @@
 </head>
 
 
-<body>
+<body onload="init()">
   <header class="baseheader">
 
     <!-- 헤더 -->

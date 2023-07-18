@@ -105,11 +105,25 @@
       $('#startclose').on('click', (e) => {
         e.preventDefault();
         
-        if (confirm("영업을 개시하시겠습니까?")) {
-          alert("영업을 시작합니다.");    
+        if (confirm("영업을 종료하시겠습니까?")) {
+          alert("영업을 종료합니다."); 
+          
+          const isOperationOn = false;
+          const data = { "operation_onoff": isOperationOn };
+          $.ajax({
+            url: '/center/operationonoff/',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+          }).done(function (response) {
+            location.href = '/center/main/'
+          }).fail(function (xhr, status, error) {
+            alert('실패: ' + error);
+          });
+          
             
         } else {
-          alert("영업을 시작 취소 버튼을 누르셨습니다.");
+          alert("영업을 종료하지 않고 유지합니다.");
 
         }
       })
@@ -132,7 +146,7 @@
         <a class="headermidtext" href="#">대리운전</a>
         <ul class="nav justify-content-end">
           <li class="nav-item">
-            <button type="button" class="btn btn-danger btn-lg" id="startclose">영업개시</button>
+            <button type="button" class="btn btn-dark btn-lg" id="startclose">영업종료</button>
           </li>
         </ul>
       </div>
