@@ -13,7 +13,7 @@
   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
   <style>
     .outerbox {
-      width: 40%;
+      width: 70%;
       margin-top: 100px;
     }
 
@@ -61,7 +61,7 @@
           <button id="singup" class="w-100 mb-2 btn btn-lg btn-outline-success orange white" type="submit">
             회원가입
           </button>
-          <a href="" id="user_id">아이디찾기</a>
+          <a href="" id="find_id">아이디찾기</a>
         </form>
       </div>
     </div>
@@ -95,7 +95,10 @@
       console.log('회원가입창으로 이동')
       location.href="/customer/signup/"
     });
-    // Hi Hello
+    $('#find_id').on('click', (e) => {
+      e.preventDefault();
+      location.href="/customer/find_id/"
+    })
   </script>
 </body>
 

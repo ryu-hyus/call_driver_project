@@ -1,8 +1,8 @@
 from django.urls import path
 from calldriverapp.views.addresshistoryCRUD import AddresshistorydataView, AddresshistorydeleteView
-from calldriverapp.views.customer import HomeTemplateView, MyPageView, OrderDetailTemplateView, OrderDetailTemplateView
+from calldriverapp.views.customer import HomeTemplateView, OrderDetailTemplateView, OrderDetailTemplateView
 from calldriverapp.views.customer import OrderMainTemplateView
-from calldriverapp.views.member_info import CustomerLoignView, FindIdView, SignUpView
+from calldriverapp.views.member_info import CustomerLoignView, FindIdView, MyPageView, SignUpView, update_profile
 from calldriverapp.views.customer import OrderMainTemplateView, OrderChangeTemplateView
 from calldriverapp.views.orderdataCRUD import OrderdataView, CustomerOrderView
 from calldriverapp.views.myuserCRUD import CustomerInfoView
@@ -13,6 +13,7 @@ urlpatterns = [
     path("find_id/", FindIdView.as_view(), name="find_id"),
     path("home/", HomeTemplateView.as_view(), name="home"),
     path("mypage/", MyPageView.as_view(), name="mypage"),
+    path("mypage/update_profile/", update_profile, name="update_profile"),
     path("customer_info/", CustomerInfoView.as_view(), name="customer_info"),
     path("ordermain/", OrderMainTemplateView.as_view(), name= "order_main"),
     path("orderdetail/", OrderDetailTemplateView.as_view(), name= "order_detail"),

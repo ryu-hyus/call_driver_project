@@ -17,6 +17,3 @@ class CustomerLoginView(TemplateView):
 
 class SigUpView(TemplateView):
     template_name = "customer/signup.html"
-
-class MyPageView(TemplateView):
-    template_name = "customer/mypage.html"
