@@ -40,5 +40,11 @@
     </div>
 </div>
 {% include 'customer/layout/footer.html' %}
+<script>
+    $('#mypage').on('click', (e) => {
+      e.preventDefault();
+      location.href="/customer/mypage/"
+    })
+  </script>
 </body>
 </html>
