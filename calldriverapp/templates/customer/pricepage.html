@@ -100,119 +100,139 @@
             margin-top: 20px;
             margin-bottom: 20px;
         }
+
+        .map-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
     </style>
 </head>
 
 <body>
-<header class="p-3 bg-dark text-white">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <img src="logo.png" alt="Logo" width="100" height="40">
+<div class="container">
+    <header class="p-3 bg-dark text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <img src="logo.png" alt="Logo" width="100" height="40">
+            </div>
+            <div class="d-flex justify-content-end">
+                <a class="btn btn-primary" href="mypage.html">My Page</a>
+            </div>
         </div>
-        <div class="d-flex justify-content-end">
-            <a class="btn btn-primary" href="mypage.html">My Page</a>
-        </div>
-    </div>
-</header>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </header>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-{% load static %}
-<script>
-    $(document).ready(function () {
-        $('#start_address').change(function () {
-            alert('hello')
-            const startAddressId = $('#start_address').val();
-            const endAddressId = $('#end_address').val();
+    {% load static %}
+    <script>
+        $(document).ready(function () {
+            $('#start_address').change(function () {
+                const startAddressId = $('#start_address').val();
+                const staticUrl = "{% static "mapimages/" %}"
+                const startImageUrl = staticUrl + startAddressId + '.png';
+                $('#start-map-image').attr('src', startImageUrl);
+            });
 
-            const startImageUrl = `/mapimages/${startAddressId}.png`;
-            const endImageUrl = '/mapimages/' + endAddressId + '.png';
-            "{% static "photos/1.jpg" %}"
-
-            $('#start-map-image').attr('src', "{% static startImageUrl %}" );
-            $('#end-map-image').attr('src', "{% static endImageUrl%}");
+            $('#end_address').change(function () {
+                const endAddressId = $('#end_address').val();
+                const staticUrl = "{% static "mapimages/" %}"
+                const endImageUrl = staticUrl + endAddressId + '.png';
+                $('#end-map-image').attr('src', endImageUrl);
+            });
         });
-    });
-</script>
+    </script>
 
-<div class="dropdown-center">
-    <label for="start_address">Start Address:</label>
-    <select id="start_address" class="address-dropdown">
-        <option value="31">구좌읍31</option>
-        <option value="17">건입동17</option>
-        <option value="7">내도동7</option>
-        <option value="10">노형동10</option>
-        <option value="15">도남동15</option>
-        <option value="11">도두동11</option>
-        <option value="24">도련동24</option>
-        <option value="6">도평동6</option>
-        <option value="27">봉개동27</option>
-        <option value="14">삼도동14</option>
-        <option value="22">삼양동22</option>
-        <option value="20">아라동20</option>
-        <option value="3">애월읍3</option>
-        <option value="13">연동13</option>
-        <option value="25">영평동25</option>
-        <option value="23">오등동23</option>
-        <option value="19">오라동19</option>
-        <option value="28">용강동28</option>
-        <option value="12">용담동12<</option>
-        <option value="5">외도동5</option>
-        <option value="9">월산9</option>
-        <option value="26">월평동26</option>
-        <option value="16">이도동16</option>
-        <option value="8">이호동8</option>
-        <option value="18">일도동18</option>
-        <option value="30">조천읍30</option>
-        <option value="1">한경면1</option>
-        <option value="2">한림읍2</option>
-        <option value="4">해안동4</option>
-        <option value="21">화북동21</option>
-        <option value="29">회천동29</option>
-    </select>
-    <img id="start-map-image" class="start-map-image" src="" alt="Start Address Map Image">
+    <section>
 
-    <label for="end_address">End Address:</label>
-    <select id="end_address" class="address-dropdown">
-        <option value="31">구좌읍31</option>
-        <option value="17">건입동17</option>
-        <option value="7">내도동7</option>
-        <option value="10">노형동10</option>
-        <option value="15">도남동15</option>
-        <option value="11">도두동11</option>
-        <option value="24">도련동24</option>
-        <option value="6">도평동6</option>
-        <option value="27">봉개동27</option>
-        <option value="14">삼도동14</option>
-        <option value="22">삼양동22</option>
-        <option value="20">아라동20</option>
-        <option value="3">애월읍3</option>
-        <option value="13">연동13</option>
-        <option value="25">영평동25</option>
-        <option value="23">오등동23</option>
-        <option value="19">오라동19</option>
-        <option value="28">용강동28</option>
-        <option value="12">용담동12<</option>
-        <option value="5">외도동5</option>
-        <option value="9">월산9</option>
-        <option value="26">월평동26</option>
-        <option value="16">이도동16</option>
-        <option value="8">이호동8</option>
-        <option value="18">일도동18</option>
-        <option value="30">조천읍30</option>
-        <option value="1">한경면1</option>
-        <option value="2">한림읍2</option>
-        <option value="4">해안동4</option>
-        <option value="21">화북동21</option>
-        <option value="29">회천동29</option>
-    </select>
-    <img id="end-map-image" class="end-map-image" src="default_image.png" alt="End Address Map Image">
+        <div class="dropdown-center">
+            <div class="row" style="height:250px">
+                <div style="position: relative;">
+                    <img id="start-map-image" class="map-image" src="{% static 'mapimages/1.png' %}" alt="Start Address Map Image">
+                    <img id="end-map-image" class="map-image" src="{% static 'mapimages/1.png' %}"
+                         alt="End Address Map Image">
+                </div>
+            </div>
+            <div class="row">
+                <label for="start_address">Start Address:</label>
+                <select id="start_address" class="address-dropdown">
+                    <option value="31">구좌읍31</option>
+                    <option value="17">건입동17</option>
+                    <option value="7">내도동7</option>
+                    <option value="10">노형동10</option>
+                    <option value="15">도남동15</option>
+                    <option value="11">도두동11</option>
+                    <option value="24">도련동24</option>
+                    <option value="6">도평동6</option>
+                    <option value="27">봉개동27</option>
+                    <option value="14">삼도동14</option>
+                    <option value="22">삼양동22</option>
+                    <option value="20">아라동20</option>
+                    <option value="3">애월읍3</option>
+                    <option value="13">연동13</option>
+                    <option value="25">영평동25</option>
+                    <option value="23">오등동23</option>
+                    <option value="19">오라동19</option>
+                    <option value="28">용강동28</option>
+                    <option value="12">용담동12<</option>
+                    <option value="5">외도동5</option>
+                    <option value="9">월산9</option>
+                    <option value="26">월평동26</option>
+                    <option value="16">이도동16</option>
+                    <option value="8">이호동8</option>
+                    <option value="18">일도동18</option>
+                    <option value="30">조천읍30</option>
+                    <option value="1">한경면1</option>
+                    <option value="2">한림읍2</option>
+                    <option value="4">해안동4</option>
+                    <option value="21">화북동21</option>
+                    <option value="29">회천동29</option>
+                </select>
+            </div>
+            <div class="row">
+                <label for="end_address">End Address:</label>
+                <select id="end_address" class="address-dropdown">
+                    <option value="31">구좌읍31</option>
+                    <option value="17">건입동17</option>
+                    <option value="7">내도동7</option>
+                    <option value="10">노형동10</option>
+                    <option value="15">도남동15</option>
+                    <option value="11">도두동11</option>
+                    <option value="24">도련동24</option>
+                    <option value="6">도평동6</option>
+                    <option value="27">봉개동27</option>
+                    <option value="14">삼도동14</option>
+                    <option value="22">삼양동22</option>
+                    <option value="20">아라동20</option>
+                    <option value="3">애월읍3</option>
+                    <option value="13">연동13</option>
+                    <option value="25">영평동25</option>
+                    <option value="23">오등동23</option>
+                    <option value="19">오라동19</option>
+                    <option value="28">용강동28</option>
+                    <option value="12">용담동12<</option>
+                    <option value="5">외도동5</option>
+                    <option value="9">월산9</option>
+                    <option value="26">월평동26</option>
+                    <option value="16">이도동16</option>
+                    <option value="8">이호동8</option>
+                    <option value="18">일도동18</option>
+                    <option value="30">조천읍30</option>
+                    <option value="1">한경면1</option>
+                    <option value="2">한림읍2</option>
+                    <option value="4">해안동4</option>
+                    <option value="21">화북동21</option>
+                    <option value="29">회천동29</option>
+                </select>
+            </div>
+        </div>
+    </section>
+    <footer class="bg-dark text-white pt-2 pb-2">
+        <div class="container mt-2 mb-1">
+            <div class="text-center">Phone: 064-000-0000</div>
+        </div>
+        <p style="text-align: center;" class="mb-1"><a href="pricepage.html" class="link-info h6">요금 안내</a></p>
+    </footer>
 </div>
 </body>
-
-<footer class="bg-dark text-white pt-2 pb-2">
-    <div class="container mt-2 mb-1">
-        <div class="text-center">Phone: 064-000-0000</div>
-    </div>
-    <p style="text-align: center;" class="mb-1"><a href="pricepage.html" class="link-info h6">요금 안내</a></p>
-</footer>
 </html>
