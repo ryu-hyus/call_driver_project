@@ -1,10 +1,11 @@
 from django.urls import path
 from calldriverapp.views.addresshistoryCRUD import AddresshistorydataView, AddresshistorydeleteView
-from calldriverapp.views.customer import HomeTemplateView, MapExamView, OrderDetailTemplateView, OrderDetailTemplateView
+from calldriverapp.views.customer import HomeTemplateView, MapExamView, OrderDetailTemplateView, OrderDetailTemplateView, SearchAddress
 from calldriverapp.views.customer import OrderMainTemplateView
 from calldriverapp.views.member_info import CustomerLoignView, SignUpView
 from calldriverapp.views.customer import OrderMainTemplateView, OrderChangeTemplateView
 from calldriverapp.views.orderdataCRUD import OrderdataView, CustomerOrderView
+from calldriverapp.views.pricecaculate import PriceTableView
 
 urlpatterns = [
     path("signup/", SignUpView.as_view(), name="sign_up"),
@@ -19,4 +20,6 @@ urlpatterns = [
     path("addresshistory/<int:pk>/", AddresshistorydataView.as_view(), name= "addresshistory_CRUD"), #커스토머 id로 주소 검색 기록 검색/등록
     path("addresshistory/delete/<int:pk>/", AddresshistorydeleteView.as_view(), name= "addresshistory_delete"), #히스토리 id로 삭제
     path("mapexam/", MapExamView.as_view(), name= "map_exam"),
+    path("searchaddress/", SearchAddress.as_view(), name= "search_address"),
+    path("pricecalculate/<str:ss>/<str:es>/", PriceTableView.as_view(), name= "calculate_price"), # 요금 계산 url / ss: 출발지, es: 도착지로 검색
 ]
