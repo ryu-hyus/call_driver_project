@@ -14,10 +14,10 @@ class CustomerInfoView(View):
 
             myuser = MyUser.objects.filter(id=pk).values().first()
 
-            if not orderdata:
+            if not myuser:
                 return JsonResponse({"error": "Order not found"}, status=404)
-            return JsonResponse(orderdata)
+            return JsonResponse(myuser)
         # 다건조회
         else:
-            orderdata = MyUser.objects.all().values()
-            return JsonResponse(list(orderdata) , safe=False)
+            myuser = MyUser.objects.all().values()
+            return JsonResponse(list(myuser) , safe=False)

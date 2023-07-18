@@ -41,10 +41,10 @@
       text-decoration: none;
     }
 
-    .nav-link {
-      color: black;
+    #startclose {
+      margin-top: 8px;
+      margin-right: 15px;
     }
-
 
     /* 왼쪽에 있는 카테고리 css */
     .basenav {
@@ -101,6 +101,20 @@
       }
     }
 
+    $(document).ready(function () {
+      $('#startclose').on('click', (e) => {
+        e.preventDefault();
+        
+        if (confirm("영업을 개시하시겠습니까?")) {
+          alert("영업을 시작합니다.");    
+            
+        } else {
+          alert("영업을 시작 취소 버튼을 누르셨습니다.");
+
+        }
+      })
+    })
+
   </script>
 
 
@@ -118,10 +132,7 @@
         <a class="headermidtext" href="#">대리운전</a>
         <ul class="nav justify-content-end">
           <li class="nav-item">
-            <a class="nav-link" href="#" id="login">로그아웃</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="startclose">영업 시작</a>
+            <button type="button" class="btn btn-danger btn-lg" id="startclose">영업개시</button>
           </li>
         </ul>
       </div>
@@ -156,7 +167,6 @@
 
 </html>
 
-<!-- 로그인 창 연결 -->
 <!-- 로그인 후 영업 개시 어떻게 할지(로직) 고민 -->
 
 <!-- 영업 개시 / 영업 종료 에 따라서 대리운전 눌렀을 때 이동하는 창이 달라야 함

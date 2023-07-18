@@ -6,6 +6,7 @@
   <title>전체 회원 목록</title>
   {% include 'center/layout/head.html' %}
   {% include 'center/layout/base.html' %}
+
   <style>
     /* content*/
     .content {
@@ -31,11 +32,11 @@
     }
   </style>
 
-  <script>
+  <!-- <script>
     $(function () {
       function getCustomerdataList() {
         $.ajax({
-          url: "http://localhost:8000/customer/signup/",
+          url: "http://localhost:8000/customer/customer_info/",
           method: "GET",
         }).done(function (response) {
           console.log(response);
@@ -43,12 +44,7 @@
             `<tr>
                         <td>${index + 1}</td>
                         <td>${user.username}</td>
-                        <td>${user.username}</td>
-                        <td>${user.name}</td>
-                        <td>${user.name}</td>
                         <td>${user.phone_number}</td>
-                        <td>${user.phone_number}</td>
-                        <td>${user.gear_type}</td>
                         <td>${user.gear_type}</td>
                     </tr>`
           ))
@@ -56,16 +52,40 @@
         });
       }
 
-      function getCustomerdataList() 
+      function getCustomerdataList()
 
     });
-  </script>
+  </script> -->
 
+  <script>
+    $(function () {
+      function getOrderdataList() {
+        $.ajax({
+          url: "http://localhost:8000/customer/orderdata/",
+          method: "GET",
+        }).done(function (response) {
+          console.log(response);
+          const tr_array = response.map((orderdata, index) => $(
+            `<tr>
+                      <td>${index + 1}</td>
+                      <td>${orderdata.customer_id}</td>
+                      <td>${orderdata.start_address}</td>
+                      <td>${orderdata.end_address}</td>
+                      </tr>`
+          ))
+          $("#data_table > tbody").append(tr_array);
+        });
+      }
+
+      getOrderdataList();
+    });
+    </script>
 </head>
 
 <body>
+  
   <div class="content">
-    <table class="table table-hover"  id="data_table">
+    <table class="table table-hover" id="data_table">
       <thead class="table-warning">
         <tr>
           <th scope="col"></th>
@@ -85,5 +105,5 @@
 
 </html>
 
-<!-- ID 별로 정렬하기 -->
-<!-- 전화번호 입력하면 search 가능..? (시간되면 하기) -->
+// <!-- ID 별로 정렬하기 -->
+// <!-- 전화번호 입력하면 search 가능..? (시간되면 하기) -->

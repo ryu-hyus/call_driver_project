@@ -1,7 +1,5 @@
 from django.urls import path
-
 from calldriverapp.views.center import MainView
-# from calldriverapp.views.center import SuperuserLoginViewß
 from calldriverapp.views.center import CustomerListView
 from calldriverapp.views.center import RealtimeOrderView
 from calldriverapp.views.center import TodayOrderView
