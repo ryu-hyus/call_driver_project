@@ -148,7 +148,8 @@
         <div class="dropdown-center">
             <div class="row" style="height:250px">
                 <div style="position: relative;">
-                    <img id="start-map-image" class="map-image" src="{% static 'mapimages/1.png' %}" alt="Start Address Map Image">
+                    <img id="start-map-image" class="map-image" src="{% static 'mapimages/1.png' %}"
+                         alt="Start Address Map Image">
                     <img id="end-map-image" class="map-image" src="{% static 'mapimages/1.png' %}"
                          alt="End Address Map Image">
                 </div>
@@ -227,12 +228,51 @@
             </div>
         </div>
     </section>
-    <footer class="bg-dark text-white pt-2 pb-2">
-        <div class="container mt-2 mb-1">
-            <div class="text-center">Phone: 064-000-0000</div>
-        </div>
-        <p style="text-align: center;" class="mb-1"><a href="pricepage.html" class="link-info h6">요금 안내</a></p>
-    </footer>
+
+{#    <script>#}
+{#        function calculatePrice() {#}
+{#            const startAddressId = $('#start_address').val();#}
+{#            const endAddressId = $('#end_address').val();#}
+{##}
+{#            // Send the startAddressId and endAddressId to the server for fare price calculation#}
+{#            $.ajax({#}
+{#                url: '/calculate_price/',#}
+{#                type: 'POST',#}
+{#                data: {#}
+{#                    'start_address_id': startAddressId,#}
+{#                    'end_address_id': endAddressId,#}
+{#                    csrfmiddlewaretoken: '{{ csrf_token }}'#}
+{#                },#}
+{#                success: function (response) {#}
+{#                    // Handle the response and update the UI with the calculated fare price#}
+{#                    const price = response.price;#}
+{#                    alert('The fare price is: ' + price);#}
+{#                },#}
+{#                error: function (xhr) {#}
+{#                    // Handle error cases#}
+{#                    alert('Error occurred while calculating fare price.');#}
+{#                }#}
+{#            });#}
+{#        }#}
+{#    </script>#}
+
+</body>
+</html>
+In the modified code, a new button with the class calculate-btn is added below the end_address dropdown. The button calls the calculatePrice() JavaScript function when clicked.
+
+The calculatePrice() function uses jQuery to retrieve the selected start_address and end_address IDs. It then sends an AJAX request to the server with the selected IDs for fare price calculation. You will need to define a Django view and URL to handle this request.
+
+In the success callback of the AJAX request, you can handle the response from the server. In this example, it simply displays an alert with the calculated fare price.
+
+Note: Make sure to update the AJAX URL (url: '/calculate_price/') with the appropriate endpoint that handles the fare price calculation in your Django application.
+
+
+<footer class="bg-dark text-white pt-2 pb-2">
+    <div class="container mt-2 mb-1">
+        <div class="text-center">Phone: 064-000-0000</div>
+    </div>
+    <p style="text-align: center;" class="mb-1"><a href="pricepage.html" class="link-info h6">요금 안내</a></p>
+</footer>
 </div>
 </body>
 </html>
