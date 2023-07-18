@@ -93,3 +93,4 @@ class FindIdView(View):
             return JsonResponse({ "username" : user.username })
         except MyUser.DoesNotExist:
             return JsonResponse({ "error" : "아이디를 찾을 수 없습니다."}, status=400 )
+        

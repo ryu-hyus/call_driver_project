@@ -5,6 +5,7 @@ from calldriverapp.views.customer import OrderMainTemplateView
 from calldriverapp.views.member_info import CustomerLoignView, FindIdView, SignUpView
 from calldriverapp.views.customer import OrderMainTemplateView, OrderChangeTemplateView
 from calldriverapp.views.orderdataCRUD import OrderdataView, CustomerOrderView
+from calldriverapp.views.myuserCRUD import CustomerInfoView
 
 urlpatterns = [
     path("signup/", SignUpView.as_view(), name="sign_up"),
@@ -12,6 +13,7 @@ urlpatterns = [
     path("find_id/", FindIdView.as_view(), name="find_id"),
     path("home/", HomeTemplateView.as_view(), name="home"),
     path("mypage/", MyPageView.as_view(), name="mypage"),
+    path("customer_info/", CustomerInfoView.as_view(), name="customer_info"),
     path("ordermain/", OrderMainTemplateView.as_view(), name= "order_main"),
     path("orderdetail/", OrderDetailTemplateView.as_view(), name= "order_detail"),
     path("orderchange/", OrderChangeTemplateView.as_view(), name= "order_change"),
