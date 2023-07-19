@@ -230,33 +230,36 @@
         </div>
     </section>
 
-        <script>
-            function calculatePrice() {
-                const startAddressId = $('#start_address option:selected').val();
-                const endAddressId = $('#end_address option:selected').val();
+    <script>
+        function calculatePrice() {
+            const startAddressId = $('#start_address option:selected').attr("id");
+            const endAddressId = $('#end_address option:selected').attr("id");
+            {#const startAddress = $('#' + startAddressId).text();#}
+            {#const endAddress = $('#' + endAddressId).text();#}
+            console.log(startAddressId);
+            console.log(endAddressId);
+            // Send the startAddressId and endAddressId to the server for fare price calculation
+            $.ajax({
+                url: `http://localhost:8000/customer/pricecalculate/${startAddressId}/${endAddressId}/`,
+                type: 'GET',
+                dataType: 'json',
+            }).done(function (response) {
+                console.log(response);
+                $('#showprice').text(JSON.stringify(response));
 
-                // Send the startAddressId and endAddressId to the server for fare price calculation
-                $.ajax({
-                    url: '/pricecalculate/',
-                    type: 'POST',
-                    data: {
-                        'start_address_id': startAddressId,
-                        'end_address_id': endAddressId,
-                        csrfmiddlewaretoken: '{{ csrf_token }}'
-                    },
-                    success: function (response) {
-                        // Handle the response and update the UI with the calculated fare price
-                        const price = response.price;
-                        alert('예상 요금은: ' + price +',000원 입니다.');
-                    },
-                    error: function (xhr) {
-                        // Handle error cases
-                        alert('Error occurred while calculating fare price.');
-                    }
-                });
-            }
-        </script>
 
+
+
+
+
+            })
+
+        };
+    </script>
+
+    <!-- Place this button wherever you want it to appear -->
+    <button id="calculate_button" class="btn btn-primary" onclick=calculatePrice()>예상요금 계산하기</button>
+    <span id="showprice"></span>
 </body>
 </html>
 
