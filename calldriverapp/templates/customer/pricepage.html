@@ -245,8 +245,7 @@
                 dataType: 'json',
             }).done(function (response) {
                 console.log(response);
-
-                $('#showprice').text(JSON.stringify(response)+ ',000원');
+                $('#showprice').text('예상요금은' +" " +JSON.stringify(response).slice(-3,-1) + ',000원');
 
             })
 
