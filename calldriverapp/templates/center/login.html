@@ -29,8 +29,9 @@
       text-decoration: none;
       color: #000;
     }
+
     .white {
-      color:#fff;
+      color: #fff;
     }
   </style>
 </head>
@@ -70,7 +71,7 @@
       console.log('아이디 : ' + username + ', 비밀번호 : ' + password);
 
       $.ajax({
-        method:"POST",
+        method: "POST",
         url: "http://127.0.0.1:8000/center/",
         contentType: "application/json",
         data: JSON.stringify({
@@ -80,7 +81,8 @@
       }).done(function (response) {
         alert('로그인 성공')
         alert(username + '님 반갑습니다!')
-        location.href="/center/main/"
+        
+        location.href = "/center/offmain/"
       }).fail(function (response) {
         alert('로그인 실패')
         location.reload();

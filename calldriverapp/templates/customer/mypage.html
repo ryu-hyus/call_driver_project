@@ -118,12 +118,14 @@
                 headers: { "X-CSRFToken": "{{ csrf_token }}" } // 모든 AJAX 요청에 CSRF 토큰 포함
             });
 
+            var user_id = sessionStorage.getItem('user_id');
+
             $.ajax({
-                url: "http://127.0.0.1:8000/customer/customer_info/17/",
+                url: `http://127.0.0.1:8000/customer/customer_info/${user_id}/`,
                 method: "GET",
-                dataType: 'json'
+                dataType: 'json',
             }).done(function (response) {
-                console.log(response)
+                console.log(response);
                 $('#customer_name').text(response.name);
                 $('#name').val(response.name);
                 $('#phone_number').val(response.phone_number);
