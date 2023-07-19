@@ -27,39 +27,8 @@
             </svg>
         </button>
     </div>
-
-    <div class="list-group rounded-0">
-        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-            <div class="d-flex w-100 justify-content-between">
-                <h6 class="mb-1">장소명</h6>
-                <small id="category-1">카테고리</small>
-            </div>
-            <p class="mb-1"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;도로명 주소</p>
-            <p class="mb-1"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;지번 주소</p>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-            <div class="d-flex w-100 justify-content-between">
-                <h6 class="mb-1">장소명</h6>
-                <small id="category-1">카테고리</small>
-            </div>
-            <p class="mb-1"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;도로명 주소</p>
-            <p class="mb-1"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;지번 주소</p>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-            <div class="d-flex w-100 justify-content-between">
-                <h6 class="mb-1">장소명</h6>
-                <small id="category-1">카테고리</small>
-            </div>
-            <p class="mb-1"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;도로명 주소</p>
-            <p class="mb-1"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;지번 주소</p>
-        </a>
-    </div>
-    <h1>장소 검색</h1>
-    <input type="text" id="keywordInput" placeholder="검색할 키워드를 입력하세요">
-    <button id="searchButton">검색</button>
-    <div id="searchResults">
-        <!-- 검색 결과를 표시할 div -->
-    </div>
+    <!-- 검색 결과 표시 창 -->
+    <div class="list-group rounded-0" id="searchResults"></div>
 
     <script>
         function searchPlaces(keyword) {
@@ -74,7 +43,9 @@
                 },
                 data: {
                     query: keyword,
-                    size: 5
+                    size: 7,
+                    x: "126.531171087129",
+                    y: "33.4995342412698"
                 },
                 success: function (response) {
                     // AJAX 요청이 성공하면 실행될 콜백 함수
@@ -94,9 +65,28 @@
 
             // 검색 결과를 반복문을 통해 표시
             data.documents.forEach(function (place) {
-                resultsDiv.append("<p>" + place.place_name + "</p>");
+                var addressName = place.address_name;
+                var roadAddressName = place.road_address_name;
+                var placeName = place.place_name;
+                var categoryGroupName = place.category_group_name;
+                var address_x = place.x;
+                var address_y = place.y;
+
+                resultsDiv.append(
+                    `<a class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1" id="placeName">${placeName}</h6>
+                    <small id="categoryGroupName">${categoryGroupName}</small>
+                    </div>
+                    <p class="mb-1" id="roadAddressName" value="${roadAddressName}"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;${roadAddressName}</p>
+                    <p class="mb-1" id="addressName" value="${addressName}"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;${addressName}</p>
+                    <input type="hidden" style="display:none;" id="address_x" value="${address_x}"></input>
+                    <input type="hidden" style="display:none;" id="address_y" value="${address_y}"></input>
+                    </a>`
+                );
             });
         }
+
 
         $(document).ready(function () {
             // 검색 버튼을 클릭하면 검색 수행
@@ -107,6 +97,26 @@
                     var keyword = $("#keywordInput").val();
                     searchPlaces(keyword);
                 }
+            });
+
+            // 검색 결과의 각 주소를 클릭하면 onAddressClick 함수를 호출하도록 수정
+            $("#searchResults").on("click", "a.list-group-item", function () {
+                var addressName = $(this).find("#addressName").attr('value');
+                var roadAddressName = $(this).find("#roadAddressName").attr('value');
+                var placeName = $(this).find("#placeName").text();
+                var categoryGroupName = $(this).find("#categoryGroupName").text();
+                var x = $(this).find("#address_x").attr('value');
+                var y = $(this).find("#address_y").attr('value');
+
+                var placeData = {
+                    address_name: addressName,
+                    road_address_name: roadAddressName,
+                    place_name: placeName,
+                    category_group_name: categoryGroupName,
+                    x: x,
+                    y: y
+                };
+                sessionStorage.setItem('selectedPlace', JSON.stringify(placeData));
             });
         });
     </script>
