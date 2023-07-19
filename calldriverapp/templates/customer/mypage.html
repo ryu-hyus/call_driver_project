@@ -119,17 +119,14 @@
             });
 
             $.ajax({
-                url: "http://127.0.0.1:8000/customer/customer_info/",
+                url: "http://127.0.0.1:8000/customer/customer_info/17/",
                 method: "GET",
                 dataType: 'json'
             }).done(function (response) {
-                // $('#customer_name').text(response.name);
-                // $('#name').val(response.name);
-                // $('#phone_number').val(response.phone_number);
-
-                $('#customer_name').text(`{{user.name}}`);
-                $('#name').val(`{{user.name}}`);
-                $('#phone_number').val(`{{user.phone_number}}`);
+                console.log(response)
+                $('#customer_name').text(response.name);
+                $('#name').val(response.name);
+                $('#phone_number').val(response.phone_number);
 
                 if (response.gear_type === 'auto') {
                     $('#auto').prop('checked', true);
