@@ -14,7 +14,6 @@ class PriceAdmin(admin.ModelAdmin):
     list_display = ("id", "start_section", "end_section", "calculated_price",)
 
 
-@admin.register(PriceFile)
 class PriceFileAdmin(admin.ModelAdmin):
     list_display = ("id", "file", 'uploaded_at',)
 
@@ -30,5 +29,5 @@ admin.site.register(AddressHistory)
 admin.site.register(OrderData)
 admin.site.register(PriceTable, PriceAdmin)
 admin.site.register(MyUser)
-admin.site.register(PriceFile)
+admin.site.register(PriceFile, PriceFileAdmin)
 
