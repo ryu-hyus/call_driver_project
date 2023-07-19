@@ -15,7 +15,7 @@ class CustomerInfoView(View):
             myuser = MyUser.objects.filter(id=pk).values().first()
 
             if not myuser:
-                return JsonResponse({"error": "Order not found"}, status=404)
+                return JsonResponse({"error": "myuser not found"}, status=404)
             return JsonResponse(myuser)
         # 다건조회
         else:
