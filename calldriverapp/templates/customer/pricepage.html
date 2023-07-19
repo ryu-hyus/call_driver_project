@@ -245,12 +245,8 @@
                 dataType: 'json',
             }).done(function (response) {
                 console.log(response);
-                $('#showprice').text(JSON.stringify(response));
 
-
-
-
-
+                $('#showprice').text(JSON.stringify(response)+ ',000원');
 
             })
 
