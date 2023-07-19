@@ -35,35 +35,6 @@
   </style>
 
 
-  <script>
-    $(function () {
-      function getOrderdataList() {
-        $.ajax({
-          url: "http://localhost:8000/customer/orderdata/",
-          method: "GET",
-        }).done(function (response) {
-          console.log(response);
-          const tr_array = response.map((orderdata, index) => $(
-            `<tr>
-                        <td>${index + 1}</td>
-                        <td>${orderdata.customer_id}</td>
-                        <td>${orderdata.start_address}</td>
-                        <td>${orderdata.end_address}</td>
-                        <td>${orderdata.operation_day}</td>
-                        <td>${orderdata.order_type}</td>
-                        <td>${orderdata.is_hide}</td>
-                        <td>${orderdata.order_type}</td>
-                        <td>${orderdata.is_hide}</td>
-                    </tr>`
-          ))
-          $("#data_table > tbody").append(tr_array);
-        });
-      }
-
-      getOrderdataList();
-    });
-  </script>
-
   <!-- <script>
     $(function () {
       function getOrderdataList() {
