@@ -20,3 +20,6 @@ class SigUpView(TemplateView):
 
 class SearchAddressView(TemplateView):
     template_name = "customer/searchaddress.html"
+
+class PricePageView(TemplateView):
+    template_name = "customer/pricepage.html"
