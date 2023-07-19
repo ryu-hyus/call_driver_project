@@ -31,6 +31,7 @@
       height: 5%;
     }
   </style>
+  
 
   <script>
     $(function () {
@@ -42,8 +43,8 @@
         for (var i = 0; i < response.length; i++) {
           var user = response[i];
           var row = $("<tr>");
-          $("<td>").text(user.username).appendTo(row); //td요소를 tr요소에 추가
-          $("<td>").text(user.name).appendTo(row);
+          $("<td>").text(i).appendTo(row); //td요소를 tr요소에 추가
+          $("<td>").text(user.username).appendTo(row);
           $("<td>").text(user.phone_number).appendTo(row);
           $("<td>").text(user.gear_type).appendTo(row);
           $("#data_table").append(row); //row를 #data_table 에 추가
@@ -55,21 +56,20 @@
 </head>
 
 <body>
-
+  
   <div class="content">
     <table class="table table-hover" id="data_table">
       <thead class="table-warning">
         <tr>
-          <th scope="col">ID</th>
-          <th scope="col">이름</th>
+          <th scope="col"></th>
+          <th scope="col">User ID</th>
           <th scope="col">전화번호</th>
           <th scope="col">기어</th>
         </tr>
       </thead>
-      <tbody class="table-group-divider">
-
-      </tbody>
+      <tbody class="table-group-divider"></tbody>
     </table>
+
   </div>
 
 
