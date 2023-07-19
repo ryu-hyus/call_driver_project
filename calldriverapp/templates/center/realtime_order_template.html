@@ -37,50 +37,43 @@
 
   <script>
     $(function () {
-      // 첫 번째 URL에 대한 AJAX 요청
-      var request1 = $.ajax({
-        url: "http://127.0.0.1:8000/customer/customer_info/",
-        method: "GET",
-        dataType: 'json'
-      });
+      function getRealtimeOrderList() {
+        $.ajax({
+          url: "http://localhost:8000/center/realtimeorder/get/",
+          method: "GET",
+        }).done(function (response) {
+          console.log(response);
+          const tr_array = response.map((getrealtimeorder, index) => $(
+            `<tr>
+                    <td>${index + 1}</td>
+                    <td>${getrealtimeorder.phone_number}</td>
+                    <td>${getrealtimeorder.gear_type}</td>
+                    <td>${getrealtimeorder.start_address}</td>
+                    <td>${getrealtimeorder.end_address}</td>
+                    <td>${getrealtimeorder.operation_day}</td>
+                    <td><button class="btn btn-danger btn-sm btn-detail-ask" data-order-id="ask_type">${getrealtimeorder.order_kind}요청</button><span id='ask_text'></span></td>
+                    <td><button class="btn btn-primary btn-sm btn-detail-confirm" data-order-id="${getrealtimeorder.is_hide}">최종확인</button></td>
+                </tr>`
+          ))
+          $("#data_table > tbody").append(tr_array);
+        });
+      }
 
-      // 두 번째 URL에 대한 AJAX 요청
-      var request2 = $.ajax({
-        url: "http://localhost:8000/customer/orderdata/",
-        method: "GET",
-        dataType: 'json'
-      });
-      Promise.all([request1, request2]).then(function (responses) {
-        const response1 = responses[0];
-        const response2 = responses[1];
-
-        console.log(response1, response2);
-
-
-
-      // 두 개의 AJAX 요청이 완료될 때까지 기다린 후 처리
-      // Promise.all([request1, request2]).then(function (responses) {
-      //   const response1 = responses[0];
-      //   const response2 = responses[1];
-
-      // // 첫 번째 URL에서 가져온 데이터 처리
-      // for (var i = 0; i < response1.length; i++) {
-      //   var user = response1[i];
-      //   var row = $("<tr>");
-      //   $("<td>").text(user.username).appendTo(row);
-      //   $("<td>").text(user.name).appendTo(row);
-      //   $("<td>").text(user.phone_number).appendTo(row);
-      //   $("<td>").text(user.gear_type).appendTo(row);
-      //   $("#data_table").append(row);
-      // }
-
-      // // 두 번째 URL에서 가져온 데이터 처리
-      // for (var j = 0; j < response2.length; j++) {
-      //   var data = response2[j];
-      //   // 처리 로직 작성
-      // }
+      getRealtimeOrderList();
     });
+
+
+    // 접수, 변경, 취소 요청 시 
+    $(document).on("click", ".btn-detail-ask", function () {
+      const buttonText = "접수완료";
+      const spanElement = $("<span>")
+        .text(buttonText)
+        .attr("id", "ask_text")
+        .css("color", "red");
+      $(this).replaceWith(spanElement);
     });
+
+
   </script>
 
 
@@ -93,7 +86,6 @@
       <thead class="table-warning">
         <tr>
           <th scope="col"></th>
-          <th scope="col">ID</th>
           <th scope="col">전화번호</th>
           <th scope="col">기어</th>
           <th scope="col">출발지</th>
@@ -116,4 +108,5 @@
 
 <!-- 접수상황 버튼 누르면 
   1. __완료가 text로 되게 (색깔 유의)
-  2. 최종확인 버튼 활성화면서 깜박깜박거리게 -->
+  2. 최종확인 버튼 활성화면서 깜박깜박거리게 
+  3. 자바스크립트 인터벌 함수 사용 (5초), 돔 핸들링-->
