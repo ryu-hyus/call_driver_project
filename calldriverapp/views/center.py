@@ -7,9 +7,7 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
 
-class MainView(TemplateView):
-    template_name = "center/home.html"
-
+# 영업시작 후
 class CustomerListView(TemplateView):
     template_name = "center/customer_list_template.html"
 
@@ -21,3 +19,14 @@ class TodayOrderView(TemplateView):
 
 class TotalOrderView(TemplateView):
     template_name = "center/total_order_template.html"
+
+
+# 영업시작 전 혹은 영업종료한 경우
+class OffMainView(TemplateView):
+    template_name = "center/offmain.html"
+    
+class OffCustomerView(TemplateView):
+    template_name = "center/off_customer_list_template.html"
+ 
+class OffTotalOrderView(TemplateView):
+    template_name = "center/off_total_order_template.html"
