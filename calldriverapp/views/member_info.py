@@ -75,10 +75,10 @@ class StaffLoginView(View):
             if user is not None and user.is_staff:
                 login(request, user)
                 if check_password(password, user.password):
-                    return render(request, 'customer/index.html')  # 로그인 성공시 연결            
+                    return render(request, 'center/offmain.html')  # 로그인 성공시 연결            
             return HttpResponse("유저가 없습니다", status=500)
         else:
-            return render(request, 'customer/login.html')      
+            return render(request, 'center/login.html')      
             
 @method_decorator(csrf_exempt, name='dispatch')
 class FindIdView(View):
