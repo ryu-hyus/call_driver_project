@@ -13,7 +13,7 @@
   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
   <style>
     .outerbox {
-      width: 70%;
+      width: 40%;
       margin-top: 100px;
     }
 
@@ -53,15 +53,11 @@
             <input type="password" class="form-control rounded-4" id="password" placeholder="비밀번호를 입력해주세요">
             <label for="password">비밀번호</label>
           </div>
+          <small class="text-muted">Happy Smile</small>
+          <hr class="my-4">
           <button id="login" class="w-100 mb-2 btn btn-lg btn-outline-success orange white" type="submit">
             로그인
           </button>
-          <small class="text-muted">Happy Smile</small>
-          <hr class="my-4">
-          <button id="singup" class="w-100 mb-2 btn btn-lg btn-outline-success orange white" type="submit">
-            회원가입
-          </button>
-          <a href="" id="find_id">아이디찾기</a>
         </form>
       </div>
     </div>
@@ -75,7 +71,7 @@
 
       $.ajax({
         method:"POST",
-        url: "http://127.0.0.1:8000/customer/login/",
+        url: "http://127.0.0.1:8000/center/",
         contentType: "application/json",
         data: JSON.stringify({
           "username": username,
@@ -84,20 +80,11 @@
       }).done(function (response) {
         alert('로그인 성공')
         alert(username + '님 반갑습니다!')
-        location.href="/customer/home/"
+        location.href="/center/offmain/"
       }).fail(function (response) {
         alert('로그인 실패')
         location.reload();
       });
-    })
-    $("#singup").on('click', (e) => {
-      e.preventDefault();
-      console.log('회원가입창으로 이동')
-      location.href="/customer/signup/"
-    });
-    $('#find_id').on('click', (e) => {
-      e.preventDefault();
-      location.href="/customer/find_id/"
     })
   </script>
 </body>

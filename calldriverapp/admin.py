@@ -6,6 +6,7 @@ from calldriverapp.models.customer import MyUser
 
 from calldriverapp.models.operation import OperationDay, OperationOnOff
 from calldriverapp.models.orderdata import OrderData
+from calldriverapp.models.pricefile import PriceFile
 from calldriverapp.models.pricetable import PriceTable
 
 
@@ -29,3 +30,5 @@ admin.site.register(AddressHistory)
 admin.site.register(OrderData)
 admin.site.register(PriceTable, PriceAdmin)
 admin.site.register(MyUser)
+admin.site.register(PriceFile)
+

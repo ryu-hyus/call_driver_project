@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% include 'customer/layout/head.html' %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <title>주소 검색</title>
+</head>
+
+<body>
+    <div class="mb-1 input-group border border-2 rounded-0">
+        <input class="form-control form-control-lg rounded-0" id="keywordInput" placeholder="주소를 입력하세요." />
+        <button class="btn btn-light search-button rounded-0" id="searchButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+                viewBox="0 0 16 16">
+                <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
+        </button>
+        <button class="btn btn-light rounded-0" id="exit_button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
+                viewBox="0 0 16 16">
+                <path
+                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+            </svg>
+        </button>
+    </div>
+
+    <div class="list-group rounded-0">
+        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">장소명</h6>
+                <small id="category-1">카테고리</small>
+            </div>
+            <p class="mb-1"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;도로명 주소</p>
+            <p class="mb-1"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;지번 주소</p>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">장소명</h6>
+                <small id="category-1">카테고리</small>
+            </div>
+            <p class="mb-1"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;도로명 주소</p>
+            <p class="mb-1"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;지번 주소</p>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">장소명</h6>
+                <small id="category-1">카테고리</small>
+            </div>
+            <p class="mb-1"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;도로명 주소</p>
+            <p class="mb-1"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;지번 주소</p>
+        </a>
+    </div>
+    <h1>장소 검색</h1>
+    <input type="text" id="keywordInput" placeholder="검색할 키워드를 입력하세요">
+    <button id="searchButton">검색</button>
+    <div id="searchResults">
+        <!-- 검색 결과를 표시할 div -->
+    </div>
+
+    <script>
+        function searchPlaces(keyword) {
+            var apiUrl = "https://dapi.kakao.com/v2/local/search/keyword";
+            var apiKey = "03822d0904427e2e6efef1126ac76f2e"; // 발급받은 카카오 API 키를 넣으세요.
+
+            $.ajax({
+                url: apiUrl,
+                method: "GET",
+                headers: {
+                    "Authorization": "KakaoAK " + apiKey,
+                },
+                data: {
+                    query: keyword,
+                    size: 5
+                },
+                success: function (response) {
+                    // AJAX 요청이 성공하면 실행될 콜백 함수
+                    displayResults(response);
+                },
+                error: function (error) {
+                    // AJAX 요청이 실패하면 실행될 콜백 함수
+                    console.error("에러 발생:", error);
+                }
+            });
+        }
+
+        // 검색 결과를 화면에 표시하는 함수
+        function displayResults(data) {
+            var resultsDiv = $("#searchResults");
+            resultsDiv.empty(); // 이전 검색 결과 지우기
+
+            // 검색 결과를 반복문을 통해 표시
+            data.documents.forEach(function (place) {
+                resultsDiv.append("<p>" + place.place_name + "</p>");
+            });
+        }
+
+        $(document).ready(function () {
+            // 검색 버튼을 클릭하면 검색 수행
+            $("#searchButton").click(function () {
+                if ($("#keywordInput").val() == "") {
+                    alert("주소를 입력해주세요.");
+                } else {
+                    var keyword = $("#keywordInput").val();
+                    searchPlaces(keyword);
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
