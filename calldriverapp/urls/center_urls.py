@@ -6,6 +6,7 @@ from calldriverapp.views.center import TodayOrderView
 from calldriverapp.views.center import TotalOrderView
 from calldriverapp.views.member_info import StaffLoginView
 from calldriverapp.views.operationCR import OperationOnOffView
+from calldriverapp.views.realtimeorder import RealtimeOrderGetView
 
 urlpatterns = [
     path("", StaffLoginView.as_view(), name="superuser_login"),
@@ -17,5 +18,6 @@ urlpatterns = [
     path("offmain/", OffMainView.as_view(), name="center_main"),
     path("offcustomerlist/", OffCustomerView.as_view(), name="off_customer_list"),
     path("offtotalorder/", OffTotalOrderView.as_view(), name="off_total_order_list"),
+    path("realtimeorder/get/", RealtimeOrderGetView.as_view(), name="realtime_order_get"),
 ]
 
