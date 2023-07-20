@@ -40,7 +40,6 @@
 
       let orderKindText = "";
       let orderButtonColor = "";
-      let textColor = "";
 
       function getRealtimeOrderList() {
         $.ajax({
@@ -57,15 +56,12 @@
             if (getrealtimeorder.order_kind === "order") {
               orderKindText = "주문";
               orderButtonColor = "danger";
-              textColor = "red";
             } else if (getrealtimeorder.order_kind === "change") {
               orderKindText = "변경";
               orderButtonColor = "warning";
-              textColor = "yellow";
             } else if (getrealtimeorder.order_kind === "cancel") {
               orderKindText = "취소";
               orderButtonColor = "success";
-              textColor = "green";
             }
 
 
@@ -80,7 +76,7 @@
               <td>${getrealtimeorder.operation_day}</td>
               <td>
                 <button id="${buttonId}" class="btn btn-${orderButtonColor} btn-sm btn-detail-ask">
-                  ${orderKindText}요청</button><span id='ask_text' style="color: ${textColor}"></span>
+                  ${orderKindText}요청</button>
               </td>
               <td>
                 <button class="btn btn-dark btn-sm btn-detail-confirm" data-order-id="${getrealtimeorder.is_hide}">
@@ -106,9 +102,23 @@
       const orderKindText = button.text();
       const changeText = orderKindText + "완료";
 
+
+      // let textColor = '';
+
+      // function getTextColor() {
+      //   if (orderKindText == "주문요청") {
+      //     textColor = "red";
+      //   } else if (orderKindText == "변경요청") {
+      //     textColor = "blue";
+      //   } else if (orderKindText == "취소요청") {
+      //     textColor = "green";
+      //   }
+      // }
+
       const spanElement = $("<span>")
         .text(changeText)
         .attr("id", "ask_text")
+        // .css("color", getTextColor(orderKindText));
 
       button.replaceWith(spanElement);
     });
