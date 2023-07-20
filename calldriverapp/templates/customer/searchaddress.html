@@ -19,7 +19,7 @@
                     d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
             </svg>
         </button>
-        <button class="btn btn-light rounded-0" id="exit_button">
+        <button class="btn btn-light rounded-0" id="exit_button" onclick=window.close();>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
                 <path
@@ -98,6 +98,9 @@
                     searchPlaces(keyword);
                 }
             });
+            
+            const searchParama = new URLSearchParams(location.search)
+            const address_type = searchParama.get('address_type')
 
             // 검색 결과의 각 주소를 클릭하면 onAddressClick 함수를 호출하도록 수정
             $("#searchResults").on("click", "a.list-group-item", function () {
@@ -107,18 +110,41 @@
                 var categoryGroupName = $(this).find("#categoryGroupName").text();
                 var x = $(this).find("#address_x").attr('value');
                 var y = $(this).find("#address_y").attr('value');
+                var sectionName = addressName.split(" ")[2].substr(0, 2);
 
-                var placeData = {
-                    address_name: addressName,
-                    road_address_name: roadAddressName,
-                    place_name: placeName,
-                    category_group_name: categoryGroupName,
-                    x: x,
-                    y: y
-                };
-                sessionStorage.setItem('selectedPlace', JSON.stringify(placeData));
+                if (address_type == 'start'){
+                    SessionUploadStart(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
+                    setValueAndCloseStart(addressName);
+                } else{
+                    SessionUploadEnd(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
+                    setValueAndCloseEnd(addressName); 
+                }
+                
+
             });
         });
+
+        // 부모 창으로 값을 전달하는 함수
+        function setValueAndCloseStart(value) {
+            // window.opener를 사용하여 부모 창의 함수 호출
+            window.opener.setValueStart(value);
+            window.close();
+        }
+
+        function SessionUploadStart(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName) {
+            window.opener.uploadStartSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName)
+        }
+
+        // 부모 창으로 값을 전달하는 함수
+        function setValueAndCloseEnd(value) {
+            // window.opener를 사용하여 부모 창의 함수 호출
+            window.opener.setValueEnd(value);
+            window.close();
+        }
+
+        function SessionUploadEnd(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName) {
+            window.opener.uploadEndSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName)
+        }
     </script>
 
 </body>
