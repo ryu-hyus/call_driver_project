@@ -15,7 +15,15 @@ class OperationOnOffView(View):
     def post(self, request):
         data = json.loads(request.body)
         operation_onoff_value = data.get("operation_onoff")
+        
+        if operation_onoff_value == True:
+            operation_onoff_value = operation_onoff_value
+        else:
+            operation_onoff_value = False
+
         operation_onoff = OperationOnOff(operation_onoff=operation_onoff_value)
         operation_onoff.save()
         return HttpResponse(status=200)
+    
+
 

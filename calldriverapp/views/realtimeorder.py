@@ -13,7 +13,7 @@ from django.utils.decorators import method_decorator
 class RealtimeOrderGetView(View):
     # 조회
     def get(self, request):
-        operationday = OperationDay.objects.filter(id=1).values().first()
+        operationday = OperationDay.objects.filter(id=1).values().first()  
         orderdata = OrderData.objects.filter(
             order_type=True, is_hide=False, operation_day=operationday['operation_day']).values()
         orderlist = list(orderdata)
@@ -23,4 +23,10 @@ class RealtimeOrderGetView(View):
                 id=i['customer_id']).values().first()['phone_number']
             i['phone_number'] = phonenumber
 
+            geartype = MyUser.objects.filter(
+                id=i['customer_id']).values().first()['gear_type']
+            i['gear_type'] = geartype
+
         return JsonResponse(orderlist, safe=False)
+
+# 16번째 줄 : id=1 전체 데이터 중 첫 번째, first()는 filter된 것 중 첫 번째 (약간 개발자 매너?로 적으신 듯)
