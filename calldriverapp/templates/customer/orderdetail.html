@@ -10,46 +10,6 @@
     .search-bar {
       position: relative;
     }
-
-    .search-bar input {
-      width: 100%;
-      padding-right: 30px;
-      /* X 버튼을 위한 여백 */
-    }
-
-    .search-bar .search-history {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-top: none;
-      display: none;
-      z-index: 999;
-      /* 팝업을 다른 요소들보다 위에 오도록 설정 */
-    }
-
-    .search-bar .search-history .history-item {
-      position: relative;
-      padding: 8px;
-      cursor: pointer;
-    }
-
-    .search-bar .search-history .history-item:hover {
-      background-color: #f4f4f4;
-      color: #007bff;
-      /* primary 색상으로 강조 */
-    }
-
-    .search-bar .search-history .delete-history {
-      position: absolute;
-      top: 50%;
-      right: 8px;
-      transform: translateY(-50%);
-      color: #999;
-      cursor: pointer;
-    }
   </style>
 
   <title>주문 상세 화면</title>
@@ -83,7 +43,7 @@
           </div>
         </div>
         <div>
-          <button class="btn btn-danger mr-3" href="#">변경/취소</button>
+          <button class="btn btn-danger mr-3" onclick="location.href='/customer/orderchange/'" value="orderid">변경/취소</button>
         </div>
       </div>
       <!-- 예상 요금 -->
@@ -114,7 +74,7 @@
   <p style="text-align: center;" class="mb-0"><a href="#" class="link-info h6">추가로 접수하기</a></p>
   <div class="row btn-row justify-content-evenly">
     <div class="col-10 align">
-      <button type="button" class="btn btn-primary btn-block btn-custom mt-0 mb-2" href="#">Home</button>
+      <button type="button" class="btn btn-primary btn-block btn-custom mt-0 mb-2" onclick="location.href='/customer/home/'">Home</button>
     </div>
   </div>
 
