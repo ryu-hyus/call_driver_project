@@ -47,7 +47,7 @@
   </style>
 </head>
 
-<body>
+<body >
   <div class="modal-dialog outerbox" role="document">
     <div class="modal-content rounded-5 shadow">
       <div class="modal-header p-5 pb-4 border-bottom-0">
@@ -97,6 +97,7 @@
         alert(username + '님 반갑습니다!');
         
         sessionStorage.setItem('user_id', response.id);
+        sessionStorage.setItem('user_name', response.username);
         location.href="/customer/home/";
       }).fail(function (response) {
         alert('로그인 실패');
