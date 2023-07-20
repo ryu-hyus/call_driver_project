@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% include 'customer/layout/head.html' %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <style>
         .search-bar {
             position: relative;
@@ -65,67 +66,64 @@
     <div class="container">
         <div class="search-bar input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-default">출발지</span>
-            <input type="text" class="form-control" id="search-input-top" placeholder="출발지를 입력하세요">
-            <div class="search-history">
-                <div class="history-item">위쪽 검색 기록 1<span class="delete-history">x</span></div>
-                <div class="history-item">위쪽 검색 기록 2<span class="delete-history">x</span></div>
-                <div class="history-item">위쪽 검색 기록 3<span class="delete-history">x</span></div>
-            </div>
-            <button class="btn btn-primary search-button">검색</button>
+            <input type="text" class="form-control" id="search-start-point" placeholder="출발지를 검색하여 입력하세요" readonly>
         </div>
 
         <div class="search-bar input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-default">도착지</span>
-            <input type="text" class="form-control" id="search-input-bottom" placeholder="도착지를 입력하세요">
-            <div class="search-history">
-                <div class="history-item">아래쪽 검색 기록 1<span class="delete-history">x</span></div>
-                <div class="history-item">아래쪽 검색 기록 2<span class="delete-history">x</span></div>
-                <div class="history-item">아래쪽 검색 기록 3<span class="delete-history">x</span></div>
-            </div>
-            <button class="btn btn-primary search-button">검색</button>
+            <input type="text" class="form-control" id="search-end-point" placeholder="도착지를 검색하여 입력하세요" readonly>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script>
+        
         $(document).ready(function () {
-            // 위쪽 서치바 클릭 시 검색 기록 보이기
-            $('#search-input-top').click(function (event) {
-                event.stopPropagation();
-                $(this).siblings('.search-history').show();
+            //출발지 서치바 클릭
+            $('#search-start-point').click(function (event) {
+                window.open('/customer/searchaddress/?address_type=start', 'SearchAddressPopup', 'width=500, height=700, scrollbars=yes, resizable=no');
             });
 
-            // 위쪽 검색 기록 선택
-            $('.search-bar:nth-child(1) .search-history .history-item').click(function (event) {
-                var searchText = $(this).clone().children().remove().end().text().trim();
-                $('#search-input-top').val(searchText);
-                $('.search-bar:nth-child(1) .search-history').hide();
-            });
-
-            // 아래쪽 서치바 클릭 시 검색 기록 보이기
-            $('#search-input-bottom').click(function (event) {
-                event.stopPropagation();
-                $(this).siblings('.search-history').show();
-            });
-
-            // 아래쪽 검색 기록 선택
-            $('.search-bar:nth-child(2) .search-history .history-item').click(function (event) {
-                var searchText = $(this).clone().children().remove().end().text().trim();
-                $('#search-input-bottom').val(searchText);
-                $('.search-bar:nth-child(2) .search-history').hide();
-            });
-
-            // 검색 기록 삭제
-            $('.delete-history').click(function (event) {
-                event.stopPropagation();
-                $(this).parent().remove();
-            });
-
-            // 문서 클릭 시 검색 기록 숨기기
-            $(document).click(function () {
-                $('.search-history').hide();
+            //도착지 서치바 클릭
+            $('#search-end-point').click(function (event) {
+                window.open('/customer/searchaddress/?address_type=end', 'SearchAddressPopup', 'width=500, height=700, scrollbars=yes, resizable=no');
             });
         });
+
+        function setValueStart(value) {
+            // 부모 창의 인풋 박스에 값을 설정
+            document.getElementById('search-start-point').value = value;
+
+        }
+
+        function setValueEnd(value) {
+            // 부모 창의 인풋 박스에 값을 설정
+            document.getElementById('search-end-point').value = value;
+
+        }
+
+        function uploadStartSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName) {
+            
+            sessionStorage.setItem('start_address_name', addressName);
+            sessionStorage.setItem('start_road_address_name', roadAddressName);
+            sessionStorage.setItem('start_place_name', placeName);
+            sessionStorage.setItem('start_category_group_name', categoryGroupName);
+            sessionStorage.setItem('start_x', x);
+            sessionStorage.setItem('start_y', y);
+            sessionStorage.setItem('start_sectionName', sectionName);
+
+        }
+
+        function uploadEndSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName) {
+            
+            sessionStorage.setItem('end_address_name', addressName);
+            sessionStorage.setItem('end_road_address_name', roadAddressName);
+            sessionStorage.setItem('end_place_name', placeName);
+            sessionStorage.setItem('end_category_group_name', categoryGroupName);
+            sessionStorage.setItem('end_x', x);
+            sessionStorage.setItem('end_y', y);
+            sessionStorage.setItem('end_sectionName', sectionName);
+
+        }
     </script>
 
     <!-- 예상 요금 섹션 -->

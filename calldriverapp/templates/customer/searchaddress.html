@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% include 'customer/layout/head.html' %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <title>주소 검색</title>
+</head>
+
+<body>
+    <div class="mb-1 input-group border border-2 rounded-0">
+        <input class="form-control form-control-lg rounded-0" id="keywordInput" placeholder="주소를 입력하세요." />
+        <button class="btn btn-light search-button rounded-0" id="searchButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+                viewBox="0 0 16 16">
+                <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
+        </button>
+        <button class="btn btn-light rounded-0" id="exit_button" onclick=window.close();>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
+                viewBox="0 0 16 16">
+                <path
+                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+            </svg>
+        </button>
+    </div>
+    <!-- 검색 결과 표시 창 -->
+    <div class="list-group rounded-0" id="searchResults"></div>
+
+    <script>
+        function searchPlaces(keyword) {
+            var apiUrl = "https://dapi.kakao.com/v2/local/search/keyword";
+            var apiKey = "03822d0904427e2e6efef1126ac76f2e"; // 발급받은 카카오 API 키를 넣으세요.
+
+            $.ajax({
+                url: apiUrl,
+                method: "GET",
+                headers: {
+                    "Authorization": "KakaoAK " + apiKey,
+                },
+                data: {
+                    query: keyword,
+                    size: 7,
+                    x: "126.531171087129",
+                    y: "33.4995342412698"
+                },
+                success: function (response) {
+                    // AJAX 요청이 성공하면 실행될 콜백 함수
+                    displayResults(response);
+                },
+                error: function (error) {
+                    // AJAX 요청이 실패하면 실행될 콜백 함수
+                    console.error("에러 발생:", error);
+                }
+            });
+        }
+
+        // 검색 결과를 화면에 표시하는 함수
+        function displayResults(data) {
+            var resultsDiv = $("#searchResults");
+            resultsDiv.empty(); // 이전 검색 결과 지우기
+
+            // 검색 결과를 반복문을 통해 표시
+            data.documents.forEach(function (place) {
+                var addressName = place.address_name;
+                var roadAddressName = place.road_address_name;
+                var placeName = place.place_name;
+                var categoryGroupName = place.category_group_name;
+                var address_x = place.x;
+                var address_y = place.y;
+
+                resultsDiv.append(
+                    `<a class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1" id="placeName">${placeName}</h6>
+                    <small id="categoryGroupName">${categoryGroupName}</small>
+                    </div>
+                    <p class="mb-1" id="roadAddressName" value="${roadAddressName}"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;${roadAddressName}</p>
+                    <p class="mb-1" id="addressName" value="${addressName}"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;${addressName}</p>
+                    <input type="hidden" style="display:none;" id="address_x" value="${address_x}"></input>
+                    <input type="hidden" style="display:none;" id="address_y" value="${address_y}"></input>
+                    </a>`
+                );
+            });
+        }
+
+
+        $(document).ready(function () {
+            // 검색 버튼을 클릭하면 검색 수행
+            $("#searchButton").click(function () {
+                if ($("#keywordInput").val() == "") {
+                    alert("주소를 입력해주세요.");
+                } else {
+                    var keyword = $("#keywordInput").val();
+                    searchPlaces(keyword);
+                }
+            });
+            
+            const searchParama = new URLSearchParams(location.search)
+            const address_type = searchParama.get('address_type')
+
+            // 검색 결과의 각 주소를 클릭하면 onAddressClick 함수를 호출하도록 수정
+            $("#searchResults").on("click", "a.list-group-item", function () {
+                var addressName = $(this).find("#addressName").attr('value');
+                var roadAddressName = $(this).find("#roadAddressName").attr('value');
+                var placeName = $(this).find("#placeName").text();
+                var categoryGroupName = $(this).find("#categoryGroupName").text();
+                var x = $(this).find("#address_x").attr('value');
+                var y = $(this).find("#address_y").attr('value');
+                var sectionName = addressName.split(" ")[2].substr(0, 2);
+
+                if (address_type == 'start'){
+                    SessionUploadStart(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
+                    setValueAndCloseStart(addressName);
+                } else{
+                    SessionUploadEnd(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
+                    setValueAndCloseEnd(addressName); 
+                }
+                
+
+            });
+        });
+
+        // 부모 창으로 값을 전달하는 함수
+        function setValueAndCloseStart(value) {
+            // window.opener를 사용하여 부모 창의 함수 호출
+            window.opener.setValueStart(value);
+            window.close();
+        }
+
+        function SessionUploadStart(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName) {
+            window.opener.uploadStartSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName)
+        }
+
+        // 부모 창으로 값을 전달하는 함수
+        function setValueAndCloseEnd(value) {
+            // window.opener를 사용하여 부모 창의 함수 호출
+            window.opener.setValueEnd(value);
+            window.close();
+        }
+
+        function SessionUploadEnd(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName) {
+            window.opener.uploadEndSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName)
+        }
+    </script>
+
+</body>
+
+</html>

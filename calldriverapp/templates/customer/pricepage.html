@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Welcome to 대리운전</title>
+    {% load static %}
+    <script src="{% static 'js/utils.js' %}"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.112.5">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/headers/">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            width: 100%;
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-bd-primary {
+            —bd-violet-bg: #712CF9;
+            —bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+            —bs-btn-font-weight: 600;
+            —bs-btn-color: var(—bs-white);
+            —bs-btn-bg: var(—bd-violet-bg);
+            —bs-btn-border-color: var(—bd-violet-bg);
+            —bs-btn-hover-color: var(—bs-white);
+            —bs-btn-hover-bg: #6528E0;
+            —bs-btn-hover-border-color: #6528E0;
+            —bs-btn-focus-shadow-rgb: var(—bd-violet-rgb);
+            —bs-btn-active-color: var(—bs-btn-hover-color);
+            —bs-btn-active-bg: #5A23C8;
+            —bs-btn-active-border-color: #5A23C8;
+        }
+
+        .bd-mode-toggle {
+            z-index: 1500;
+        }
+
+        /* Custom styles */
+        .center-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .center-buttons .btn {
+            width: 500px;
+            margin: 10 20px;
+        }
+
+        .container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .map-image {
+            position: absolute;
+            top: 0;
+            width: 90%;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <header class="p-3 bg-dark text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <img src="logo.png" alt="Logo" width="100" height="40">
+            </div>
+            <div class="d-flex justify-content-end">
+                <a class="btn btn-primary" href="mypage.html">My Page</a>
+            </div>
+        </div>
+    </header>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    {% load static %}
+    <script>
+        $(document).ready(function () {
+            $('#start_address').change(function () {
+                const startAddressId = $('#start_address').val();
+                const staticUrl = "{% static "mapimages/" %}"
+                const startImageUrl = staticUrl + startAddressId + '.png';
+                $('#start-map-image').attr('src', startImageUrl);
+            });
+
+            $('#end_address').change(function () {
+                const endAddressId = $('#end_address').val();
+                const staticUrl = "{% static "mapimages/" %}"
+                const endImageUrl = staticUrl + endAddressId + '.png';
+                $('#end-map-image').attr('src', endImageUrl);
+            });
+        });
+    </script>
+
+    <section>
+
+        <div class="dropdown-center">
+
+            <div class="position-relative">
+                <img id="start-map-image" class="mx-auto w-100 d-block position-absolute top-0 image-fluid"
+                     src="{% static 'mapimages/map.png' %}"
+                     alt="Start Address Map Image">
+                <img id="end-map-image" class="mx-auto w-100 d-block top-0 image-fluid"
+                     src="{% static 'mapimages/default.png' %}"
+                     alt="End Address Map Image">
+            </div>
+
+            <div class="position-relative">
+                <label for="start_address">출발지:</label>
+                <select id="start_address" class="address-dropdown">
+                    <option value="31" id="구좌">구좌읍31</option>
+                    <option value="17" id="건입">건입동17</option>
+                    <option value="7" id="내도">내도동7</option>
+                    <option value="10" id="노형">노형동10</option>
+                    <option value="15" id="도남">도남동15</option>
+                    <option value="11" id="도두">도두동11</option>
+                    <option value="24" id="도련">도련동24</option>
+                    <option value="6" id="도평">도평동6</option>
+                    <option value="27" id="봉개">봉개동27</option>
+                    <option value="14" id="삼도">삼도동14</option>
+                    <option value="22" id="삼양">삼양동22</option>
+                    <option value="20" id="아라">아라동20</option>
+                    <option value="3" id="애월">애월읍3</option>
+                    <option value="13" id="연동">연동13</option>
+                    <option value="25" id="영평">영평동25</option>
+                    <option value="23" id="오등">오등동23</option>
+                    <option value="19" id="오라">오라동19</option>
+                    <option value="28" id="용강">용강동28</option>
+                    <option value="12" id="용담">용담동12<</option>
+                    <option value="5" id="외도">외도동5</option>
+                    <option value="9" id="월산">월산9</option>
+                    <option value="26" id="월평">월평동26</option>
+                    <option value="16" id="이도">이도동16</option>
+                    <option value="8" id="이호">이호동8</option>
+                    <option value="18" id="일도">일도동18</option>
+                    <option value="30" id="조천">조천읍30</option>
+                    <option value="1" id="한경">한경면1</option>
+                    <option value="2" id="한림">한림읍2</option>
+                    <option value="4" id="해안">해안동4</option>
+                    <option value="21" id="화북">화북동21</option>
+                    <option value="29" id="회천">회천동29</option>
+                </select>
+            </div>
+            <div>
+                <label for="end_address">목적지:</label>
+                <select id="end_address" class="address-dropdown">
+                    <option value="31" id="구좌">구좌읍31</option>
+                    <option value="17" id="건입">건입동17</option>
+                    <option value="7" id="내도">내도동7</option>
+                    <option value="10" id="노형">노형동10</option>
+                    <option value="15" id="도남">도남동15</option>
+                    <option value="11" id="도두">도두동11</option>
+                    <option value="24" id="도련">도련동24</option>
+                    <option value="6" id="도평">도평동6</option>
+                    <option value="27" id="봉개">봉개동27</option>
+                    <option value="14" id="삼도">삼도동14</option>
+                    <option value="22" id="삼양">삼양동22</option>
+                    <option value="20" id="아라">아라동20</option>
+                    <option value="3" id="애월">애월읍3</option>
+                    <option value="13" id="연동">연동13</option>
+                    <option value="25" id="영평">영평동25</option>
+                    <option value="23" id="오등">오등동23</option>
+                    <option value="19" id="오라">오라동19</option>
+                    <option value="28" id="용강">용강동28</option>
+                    <option value="12" id="용담">용담동12<</option>
+                    <option value="5" id="외도">외도동5</option>
+                    <option value="9" id="월산">월산9</option>
+                    <option value="26" id="월평">월평동26</option>
+                    <option value="16" id="이도">이도동16</option>
+                    <option value="8" id="이호">이호동8</option>
+                    <option value="18" id="일도">일도동18</option>
+                    <option value="30" id="조천">조천읍30</option>
+                    <option value="1" id="한경">한경면1</option>
+                    <option value="2" id="한림">한림읍2</option>
+                    <option value="4" id="해안">해안동4</option>
+                    <option value="21" id="화북">화북동21</option>
+                    <option value="29" id="회천">회천동29</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function calculatePrice() {
+            const startAddressId = $('#start_address option:selected').attr("id");
+            const endAddressId = $('#end_address option:selected').attr("id");
+            {#const startAddress = $('#' + startAddressId).text();#}
+            {#const endAddress = $('#' + endAddressId).text();#}
+            console.log(startAddressId);
+            console.log(endAddressId);
+            // Send the startAddressId and endAddressId to the server for fare price calculation
+            $.ajax({
+                url: `http://localhost:8000/customer/pricecalculate/${startAddressId}/${endAddressId}/`,
+                type: 'GET',
+                dataType: 'json',
+            }).done(function (response) {
+                console.log(response);
+                $('#showprice').text('예상요금은' +" " +JSON.stringify(response).slice(-3,-1) + ',000원');
+
+            })
+
+        };
+    </script>
+
+    <!-- Place this button wherever you want it to appear -->
+    <button id="calculate_button" class="btn btn-primary" onclick=calculatePrice()>예상요금 계산하기</button>
+    <span id="showprice"></span>
+</body>
+</html>
+
+
+<footer class="bg-dark text-white pt-2 pb-2">
+    <div class="container mt-2 mb-1">
+        <div class="text-center">Phone: 064-000-0000</div>
+    </div>
+    <p style="text-align: center;" class="mb-1"><a href="pricepage.html" class="link-info h6">요금 안내</a></p>
+</footer>
+</div>
+</body>
+</html>
