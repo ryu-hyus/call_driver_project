@@ -37,50 +37,94 @@
 
   <script>
     $(function () {
-      // 첫 번째 URL에 대한 AJAX 요청
-      var request1 = $.ajax({
-        url: "http://127.0.0.1:8000/customer/customer_info/",
-        method: "GET",
-        dataType: 'json'
-      });
 
-      // 두 번째 URL에 대한 AJAX 요청
-      var request2 = $.ajax({
-        url: "http://localhost:8000/customer/orderdata/",
-        method: "GET",
-        dataType: 'json'
-      });
-      Promise.all([request1, request2]).then(function (responses) {
-        const response1 = responses[0];
-        const response2 = responses[1];
+      let orderKindText = "";
+      let orderButtonColor = "";
 
-        console.log(response1, response2);
+      function getRealtimeOrderList() {
+        $.ajax({
+          url: "http://localhost:8000/center/realtimeorder/get/",
+          method: "GET",
+        }).done(function (response) {
+          console.log(response);
+
+          const tr_array = response.map((getrealtimeorder, index) => {
+
+            const buttonId = `btn-detail-ask-${index}`;
+
+            // order_kind에 따라 다른 값을 할당
+            if (getrealtimeorder.order_kind === "order") {
+              orderKindText = "주문";
+              orderButtonColor = "danger";
+            } else if (getrealtimeorder.order_kind === "change") {
+              orderKindText = "변경";
+              orderButtonColor = "warning";
+            } else if (getrealtimeorder.order_kind === "cancel") {
+              orderKindText = "취소";
+              orderButtonColor = "success";
+            }
 
 
 
-      // 두 개의 AJAX 요청이 완료될 때까지 기다린 후 처리
-      // Promise.all([request1, request2]).then(function (responses) {
-      //   const response1 = responses[0];
-      //   const response2 = responses[1];
+            return $(
+              `<tr>
+              <td>${index + 1}</td>
+              <td>${getrealtimeorder.phone_number}</td>
+              <td>${getrealtimeorder.gear_type}</td>
+              <td>${getrealtimeorder.start_address}</td>
+              <td>${getrealtimeorder.end_address}</td>
+              <td>${getrealtimeorder.operation_day}</td>
+              <td>
+                <button id="${buttonId}" class="btn btn-${orderButtonColor} btn-sm btn-detail-ask">
+                  ${orderKindText}요청</button>
+              </td>
+              <td>
+                <button class="btn btn-dark btn-sm btn-detail-confirm" data-order-id="${getrealtimeorder.is_hide}">
+                  최종확인
+                </button>
+              </td>
+            </tr>`
+            );
+          });
 
-      // // 첫 번째 URL에서 가져온 데이터 처리
-      // for (var i = 0; i < response1.length; i++) {
-      //   var user = response1[i];
-      //   var row = $("<tr>");
-      //   $("<td>").text(user.username).appendTo(row);
-      //   $("<td>").text(user.name).appendTo(row);
-      //   $("<td>").text(user.phone_number).appendTo(row);
-      //   $("<td>").text(user.gear_type).appendTo(row);
-      //   $("#data_table").append(row);
+          $("#data_table > tbody").append(tr_array);
+        });
+      }
+
+      getRealtimeOrderList();
+
+    });
+
+
+    // // 접수, 변경, 취소 요청 시 
+    $(document).on("click", ".btn-detail-ask", function () {
+      const button = $(this);
+      const orderKindText = button.text();
+      const changeText = orderKindText + "완료";
+
+
+      // let textColor = '';
+
+      // function getTextColor() {
+      //   if (orderKindText == "주문요청") {
+      //     textColor = "red";
+      //   } else if (orderKindText == "변경요청") {
+      //     textColor = "blue";
+      //   } else if (orderKindText == "취소요청") {
+      //     textColor = "green";
+      //   }
       // }
 
-      // // 두 번째 URL에서 가져온 데이터 처리
-      // for (var j = 0; j < response2.length; j++) {
-      //   var data = response2[j];
-      //   // 처리 로직 작성
-      // }
+      const spanElement = $("<span>")
+        .text(changeText)
+        .attr("id", "ask_text")
+        // .css("color", getTextColor(orderKindText));
+
+      button.replaceWith(spanElement);
     });
-    });
+
+
+
   </script>
 
 
@@ -93,7 +137,6 @@
       <thead class="table-warning">
         <tr>
           <th scope="col"></th>
-          <th scope="col">ID</th>
           <th scope="col">전화번호</th>
           <th scope="col">기어</th>
           <th scope="col">출발지</th>
@@ -115,5 +158,6 @@
 </html>
 
 <!-- 접수상황 버튼 누르면 
-  1. __완료가 text로 되게 (색깔 유의)
-  2. 최종확인 버튼 활성화면서 깜박깜박거리게 -->
+//   1. __완료가 text로 되게 (색깔 유의)
+//   2. 최종확인 버튼 활성화면서 깜박깜박거리게 
+//   3. 자바스크립트 인터벌 함수 사용 (5초), 돔 핸들링-->
