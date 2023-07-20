@@ -37,41 +37,82 @@
 
   <script>
     $(function () {
+
+      let orderKindText = "";
+      let orderButtonColor = "";
+      let textColor = "";
+
       function getRealtimeOrderList() {
         $.ajax({
           url: "http://localhost:8000/center/realtimeorder/get/",
           method: "GET",
         }).done(function (response) {
           console.log(response);
-          const tr_array = response.map((getrealtimeorder, index) => $(
-            `<tr>
-                    <td>${index + 1}</td>
-                    <td>${getrealtimeorder.phone_number}</td>
-                    <td>${getrealtimeorder.gear_type}</td>
-                    <td>${getrealtimeorder.start_address}</td>
-                    <td>${getrealtimeorder.end_address}</td>
-                    <td>${getrealtimeorder.operation_day}</td>
-                    <td><button class="btn btn-danger btn-sm btn-detail-ask" data-order-id="ask_type">${getrealtimeorder.order_kind}요청</button><span id='ask_text'></span></td>
-                    <td><button class="btn btn-primary btn-sm btn-detail-confirm" data-order-id="${getrealtimeorder.is_hide}">최종확인</button></td>
-                </tr>`
-          ))
+
+          const tr_array = response.map((getrealtimeorder, index) => {
+
+            const buttonId = `btn-detail-ask-${index}`;
+
+            // order_kind에 따라 다른 값을 할당
+            if (getrealtimeorder.order_kind === "order") {
+              orderKindText = "주문";
+              orderButtonColor = "danger";
+              textColor = "red";
+            } else if (getrealtimeorder.order_kind === "change") {
+              orderKindText = "변경";
+              orderButtonColor = "warning";
+              textColor = "yellow";
+            } else if (getrealtimeorder.order_kind === "cancel") {
+              orderKindText = "취소";
+              orderButtonColor = "success";
+              textColor = "green";
+            }
+
+
+
+            return $(
+              `<tr>
+              <td>${index + 1}</td>
+              <td>${getrealtimeorder.phone_number}</td>
+              <td>${getrealtimeorder.gear_type}</td>
+              <td>${getrealtimeorder.start_address}</td>
+              <td>${getrealtimeorder.end_address}</td>
+              <td>${getrealtimeorder.operation_day}</td>
+              <td>
+                <button id="${buttonId}" class="btn btn-${orderButtonColor} btn-sm btn-detail-ask">
+                  ${orderKindText}요청</button><span id='ask_text' style="color: ${textColor}"></span>
+              </td>
+              <td>
+                <button class="btn btn-dark btn-sm btn-detail-confirm" data-order-id="${getrealtimeorder.is_hide}">
+                  최종확인
+                </button>
+              </td>
+            </tr>`
+            );
+          });
+
           $("#data_table > tbody").append(tr_array);
         });
       }
 
       getRealtimeOrderList();
+
     });
 
 
-    // 접수, 변경, 취소 요청 시 
+    // // 접수, 변경, 취소 요청 시 
     $(document).on("click", ".btn-detail-ask", function () {
-      const buttonText = "접수완료";
+      const button = $(this);
+      const orderKindText = button.text();
+      const changeText = orderKindText + "완료";
+
       const spanElement = $("<span>")
-        .text(buttonText)
+        .text(changeText)
         .attr("id", "ask_text")
-        .css("color", "red");
-      $(this).replaceWith(spanElement);
+
+      button.replaceWith(spanElement);
     });
+
 
 
   </script>
@@ -107,6 +148,6 @@
 </html>
 
 <!-- 접수상황 버튼 누르면 
-  1. __완료가 text로 되게 (색깔 유의)
-  2. 최종확인 버튼 활성화면서 깜박깜박거리게 
-  3. 자바스크립트 인터벌 함수 사용 (5초), 돔 핸들링-->
+//   1. __완료가 text로 되게 (색깔 유의)
+//   2. 최종확인 버튼 활성화면서 깜박깜박거리게 
+//   3. 자바스크립트 인터벌 함수 사용 (5초), 돔 핸들링-->
