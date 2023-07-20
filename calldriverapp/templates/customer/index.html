@@ -23,37 +23,32 @@
 <body>
 {% include 'customer/layout/header.html' %}
 
-{% if disable_button %}
-    <button disabled>Button is disabled</button>
-{% else %}
-    <button>Button works</button>
-{% endif %}
 
 <div class="container">
     <div class="row btn-row">
         <div class="col-4">
             {% if disable_button %}
-            <button type="button" class="btn btn-primary btn-block btn-custom" disabled>Order</button>
-            {% else %}
             <button type="button" class="btn btn-primary btn-block btn-custom">Order</button>
+            {% else %}
+            <button type="button" class="btn btn-primary btn-block btn-custom" disabled>Order</button>
             {% endif %}
         </div>
     </div>
     <div class="row btn-row">
         <div class="col-4">
             {% if disable_button %}
-                <button type="button" class="btn btn-primary btn-block btn-custom" disabled>Modify</button>
-            {% else %}
                 <button type="button" class="btn btn-primary btn-block btn-custom">Modify</button>
+            {% else %}
+                <button type="button" class="btn btn-primary btn-block btn-custom" disabled>Modify</button>
             {% endif %}
         </div>
     </div>
     <div class="row btn-row">
         <div class="col-4">
             {% if disable_button %}
-            <button type="button" class="btn btn-danger btn-block btn-custom" disabled>Cancel</button>
-            {% else %}
             <button type="button" class="btn btn-danger btn-block btn-custom">Cancel</button>
+            {% else %}
+            <button type="button" class="btn btn-danger btn-block btn-custom" disabled>Cancel</button>
             {% endif %}
         </div>
     </div>
