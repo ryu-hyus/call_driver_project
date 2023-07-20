@@ -17,6 +17,7 @@ urlpatterns = [
     path("home/", HomeTemplateView.as_view(), name="home"),
     path("mypage/", MyPageView.as_view(), name="mypage"),
     path("mypage/update_profile/", update_profile, name="update_profile"),
+    path("customer_info/", CustomerInfoView.as_view(), name="customer_info_select"),
     path("customer_info/<int:pk>/", CustomerInfoView.as_view(), name="customer_info_select"),
     path("ordermain/", OrderMainTemplateView.as_view(), name= "order_main"),
     path("orderdetail/", OrderDetailTemplateView.as_view(), name= "order_detail"),
