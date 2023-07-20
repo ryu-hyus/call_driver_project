@@ -63,9 +63,7 @@
               orderKindText = "취소";
               orderButtonColor = "success";
             }
-
-
-
+            
             return $(
               `<tr>
               <td>${index + 1}</td>
@@ -100,27 +98,34 @@
     $(document).on("click", ".btn-detail-ask", function () {
       const button = $(this);
       const orderKindText = button.text();
-      const changeText = orderKindText + "완료";
+      const changeText = orderKindText.replace("요청", "") + "완료";
+      const orderId = button.data("order-id");
+      const buttonClasses = button.attr("class");
+      const orderButtonColor = buttonClasses.split("btn-")[1].split(" ")[0];
 
-
-      // let textColor = '';
-
-      // function getTextColor() {
-      //   if (orderKindText == "주문요청") {
-      //     textColor = "red";
-      //   } else if (orderKindText == "변경요청") {
-      //     textColor = "blue";
-      //   } else if (orderKindText == "취소요청") {
-      //     textColor = "green";
-      //   }
-      // }
 
       const spanElement = $("<span>")
         .text(changeText)
         .attr("id", "ask_text")
-        // .css("color", getTextColor(orderKindText));
+        .addClass(`text-${orderButtonColor}`)
+        .css("font-weight", "bold"); 
 
       button.replaceWith(spanElement);
+
+
+      // $.ajax({
+      //   url: '/center/realtimeorder/get/',
+      //   method: 'POST',
+      //   contentType: 'application/json',
+      //   data: { order_type: false },
+      // }).done(function (response) {
+      //   console.log(data);
+      // }).fail(function (xhr, status, error) {
+      //   alert('실패: ' + error);
+      // });
+
+
+
     });
 
 
