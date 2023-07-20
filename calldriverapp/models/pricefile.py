@@ -20,8 +20,8 @@ class PriceFile(models.Model):
         PriceTable.objects.all().delete()
 
         new_price_list = []
-
-        with open(file_url, 'r', encoding='cp949') as csvfile:
+        # with open(file_url, 'r') as csvfile:
+        with open(file_url, 'r', encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile)
             rows = list(reader)
             area_row = rows[0][1:]
