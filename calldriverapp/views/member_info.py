@@ -1,7 +1,7 @@
 import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -48,13 +48,16 @@ class SignUpView(View):
             username = data.get("username")
             password = data.get("password")
             name = data.get("name")
-            phone_number = data.get("phone_number")
+            first_number = data.get("first_number")
+            second_number = data.get("second_number")
+            third_number = data.get("third_number")
+            phone_number = f"{first_number}-{second_number}-{third_number}"
             gear_type = data.get("gear_type")
 
             if not username:
                 return HttpResponse('아이디를 입력해주세요.', status=400)
             
-            password = phone_number[-4: ]
+            password = third_number
             hashed_password = make_password(password)
             user = MyUser.objects.create_user(username=username, password=password, phone_number=phone_number, gear_type=gear_type)
             user.name = name
@@ -138,3 +141,8 @@ def update_profile(request):
             'error': '잘못된 요청입니다.',
         }
         return JsonResponse(response_data, status=400)
+    
+@method_decorator(csrf_exempt)
+def Logout(request):
+    logout(request)
+    return redirect('/customer/login/')
