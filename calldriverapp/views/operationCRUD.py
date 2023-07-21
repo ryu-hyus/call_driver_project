@@ -24,4 +24,6 @@ class OperationOnOffView(View):
         operation_onoff = OperationOnOff(operation_onoff=operation_onoff_value)
         operation_onoff.save()
         return HttpResponse(status=200)
+    
+
 

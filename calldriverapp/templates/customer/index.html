@@ -6,45 +6,44 @@
 </head>
 
 <body>
-    {% include 'customer/layout/header.html' %}
+{% include 'customer/layout/header.html' %}
 
-    <div id="main" >
-        <div id="main_inner">
-            <div class="btn-row">
-                <div class="col-4">
-                    {% if disable_button %}
-                    <button type="button" class="btn btn-custom">접수하기</button>
-                    {% else %}
-                    <button  type="button" class="btn btn-custom" disabled>접수하기</button>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="btn-row">
-                <div class="col-4">
-                    {% if disable_button %}
-                    <button type="button" class="btn btn-custom">접수확인</button>
-                    {% else %}
-                    <button type="button" class="btn btn-custom" disabled>접수확인</button>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="btn-row">
-                <div class="col-4">
-                    {% if disable_button %}
-                    <button type="button" class="btn btn-custom">변경/취소</button>
-                    {% else %}
-                    <button type="button" class="btn btn-custom" disabled>변경/취소</button>
-                    {% endif %}
-                </div>
-            </div>
+<div class="container">
+    <div class="row btn-row">
+        <div class="col-4">
+            {% if disable_button %}
+
+                <button type="button" id="order" class="btn btn-primary btn-block btn-custom">Order</button>
+            {% else %}
+                <button type="button" class="btn btn-primary btn-block btn-custom" disabled>Order</button>
+            {% endif %}
         </div>
     </div>
-    {% include 'customer/layout/footer.html' %}
-</body>
+    <div class="row btn-row">
+        <div class="col-4">
+            {% if disable_button %}
+                <button type="button" id="modify" class="btn btn-primary btn-block btn-custom">Modify</button>
+            {% else %}
+                <button type="button" class="btn btn-primary btn-block btn-custom" disabled>Modify</button>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row btn-row">
+        <div class="col-4">
+            {% if disable_button %}
+                <button type="button" id="cancel" class="btn btn-danger btn-block btn-custom">Cancel</button>
+            {% else %}
+                <button type="button" class="btn btn-danger btn-block btn-custom" disabled>Cancel</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% include 'customer/layout/footer.html' %}
 <script>
     $('#mypage').on('click', (e) => {
-        e.preventDefault();
-        location.href='/customer/mypage/'
+      e.preventDefault();
+      location.href="/customer/mypage/"
     })
-</script>
+  </script>
+</body>
 </html>

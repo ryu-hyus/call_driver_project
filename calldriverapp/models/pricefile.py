@@ -20,8 +20,8 @@ class PriceFile(models.Model):
         PriceTable.objects.all().delete()
 
         new_price_list = []
-
-        with open(file_url, 'r', encoding='cp949') as csvfile:
+        # with open(file_url, 'r') as csvfile:
+        with open(file_url, 'r', encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile)
             rows = list(reader)
             area_row = rows[0][1:]
@@ -37,7 +37,7 @@ class PriceFile(models.Model):
                     from_to_price['calculated_price'] = price
                     print(from_to_price)
 
-                    price_table = PriceTable(start_section = start, end_section = end, calculated_price = int(price) if not price == '' else 0)
+                    price_table = PriceTable(start_section = start, end_section = end, calculated_price = int(price) if not price == '' else 12)
                     new_price_list.append(price_table)
 
         PriceTable.objects.bulk_create(new_price_list)

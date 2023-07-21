@@ -15,7 +15,7 @@ class OrderData(BaseModel):
     customer = models.ForeignKey(MyUser, related_name='order_customer', on_delete=models.CASCADE, default='') 
     start_address = models.CharField(max_length=255, default='')
     end_address = models.CharField(max_length=255, default='')
-    order_kind = models.CharField(max_length=255, choices= ORDER_KIND, default='주문')
+    order_kind = models.CharField(max_length=255, choices= ORDER_KIND, default='order')
     operation_day = models.DateField(default= date.today())
     order_type = models.BooleanField(default=True)
     is_hide = models.BooleanField(default=False)
