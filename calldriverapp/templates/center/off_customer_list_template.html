@@ -8,7 +8,7 @@
   {% include 'center/offmain.html' %}
 
   <style>
-    /* content*/
+    /* content */
     .content {
       width: 83%;
       height: 80%;
@@ -25,33 +25,31 @@
       text-align: center;
     }
 
-    /* footer */
-    .basefooter {
-      width: 100%;
-      height: 5%;
+    .pagination {
+      display: flex;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 83%;
+      float: right;
+    }
+
+    .page {
+      margin-right: 10px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    /* 좌우 간격을 조정*/
+    .pagination .page {
+      margin: 0 10px;
     }
   </style>
-
-
-  <script>
-    $(function () {
-      $.ajax({
-        url: "http://127.0.0.1:8000/customer/customer_info/",
-        method: "GET",
-        dataType: 'json'
-      }).done(function (response) {
-        for (var i = 0; i < response.length; i++) {
-          var user = response[i];
-          var row = $("<tr>");
-          $("<td>").text(i).appendTo(row); //td요소를 tr요소에 추가
-          $("<td>").text(user.username).appendTo(row);
-          $("<td>").text(user.phone_number).appendTo(row);
-          $("<td>").text(user.gear_type).appendTo(row);
-          $("#data_table").append(row); //row를 #data_table 에 추가
-        }
-      });
-    })
-  </script>
 
 </head>
 
@@ -69,14 +67,85 @@
       </thead>
       <tbody class="table-group-divider"></tbody>
     </table>
-
   </div>
 
+  <div class="pagination" id="paginationDiv">
+  </div>
 
-  <footer class="basefooter"></footer>
+  <script>
+    let rowsPerPage = 11;
+    let response = [];
+
+    $(function () {
+      $.ajax({
+
+        url: "http://127.0.0.1:8000/customer/customer_info/",
+        method: "GET",
+        dataType: 'json'
+
+      }).done(function (data) {
+
+        response = data;
+        response.sort(function (a, b) {
+          return a.username.localeCompare(b.username);
+        });
+
+        $(".page").on("click", function () {
+          const page = $(this).data("page");
+          showTablePage(page, rowsPerPage);
+        });
+
+        showTablePage(1, rowsPerPage);
+      });
+
+    });
+
+    function showTablePage(page, rowsPerPage) {
+      // 테이블 초기화
+      $("#data_table tbody").empty();
+
+      // 테이블에 해당하는 페이지의 행들을 보여줍니다.
+      const startIndex = (page - 1) * rowsPerPage;
+      const endIndex = Math.min(startIndex + rowsPerPage, response.length);
+
+      for (let i = startIndex; i < endIndex; i++) {
+        const user = response[i];
+        const row = $("<tr>");
+        $("<td>").text(i + 1).appendTo(row);
+        $("<td>").text(user.username).appendTo(row);
+        $("<td>").text(user.phone_number).appendTo(row);
+        $("<td>").text(user.gear_type).appendTo(row);
+        $("#data_table").append(row);
+      }
+
+      updatePagination(page);
+    }
+
+    function updatePagination(currentPage) {
+      const totalPages = Math.ceil(response.length / rowsPerPage);
+      const paginationDiv = $("#paginationDiv");
+      paginationDiv.empty();
+
+      for (let i = 1; i <= totalPages; i++) {
+        const pageElement = $("<span>")
+          .addClass("page")
+          .attr("data-page", i)
+          .text(i);
+
+        if (i === currentPage) {
+          pageElement.addClass("active");
+        }
+
+        paginationDiv.append(pageElement);
+      }
+
+      $(".page").on("click", function () {
+        const page = $(this).data("page");
+        showTablePage(page, rowsPerPage);
+      });
+    }
+  </script>
+
 </body>
 
 </html>
-
-// <!-- ID 별로 정렬하기 -->
-// <!-- 전화번호 입력하면 search 가능..? (시간되면 하기) -->
