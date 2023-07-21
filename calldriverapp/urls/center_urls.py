@@ -5,7 +5,7 @@ from calldriverapp.views.center import RealtimeOrderView
 from calldriverapp.views.center import TodayOrderView
 from calldriverapp.views.center import TotalOrderView
 from calldriverapp.views.member_info import StaffLoginView
-from calldriverapp.views.operationCR import OperationOnOffView
+from calldriverapp.views.operationCRUD import OperationOnOffView
 from calldriverapp.views.realtimeorder import RealtimeOrderGetView
 
 urlpatterns = [
