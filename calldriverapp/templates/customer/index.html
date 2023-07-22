@@ -1,49 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     {% include 'customer/layout/head.html' %}
+    <style>
+        .btn-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .btn-row {
+            padding: 10px 0; /* Adjust the padding as needed */
+        }
+
+        .btn-custom {
+            width: 130%; /* Ensure all buttons have the same width */
+            height: 60px; /* Set the desired height for the buttons */
+        }
+    </style>
 </head>
 
 <body>
 {% include 'customer/layout/header.html' %}
 
 <div class="container">
-    <div class="row btn-row">
-        <div class="col-4">
-            {% if disable_button %}
+    {% if disable_button %}
+        {% else %}
+        <div class="row text-center">
+            <div class="col-12">
+                <p>영업시간이 아닙니다.</p>
+            </div>
+        </div>
+    {% endif %}
 
-                <button type="button" id="order" class="btn btn-primary btn-block btn-custom">Order</button>
-            {% else %}
-                <button type="button" class="btn btn-primary btn-block btn-custom" disabled>Order</button>
-            {% endif %}
+    <div class="container">
+        <div class="row btn-row">
+            <div class="col-4">
+                {% if disable_button %}
+
+                    <button type="button" id="order" class="btn btn-primary btn-block btn-custom">주문하기</button>
+                {% else %}
+                    <button type="button" class="btn btn-primary btn-block btn-custom" disabled>주문하기</button>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row btn-row">
+            <div class="col-4">
+                {% if disable_button %}
+                    <button type="button" id="modify" class="btn btn-primary btn-block btn-custom">주문확인</button>
+                {% else %}
+                    <button type="button" class="btn btn-primary btn-block btn-custom" disabled>주문확인</button>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row btn-row">
+            <div class="col-4">
+                {% if disable_button %}
+                    <button type="button" id="cancel" class="btn btn-danger btn-block btn-custom">변경/취소</button>
+                {% else %}
+                    <button type="button" class="btn btn-danger btn-block btn-custom" disabled>변경/취소</button>
+                {% endif %}
+            </div>
         </div>
     </div>
-    <div class="row btn-row">
-        <div class="col-4">
-            {% if disable_button %}
-                <button type="button" id="modify" class="btn btn-primary btn-block btn-custom">Modify</button>
-            {% else %}
-                <button type="button" class="btn btn-primary btn-block btn-custom" disabled>Modify</button>
-            {% endif %}
-        </div>
-    </div>
-    <div class="row btn-row">
-        <div class="col-4">
-            {% if disable_button %}
-                <button type="button" id="cancel" class="btn btn-danger btn-block btn-custom">Cancel</button>
-            {% else %}
-                <button type="button" class="btn btn-danger btn-block btn-custom" disabled>Cancel</button>
-            {% endif %}
-        </div>
-    </div>
-</div>
-{% include 'customer/layout/footer.html' %}
-<script>
-    $('#mypage').on('click', (e) => {
-      e.preventDefault();
-      location.href="/customer/mypage/"
-    })
-  </script>
+    {% include 'customer/layout/footer.html' %}
+    <script>
+        $('#order').on('click', (e) => {
+            e.preventDefault();
+            location.href = "/customer/ordermain/"
+        })
+        $('#modify').on('click', (e) => {
+            e.preventDefault();
+            location.href = "/customer/orderdetail/"
+        })
+        $('#cancel').on('click', (e) => {
+            e.preventDefault();
+            location.href = "/customer/orderdetail/"
+        })
+    </script>
 </body>
 </html>
