@@ -6,53 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% include 'customer/layout/head.html' %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <style>
-        .search-bar {
-            position: relative;
-        }
-
-        .search-bar input {
-            width: 100%;
-            padding-right: 30px;
-            /* X 버튼을 위한 여백 */
-        }
-
-        .search-bar .search-history {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-top: none;
+        .modal {
             display: none;
-            z-index: 999;
-            /* 팝업을 다른 요소들보다 위에 오도록 설정 */
+            position: fixed;
+            z-index: 99;
+            top: 150px;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            max-height: 80%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
         }
 
-        .search-bar .search-history .history-item {
-            position: relative;
-            padding: 8px;
-            cursor: pointer;
-        }
-
-        .search-bar .search-history .history-item:hover {
-            background-color: #f4f4f4;
-            color: #007bff;
-            /* primary 색상으로 강조 */
-        }
-
-        .search-bar .search-history .delete-history {
-            position: absolute;
-            top: 50%;
-            right: 8px;
-            transform: translateY(-50%);
-            color: #999;
-            cursor: pointer;
+        .modal-content {
+            background-color: #fff;
+            margin: 0 auto;
+            padding: 0px;
+            border: 1px solid #888;
+            width: 100%;
         }
     </style>
-
-    <title>주문 화면</title>
 </head>
 
 <body>
@@ -60,102 +37,343 @@
 
     <div>Map Section</div>
 
-    <!-- 출발지 검색창 -->
-
     <div class="container">
-        <div class="search-bar input-group mb-3">
+        <div class=" input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-default">출발지</span>
-            <input type="text" class="form-control" id="search-input-top" placeholder="출발지를 입력하세요">
-            <div class="search-history">
-                <div class="history-item">위쪽 검색 기록 1<span class="delete-history">x</span></div>
-                <div class="history-item">위쪽 검색 기록 2<span class="delete-history">x</span></div>
-                <div class="history-item">위쪽 검색 기록 3<span class="delete-history">x</span></div>
-            </div>
-            <button class="btn btn-primary search-button">검색</button>
+            <input type="text" class="form-control" id="search-start-point" placeholder="출발지를 검색하여 입력하세요" readonly>
         </div>
 
-        <div class="search-bar input-group mb-3">
+        <div class=" input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-default">도착지</span>
-            <input type="text" class="form-control" id="search-input-bottom" placeholder="도착지를 입력하세요">
-            <div class="search-history">
-                <div class="history-item">아래쪽 검색 기록 1<span class="delete-history">x</span></div>
-                <div class="history-item">아래쪽 검색 기록 2<span class="delete-history">x</span></div>
-                <div class="history-item">아래쪽 검색 기록 3<span class="delete-history">x</span></div>
-            </div>
-            <button class="btn btn-primary search-button">검색</button>
+            <input type="text" class="form-control" id="search-end-point" placeholder="도착지를 검색하여 입력하세요" readonly>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            // 위쪽 서치바 클릭 시 검색 기록 보이기
-            $('#search-input-top').click(function (event) {
-                event.stopPropagation();
-                $(this).siblings('.search-history').show();
-            });
+    <!-- 모달 주소검색창 -->
+    <div id="addressModal" class="modal rounded-0">
+        <div class="modal-content rounded-0">
+            <div class="mb-1 input-group border border-2 rounded-0">
+                <input class="form-control rounded-0" id="keywordInput" placeholder="주소를 입력하세요." />
+                <button class="btn btn-light search-button rounded-0" id="searchButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                </button>
+                <button class="btn btn-light rounded-0" id="exit_button" onclick="closeModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path
+                            d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                    </svg>
+                </button>
+            </div>
+            <!-- 검색 결과 표시 창 -->
+            <div class="list-group rounded-0" id="searchResults" style="height: 50vh;"></div>
+        </div>
 
-            // 위쪽 검색 기록 선택
-            $('.search-bar:nth-child(1) .search-history .history-item').click(function (event) {
-                var searchText = $(this).clone().children().remove().end().text().trim();
-                $('#search-input-top').val(searchText);
-                $('.search-bar:nth-child(1) .search-history').hide();
-            });
-
-            // 아래쪽 서치바 클릭 시 검색 기록 보이기
-            $('#search-input-bottom').click(function (event) {
-                event.stopPropagation();
-                $(this).siblings('.search-history').show();
-            });
-
-            // 아래쪽 검색 기록 선택
-            $('.search-bar:nth-child(2) .search-history .history-item').click(function (event) {
-                var searchText = $(this).clone().children().remove().end().text().trim();
-                $('#search-input-bottom').val(searchText);
-                $('.search-bar:nth-child(2) .search-history').hide();
-            });
-
-            // 검색 기록 삭제
-            $('.delete-history').click(function (event) {
-                event.stopPropagation();
-                $(this).parent().remove();
-            });
-
-            // 문서 클릭 시 검색 기록 숨기기
-            $(document).click(function () {
-                $('.search-history').hide();
-            });
-        });
-    </script>
+    </div>
 
     <!-- 예상 요금 섹션 -->
     <div style="display: flex; justify-content: center; align-items: center; height: 5vh;">
         <div style="display: flex; align-items: center;">
             <span class="badge bg-secondary">예상 요금</span>
             <div style="margin: 0 0 0 10px; display: flex; align-items: center;">
-                <div id="expected price">10,000</div>
-                <div style="margin-left: 5px;">원</div>
+                <div id="expected price">10</div>
+                <div>,000 원</div>
             </div>
         </div>
     </div>
 
+    <!-- 버튼 세션 -->
     <div class="row btn-row justify-content-evenly">
         <div class="col-10 align">
-            <button type="button" class="btn btn-primary btn-block btn-custom mt-2">변경 요청</button>
+            <button id = 'orderchangebtn' type="button" class="btn btn-primary btn-block btn-custom mt-2">변경 요청</button>
         </div>
     </div>
 
     <div class="row btn-row justify-content-evenly">
         <div class="col-10 align">
-            <button type="button" class="btn btn-danger btn-block btn-custom mt-2 mb-2">취소 요청</button>
+            <button id = 'ordercancelbtn' type="button" class="btn btn-danger btn-block btn-custom mt-2 mb-2">취소 요청</button>
         </div>
     </div>
 
     <div class="row btn-row justify-content-evenly">
         <div class="col-10 align">
-            <button type="button" class="btn btn-primary btn-block btn-custom mt-0 mb-2" onclick="location.href='/customer/home/'">Home</button>
+            <button id = 'homebtn' type="button" class="btn btn-primary btn-block btn-custom mt-0 mb-2">Home</button>
         </div>
     </div>
+
+    <script>
+        var address_type = ''
+
+        $(document).ready(function () {
+            keepDesiredValueOnly();
+
+            //출발지 서치바 클릭
+            $('#search-start-point').click(function (event) {
+                initSearchModal();
+                openModal();
+                address_type = 'start'
+            });
+
+            //도착지 서치바 클릭
+            $('#search-end-point').click(function (event) {
+                initSearchModal();
+                openModal();
+                address_type = 'end'
+            });
+        });
+
+        function openModal() {
+            $('#addressModal').css('display', 'block');
+        }
+
+        // 모달 닫기
+        function closeModal() {
+            $('#addressModal').css('display', 'none');
+        }
+
+        function setValueStart(value) {
+            // 출발지 인풋 박스에 값을 설정
+            document.getElementById('search-start-point').value = value;
+        }
+
+        function setValueEnd(value) {
+            // 도착지 인풋 박스에 값을 설정
+            document.getElementById('search-end-point').value = value;
+        }
+
+        function uploadStartSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName) {
+            // 세션에 받아온 값들 저장(출발지)
+            sessionStorage.setItem('start_address_name', addressName);
+            sessionStorage.setItem('start_road_address_name', roadAddressName);
+            sessionStorage.setItem('start_place_name', placeName);
+            sessionStorage.setItem('start_category_group_name', categoryGroupName);
+            sessionStorage.setItem('start_x', x);
+            sessionStorage.setItem('start_y', y);
+            sessionStorage.setItem('start_sectionName', sectionName);
+        }
+
+        function uploadEndSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName) {
+            // 세션에 받아온 값들 저장(출발지)
+            sessionStorage.setItem('end_address_name', addressName);
+            sessionStorage.setItem('end_road_address_name', roadAddressName);
+            sessionStorage.setItem('end_place_name', placeName);
+            sessionStorage.setItem('end_category_group_name', categoryGroupName);
+            sessionStorage.setItem('end_x', x);
+            sessionStorage.setItem('end_y', y);
+            sessionStorage.setItem('end_sectionName', sectionName);
+        }
+
+        // 모달 컨트롤 js
+        function searchPlaces(keyword) {
+            var apiUrl = "https://dapi.kakao.com/v2/local/search/keyword";
+            var apiKey = "03822d0904427e2e6efef1126ac76f2e"; // 발급받은 카카오 API 키를 넣으세요.
+
+            $.ajax({
+                url: apiUrl,
+                method: "GET",
+                headers: {
+                    "Authorization": "KakaoAK " + apiKey,
+                },
+                data: {
+                    query: keyword,
+                    size: 7,
+                    x: "126.531171087129",
+                    y: "33.4995342412698"
+                },
+                success: function (response) {
+                    // AJAX 요청이 성공하면 실행될 콜백 함수
+                    displayResults(response);
+                },
+                error: function (error) {
+                    // AJAX 요청이 실패하면 실행될 콜백 함수
+                    console.error("에러 발생:", error);
+                }
+            });
+        }
+
+        // 검색 창 모달을 초기화 하는 함수
+        function initSearchModal() {
+            var resultsDiv = $("#searchResults");
+            resultsDiv.empty(); // 이전 검색 결과 지우기
+            $("#keywordInput").val("");
+        }
+
+
+        // 검색 결과를 화면에 표시하는 함수
+        function displayResults(data) {
+            var resultsDiv = $("#searchResults");
+            resultsDiv.empty(); // 이전 검색 결과 지우기
+
+            // 검색 결과를 반복문을 통해 표시
+            data.documents.forEach(function (place) {
+                var addressName = place.address_name;
+                var roadAddressName = place.road_address_name;
+                var placeName = place.place_name;
+                var categoryGroupName = place.category_group_name;
+                var address_x = place.x;
+                var address_y = place.y;
+
+                resultsDiv.append(
+                    `<a class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1" id="placeName">${placeName}</h6>
+                    <small id="categoryGroupName">${categoryGroupName}</small>
+                    </div>
+                    <p class="mb-1" id="roadAddressName" value="${roadAddressName}"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;${roadAddressName}</p>
+                    <p class="mb-1" id="addressName" value="${addressName}"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;${addressName}</p>
+                    <input type="hidden" style="display:none;" id="address_x" value="${address_x}"></input>
+                    <input type="hidden" style="display:none;" id="address_y" value="${address_y}"></input>
+                    </a>`
+                );
+            });
+        }
+
+
+        $(document).ready(function () {
+            // 검색 버튼을 클릭하면 검색 수행
+            $("#searchButton").click(function () {
+                if ($("#keywordInput").val() == "") {
+                    alert("주소를 입력해주세요.");
+                } else {
+                    var keyword = $("#keywordInput").val();
+                    searchPlaces(keyword);
+                }
+            });
+
+
+            // 검색 결과의 각 주소를 클릭하면 onAddressClick 함수를 호출하도록 수정
+            $("#searchResults").on("click", "a.list-group-item", function () {
+                var addressName = $(this).find("#addressName").attr('value');
+                var roadAddressName = $(this).find("#roadAddressName").attr('value');
+                var placeName = $(this).find("#placeName").text();
+                var categoryGroupName = $(this).find("#categoryGroupName").text();
+                var x = $(this).find("#address_x").attr('value');
+                var y = $(this).find("#address_y").attr('value');
+                var sectionName = addressName.split(" ")[2].substr(0, 2);
+
+                if (address_type == 'start') {
+                    uploadStartSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
+                    setValueAndCloseStart(addressName);
+                } else if (address_type == 'end') {
+                    uploadEndSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
+                    setValueAndCloseEnd(addressName);
+                }
+
+            });
+        });
+
+        function setValueAndCloseStart(value) {
+            setValueStart(value);
+            closeModal();
+        }
+
+        function setValueAndCloseEnd(value) {
+            setValueEnd(value);
+            closeModal();
+        }
+
+
+        //접수 요청 버튼 관련
+
+        $('#postorder').click(function (e) {
+            const start_address = sessionStorage.getItem("start_address_name")
+            const end_address = sessionStorage.getItem("end_address_name")
+            const customer_id = sessionStorage.getItem("user_id")
+
+            $.ajax({
+                url: '/customer/orderdata/',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    start_address: start_address,
+                    end_address: end_address,
+                    customer_id: customer_id
+                })
+            })
+
+            const start_raw_address = sessionStorage.getItem("start_place_name")
+            const start_section = sessionStorage.getItem("start_sectionName")
+            $.ajax({
+                url: `/customer/addresshistory/${customer_id}/`,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    raw_address: start_raw_address,
+                    trans_address: start_address,
+                    section_name: start_section,
+                    address_type: "start",
+                })
+            })
+
+            const end_raw_address = sessionStorage.getItem("end_place_name")
+            const end_section = sessionStorage.getItem("end_sectionName")
+            $.ajax({
+                url: `/customer/addresshistory/${customer_id}/`,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    raw_address: end_raw_address,
+                    trans_address: end_address,
+                    section_name: end_section,
+                    address_type: "end"
+                })
+            })
+                .done(function (response) {
+                    console.log('저장성공')
+                    e.preventDefault();
+                    ClearSession();
+                    location.href = "/customer/orderdetail/"
+                })
+                .fail(function (response) {
+                    console.log('저장실패')
+                    alert("주소를 모두 입력해주세요.")
+                })
+                .always(function (response) {
+                    console.log(response);
+                })
+        })
+
+        function ClearSession(){
+            sessionStorage.removeItem("start_address_name")
+            sessionStorage.removeItem("start_road_address_name")
+            sessionStorage.removeItem("start_place_name")
+            sessionStorage.removeItem("start_category_group_name")
+            sessionStorage.removeItem("start_x")
+            sessionStorage.removeItem("start_y")
+            sessionStorage.removeItem("start_sectionName")
+
+            sessionStorage.removeItem("end_address_name")
+            sessionStorage.removeItem("end_road_address_name")
+            sessionStorage.removeItem("end_place_name")
+            sessionStorage.removeItem("end_category_group_name")
+            sessionStorage.removeItem("end_x")
+            sessionStorage.removeItem("end_y")
+            sessionStorage.removeItem("end_sectionName")
+        }
+
+        $('#homebtn').click(function (e) {
+            e.preventDefault();
+            ClearSession();
+            location.href = "/customer/home/"
+        })
+
+        //세션스토리지 비우기(user_id, user_name 제외하고)
+        function keepDesiredValueOnly() {
+            var desiredKeyList = ["user_id", "user_name", "current_x", "current_y"];
+        
+            for (var key in sessionStorage) {
+                if (desiredKeyList.includes(key)) {
+                } else {
+                    sessionStorage.removeItem(key);
+                }
+            }
+          }
+
+    </script>
 
     {% include 'customer/layout/footer.html' %}
 </body>

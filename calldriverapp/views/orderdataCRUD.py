@@ -58,7 +58,7 @@ class CustomerOrderView(View):
     def get(self, request, pk):
         #유저 id로 조회
         center_day = OperationDay.objects.all()[0].operation_day
-        orderdata = OrderData.objects.filter(customer_id=pk, operation_day = center_day).values()
+        orderdata = OrderData.objects.filter(customer_id=pk, operation_day = center_day, is_deleted = False).exclude(order_kind = 'cancel', order_type = False).values()
 
         if not orderdata:
             return JsonResponse({"error": "Order not found"}, status=404)
