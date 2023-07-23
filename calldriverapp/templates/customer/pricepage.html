@@ -5,141 +5,143 @@
 </head>
 
 <body>
-    {% include 'customer/layout/header.html' %}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% include 'customer/layout/header.html' %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    {% load static %}
-    <script>
-        $(document).ready(function () {
-            $('#start_address').change(function () {
-                const startAddressId = $('#start_address').val();
-                const staticUrl = "{% static "mapimages/" %}"
-                const startImageUrl = staticUrl + startAddressId + '.png';
-                $('#start-map-image').attr('src', startImageUrl);
-            });
-
-            $('#end_address').change(function () {
-                const endAddressId = $('#end_address').val();
-                const staticUrl = "{% static "mapimages/" %}"
-                const endImageUrl = staticUrl + endAddressId + '.png';
-                $('#end-map-image').attr('src', endImageUrl);
-            });
+{% load static %}
+<script>
+    $(document).ready(function () {
+        $('#start_address').change(function () {
+            const startAddressId = $('#start_address').val();
+            const staticUrl = "{% static "mapimages/" %}"
+            const startImageUrl = staticUrl + startAddressId + '.png';
+            $('#start-map-image').attr('src', startImageUrl);
         });
-    </script>
 
-    <section>
+        $('#end_address').change(function () {
+            const endAddressId = $('#end_address').val();
+            const staticUrl = "{% static "mapimages/" %}"
+            const endImageUrl = staticUrl + endAddressId + '.png';
+            $('#end-map-image').attr('src', endImageUrl);
+        });
+    });
+</script>
 
-        <div class="dropdown-center">
+<section>
 
-            <div class="position-relative">
-                <img id="start-map-image" class="mx-auto w-100 d-block position-absolute top-0 image-fluid"
-                     src="{% static 'mapimages/map.png' %}"
-                     alt="Start Address Map Image">
-                <img id="end-map-image" class="mx-auto w-100 d-block top-0 image-fluid"
-                     src="{% static 'mapimages/default.png' %}"
-                     alt="End Address Map Image">
-            </div>
+    <div class="dropdown-center">
 
-            <div class="position-relative">
-                <label for="start_address">출발지:</label>
-                <select id="start_address" class="address-dropdown">
-                    <option value="31" id="구좌">구좌읍31</option>
-                    <option value="17" id="건입">건입동17</option>
-                    <option value="7" id="내도">내도동7</option>
-                    <option value="10" id="노형">노형동10</option>
-                    <option value="15" id="도남">도남동15</option>
-                    <option value="11" id="도두">도두동11</option>
-                    <option value="24" id="도련">도련동24</option>
-                    <option value="6" id="도평">도평동6</option>
-                    <option value="27" id="봉개">봉개동27</option>
-                    <option value="14" id="삼도">삼도동14</option>
-                    <option value="22" id="삼양">삼양동22</option>
-                    <option value="20" id="아라">아라동20</option>
-                    <option value="3" id="애월">애월읍3</option>
-                    <option value="13" id="연동">연동13</option>
-                    <option value="25" id="영평">영평동25</option>
-                    <option value="23" id="오등">오등동23</option>
-                    <option value="19" id="오라">오라동19</option>
-                    <option value="28" id="용강">용강동28</option>
-                    <option value="12" id="용담">용담동12</option>
-                    <option value="5" id="외도">외도동5</option>
-                    <option value="9" id="월산">월산9</option>
-                    <option value="26" id="월평">월평동26</option>
-                    <option value="16" id="이도">이도동16</option>
-                    <option value="8" id="이호">이호동8</option>
-                    <option value="18" id="일도">일도동18</option>
-                    <option value="30" id="조천">조천읍30</option>
-                    <option value="1" id="한경">한경면1</option>
-                    <option value="2" id="한림">한림읍2</option>
-                    <option value="4" id="해안">해안동4</option>
-                    <option value="21" id="화북">화북동21</option>
-                    <option value="29" id="회천">회천동29</option>
-                </select>
-            </div>
-            <div>
-                <label for="end_address">목적지:</label>
-                <select id="end_address" class="address-dropdown">
-                    <option value="31" id="구좌">구좌읍31</option>
-                    <option value="17" id="건입">건입동17</option>
-                    <option value="7" id="내도">내도동7</option>
-                    <option value="10" id="노형">노형동10</option>
-                    <option value="15" id="도남">도남동15</option>
-                    <option value="11" id="도두">도두동11</option>
-                    <option value="24" id="도련">도련동24</option>
-                    <option value="6" id="도평">도평동6</option>
-                    <option value="27" id="봉개">봉개동27</option>
-                    <option value="14" id="삼도">삼도동14</option>
-                    <option value="22" id="삼양">삼양동22</option>
-                    <option value="20" id="아라">아라동20</option>
-                    <option value="3" id="애월">애월읍3</option>
-                    <option value="13" id="연동">연동13</option>
-                    <option value="25" id="영평">영평동25</option>
-                    <option value="23" id="오등">오등동23</option>
-                    <option value="19" id="오라">오라동19</option>
-                    <option value="28" id="용강">용강동28</option>
-                    <option value="12" id="용담">용담동12<</option>
-                    <option value="5" id="외도">외도동5</option>
-                    <option value="9" id="월산">월산9</option>
-                    <option value="26" id="월평">월평동26</option>
-                    <option value="16" id="이도">이도동16</option>
-                    <option value="8" id="이호">이호동8</option>
-                    <option value="18" id="일도">일도동18</option>
-                    <option value="30" id="조천">조천읍30</option>
-                    <option value="1" id="한경">한경면1</option>
-                    <option value="2" id="한림">한림읍2</option>
-                    <option value="4" id="해안">해안동4</option>
-                    <option value="21" id="화북">화북동21</option>
-                    <option value="29" id="회천">회천동29</option>
-                </select>
-            </div>
+        <div class="position-relative">
+            <img id="start-map-image" class="mx-auto w-100 d-block position-absolute top-0 image-fluid"
+                 src="{% static 'mapimages/map.png' %}"
+                 alt="Start Address Map Image">
+            <img id="end-map-image" class="mx-auto w-100 d-block top-0 image-fluid"
+                 src="{% static 'mapimages/default.png' %}"
+                 alt="End Address Map Image">
         </div>
-    </section>
 
-    <script>
-        function calculatePrice() {
-            const startAddressId = $('#start_address option:selected').attr("id");
-            const endAddressId = $('#end_address option:selected').attr("id");
-            {#const startAddress = $('#' + startAddressId).text();#}
-            {#const endAddress = $('#' + endAddressId).text();#}
-            console.log(startAddressId);
-            console.log(endAddressId);
-            // Send the startAddressId and endAddressId to the server for fare price calculation
-            $.ajax({
-                url: `http://localhost:8000/customer/pricecalculate/${startAddressId}/${endAddressId}/`,
-                type: 'GET',
-                dataType: 'json',
-            }).done(function (response) {
-                console.log(response);
-                $('#showprice').text('예상요금은' +" " +JSON.stringify(response).slice(-3,-1) + ',000원');
+        <div class="position-relative">
+            <label for="start_address">출발지:</label>
+            <select id="start_address" class="address-dropdown">
+                <option value="0">동/읍/면을 선택 해 주세요.</option>
+                <option value="31" id="구좌">구좌읍</option>
+                <option value="17" id="건입">건입동</option>
+                <option value="7" id="내도">내도동</option>
+                <option value="10" id="노형">노형동</option>
+                <option value="15" id="도남">도남동</option>
+                <option value="11" id="도두">도두동</option>
+                <option value="24" id="도련">도련동</option>
+                <option value="6" id="도평">도평동</option>
+                <option value="27" id="봉개">봉개동</option>
+                <option value="14" id="삼도">삼도동</option>
+                <option value="22" id="삼양">삼양동</option>
+                <option value="20" id="아라">아라동</option>
+                <option value="3" id="애월">애월읍</option>
+                <option value="13" id="연동">연동</option>
+                <option value="25" id="영평">영평동</option>
+                <option value="23" id="오등">오등동</option>
+                <option value="19" id="오라">오라동</option>
+                <option value="28" id="용강">용강동</option>
+                <option value="12" id="용담">용담동</option>
+                <option value="5" id="외도">외도동</option>
+                <option value="9" id="월산">월산</option>
+                <option value="26" id="월평">월평동</option>
+                <option value="16" id="이도">이도동</option>
+                <option value="8" id="이호">이호동</option>
+                <option value="18" id="일도">일도동</option>
+                <option value="30" id="조천">조천읍</option>
+                <option value="1" id="한경">한경면</option>
+                <option value="2" id="한림">한림읍</option>
+                <option value="4" id="해안">해안동</option>
+                <option value="21" id="화북">화북동</option>
+                <option value="29" id="회천">회천동</option>
+            </select>
+        </div>
+        <div>
+            <label for="end_address">목적지:</label>
+            <select id="end_address" class="address-dropdown">
+                <option value="0">동/읍/면을 선택 해 주세요.</option>
+                <option value="31" id="구좌">구좌읍</option>
+                <option value="17" id="건입">건입동</option>
+                <option value="7" id="내도">내도동</option>
+                <option value="10" id="노형">노형동</option>
+                <option value="15" id="도남">도남동</option>
+                <option value="11" id="도두">도두동</option>
+                <option value="24" id="도련">도련동</option>
+                <option value="6" id="도평">도평동</option>
+                <option value="27" id="봉개">봉개동</option>
+                <option value="14" id="삼도">삼도동</option>
+                <option value="22" id="삼양">삼양동</option>
+                <option value="20" id="아라">아라동</option>
+                <option value="3" id="애월">애월읍</option>
+                <option value="13" id="연동">연동</option>
+                <option value="25" id="영평">영평동</option>
+                <option value="23" id="오등">오등동</option>
+                <option value="19" id="오라">오라동</option>
+                <option value="28" id="용강">용강동</option>
+                <option value="12" id="용담">용담동</option>
+                <option value="5" id="외도">외도동</option>
+                <option value="9" id="월산">월산</option>
+                <option value="26" id="월평">월평동</option>
+                <option value="16" id="이도">이도동</option>
+                <option value="8" id="이호">이호동</option>
+                <option value="18" id="일도">일도동</option>
+                <option value="30" id="조천">조천읍</option>
+                <option value="1" id="한경">한경면</option>
+                <option value="2" id="한림">한림읍</option>
+                <option value="4" id="해안">해안동</option>
+                <option value="21" id="화북">화북동</option>
+                <option value="29" id="회천">회천동</option>
+            </select>
+        </div>
+    </div>
+</section>
 
-            })
+<script>
+    function calculatePrice() {
+        const startAddressId = $('#start_address option:selected').attr("id");
+        const endAddressId = $('#end_address option:selected').attr("id");
+        {#const startAddress = $('#' + startAddressId).text();#}
+        {#const endAddress = $('#' + endAddressId).text();#}
+        console.log(startAddressId);
+        console.log(endAddressId);
+        // Send the startAddressId and endAddressId to the server for fare price calculation
+        $.ajax({
+            url: `http://localhost:8000/customer/pricecalculate/${startAddressId}/${endAddressId}/`,
+            type: 'GET',
+            dataType: 'json',
+        }).done(function (response) {
+            console.log(response);
+            $('#showprice').text('예상요금은' + " " + JSON.stringify(response).slice(-3, -1) + ',000원');
 
-        };
-    </script>
+        })
 
-    <!-- Place this button wherever you want it to appear -->
-    <button id="calculate_button" class="btn btn-primary" onclick=calculatePrice()>예상요금 계산하기</button>
-    <span id="showprice"></span>
+    };
+</script>
+
+<!-- Place this button wherever you want it to appear -->
+<button id="calculate_button" class="btn btn-primary" onclick=calculatePrice()>예상요금 계산하기</button>
+<span id="showprice"></span>
 </body>
 </html>
 
