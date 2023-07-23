@@ -28,5 +28,22 @@ class RealtimeOrderGetView(View):
             i['gear_type'] = geartype
 
         return JsonResponse(orderlist, safe=False)
+    
+    # 수정
+    def put(self, request, pk):
+        orderlist = get_object_or_404(OrderData, pk=pk)
+        data = json.loads(request.body)
+    
+        orderlist.order_type = data.get("order_type") or orderlist.order_type
+        orderlist.is_hide = data.get("is_hide") or orderlist.is_hide
+    
+        # OrderConfirm 메서드 호출
+        if orderlist.order_type == False:
+            orderlist.OrderConfirm()
+    
+        orderlist.save()
+        return JsonResponse(data)
+
+      
 
 # 16번째 줄 : id=1 전체 데이터 중 첫 번째, first()는 filter된 것 중 첫 번째 (약간 개발자 매너?로 적으신 듯)

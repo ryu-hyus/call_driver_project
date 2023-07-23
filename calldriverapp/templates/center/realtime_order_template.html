@@ -27,10 +27,27 @@
       text-align: center;
     }
 
-    /* footer */
-    .basefooter {
-      width: 100%;
-      height: 5%;
+    /* 버튼 안 글씨 크기 조절 */
+    .btn-detail-ask {
+      font-size: 16px;
+    }
+
+    /* 체크박스 스타일*/
+    .form-check-input {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      outline: none;
+      width: 22px;
+      height: 22px;
+      border: 3px solid black;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .form-check-input:checked {
+      background-color: black;
+      border-color: black;
     }
   </style>
 
@@ -63,7 +80,7 @@
               orderKindText = "취소";
               orderButtonColor = "success";
             }
-            
+
             return $(
               `<tr>
               <td>${index + 1}</td>
@@ -77,9 +94,7 @@
                   ${orderKindText}요청</button>
               </td>
               <td>
-                <button class="btn btn-dark btn-sm btn-detail-confirm" data-order-id="${getrealtimeorder.is_hide}">
-                  최종확인
-                </button>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
               </td>
             </tr>`
             );
@@ -108,14 +123,15 @@
         .text(changeText)
         .attr("id", "ask_text")
         .addClass(`text-${orderButtonColor}`)
-        .css("font-weight", "bold"); 
+        .css("font-weight", "bold");
 
       button.replaceWith(spanElement);
 
+    });
 
       // $.ajax({
       //   url: '/center/realtimeorder/get/',
-      //   method: 'POST',
+      //   method: 'PUT',
       //   contentType: 'application/json',
       //   data: { order_type: false },
       // }).done(function (response) {
@@ -125,8 +141,18 @@
       // });
 
 
+    //   $(document).on("click", "#flexCheckDefault", function () {
+    //   const isChecked = $(this).prop("checked");
+    //   const rowIndex = $(this).closest("tr").index();
 
-    });
+    //   if (isChecked) {
+    //     $(`table tr:eq(${rowIndex + 1})`).remove(); // 해당 tr 숨기기
+    //   } else {
+    //     $(`table tr:eq(${rowIndex + 1})`).show(); // 해당 tr 보여주기
+    //   }
+    // });
+
+
 
 
 
@@ -157,12 +183,11 @@
   </div>
 
 
-  <footer class="basefooter"></footer>
 </body>
 
 </html>
 
 <!-- 접수상황 버튼 누르면 
-//   1. __완료가 text로 되게 (색깔 유의)
+//   1. __완료가 text로 되게 (색깔 유의) -> 성공
 //   2. 최종확인 버튼 활성화면서 깜박깜박거리게 
 //   3. 자바스크립트 인터벌 함수 사용 (5초), 돔 핸들링-->
