@@ -110,7 +110,6 @@
 
 
     // 접수, 변경, 취소 요청 시 
-
     $(document).on("click", ".btn-detail-ask", function () {
       const button = $(this);
       const orderKindText = button.text();
@@ -129,27 +128,27 @@
       button.replaceWith(spanElement);
 
 
-
       // PUT 
-      const customerId = button.attr("id");
+      const pkKey = button.attr("id");
 
       $.ajax({
-        url: '/center/realtimeorder/get/',
+        url: `/center/realtimeorder/get/${pkKey}/`,
         method: 'PUT',
         contentType: 'application/json',
-        data: { order_type: false },
-      }).done(function (response) {
-        console.log(data);
-      }).fail(function (xhr, status, error) {
-        alert('실패: ' + error);
+        data: JSON.stringify({ order_type: false }),
+        success: function (response) {
+          console.log(response);
+        },
+        error: function (xhr, status, error) {
+          console.error(xhr.responseText); 
+        }
       });
 
-    });
 
-    // tooltip
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip();
-    });
+      // tooltip
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
 
 
 
@@ -166,9 +165,7 @@
     // });
 
 
-
-
-
+    })
   </script>
 
 

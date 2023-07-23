@@ -10,19 +10,21 @@ from django.utils.decorators import method_decorator
 
 
 @method_decorator(csrf_exempt, name="dispatch")
-class RealtimeOrderGetView(View):
+class TodayOrderGetView(View):
     # 조회
     def get(self, request, pk=None):
         operationday = OperationDay.objects.filter(id=1).values().first()
         orderdata = OrderData.objects.filter(
-            order_type=True, is_hide=False, 
-            operation_day=operationday["operation_day"]).values()
+            order_type=False,
+            is_hide=True,  # is_hide=False 로 바꿔야 함
+            operation_day=operationday["operation_day"],
+        ).values()
         orderlist = list(orderdata)
 
         # 단건조회
         if pk is not None:
             for order in orderlist:
-                if order['id'] == pk:
+                if order["id"] == pk:
                     phonenumber = (
                         MyUser.objects.filter(id=order["customer_id"])
                         .values()
@@ -36,6 +38,13 @@ class RealtimeOrderGetView(View):
                         .first()["gear_type"]
                     )
                     order["gear_type"] = geartype
+
+                    username = (
+                        MyUser.objects.filter(id=order["customer_id"])
+                        .values()
+                        .first()["username"]
+                    )
+                    order["username"] = username
 
                     return JsonResponse(order)
 
@@ -53,30 +62,27 @@ class RealtimeOrderGetView(View):
                 i["phone_number"] = phonenumber
 
                 geartype = (
-                    MyUser.objects.filter(id=i["customer_id"]).values().first()["gear_type"]
+                    MyUser.objects.filter(id=i["customer_id"])
+                    .values()
+                    .first()["gear_type"]
                 )
                 i["gear_type"] = geartype
 
+                username = (
+                    MyUser.objects.filter(id=i["customer_id"])
+                    .values()
+                    .first()["username"]
+                )
+                i["username"] = username
+
             return JsonResponse(orderlist, safe=False)
-            
 
     # 수정
     def put(self, request, pk):
         orderlist = get_object_or_404(OrderData, pk=pk)
         data = json.loads(request.body)
 
-        orderlist.order_type = data.get("order_type") or orderlist.order_type
-        orderlist.is_hide = data.get("is_hide") or orderlist.is_hide
-
-        # OrderConfirm 메서드 호출
-        if orderlist.order_type == True:
-            orderlist.OrderConfirm()
-
-        if orderlist.is_hide == False:
-            orderlist.OrderHide()
-
+        orderlist.order_kind = data.get("order_kind") or orderlist.order_kind
         orderlist.save()
 
         return JsonResponse(data)
-
-

@@ -28,36 +28,121 @@
       text-align: center;
     }
 
+    .for_select {
+      width: 170px;
+      height: 50px;
+    }
 
+    /* 셀렉트 박스 */
+    .form-select {
+      width: 140px;
+      height: 40px;
+      text-align: center;
+    }
   </style>
 
 
   <script>
     $(function () {
+      let orderKindText = "";
+      let response = [];
+
       function getOrderdonedataList() {
         $.ajax({
-          url: "http://localhost:8000/customer/orderdata/",
+          url: "http://localhost:8000/center/todayorder/get/",
           method: "GET",
-        }).done(function (response) {
+        }).done(function (data) {
+          response = data;
           console.log(response);
-          const tr_array = response.map((orderdata, index) => $(
-            `<tr>
-                      <td>${index + 1}</td>
-                      <td>${orderdata.customer_id}</td>
-                      <td>${orderdata.start_address}</td>
-                      <td>${orderdata.end_address}</td>
-                      <td>${orderdata.operation_day}</td>
-                      <td>${orderdata.order_type}</td>
-                      <td>${orderdata.is_hide}</td>
-                      <td>${orderdata.order_type}</td>
-                  </tr>`
-          ))
-          $("#data_table > tbody").append(tr_array);
+
+          // 접수된 순서대로 정렬
+          response.sort(function (a, b) {
+            return a.operation_day.localeCompare(b.operation_day);
+          });
+
+          const tr_array = response.map((today_orderdata, index) => {
+            // order_kind에 따라 다른 값을 할당
+            if (today_orderdata.order_kind === "order") {
+              orderKindText = "주문";
+            } else if (today_orderdata.order_kind === "change") {
+              orderKindText = "변경";
+            } else if (today_orderdata.order_kind === "cancel") {
+              orderKindText = "취소";
+            }
+
+            return $(
+              `<tr>
+            <td>${index + 1}</td>
+            <td>${today_orderdata.username}</td>
+            <td>${today_orderdata.phone_number}</td>
+            <td>${today_orderdata.gear_type}</td>
+            <td>${today_orderdata.start_address}</td>
+            <td>${today_orderdata.end_address}</td>
+            <td>${today_orderdata.operation_day}</td>
+            <td class="for_select">
+              <select class="form-select orderStatus" aria-label="Default select example">
+                <option selected>${orderKindText}완료</option>
+                <option value="1">주문완료</option>
+                <option value="2">취소완료</option>
+                <option value="3">변경완료</option>
+              </select>
+            </td>
+          </tr>`
+            );
+          });
+
+          $("#data_table > tbody").empty().append(tr_array);
         });
       }
 
       getOrderdonedataList();
+
+
+      function updateOrderStatus(pkKey, selectedValue) {
+        let order_kind = "";
+
+        if (selectedValue === "1") {
+          order_kind = "order";
+        } else if (selectedValue === "2") {
+          order_kind = "cancel";
+        } else if (selectedValue === "3") {
+          order_kind = "change";
+        }
+
+        const dataToSend = { order_kind };
+
+        $.ajax({
+          url: `http://localhost:8000/center/todayorder/get/${pkKey}/`,
+          method: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify(dataToSend),
+          success: function (response) {
+            console.log(response);
+            alert("바뀜");
+          },
+          error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+          }
+        });
+      }
+
+      $("#data_table").on("change", ".orderStatus", function () {
+        const selectedValue = $(this).val();
+        console.log("선택된 값:", selectedValue);
+
+        const selectedRow = $(this).closest("tr");
+        const selectedIndex = selectedRow.index();
+        const selectedTodayOrderdata = response[selectedIndex];
+        console.log(selectedTodayOrderdata);
+
+        const pkKey = selectedTodayOrderdata.id
+
+        updateOrderStatus(pkKey, selectedValue);
+
+      });
+
     });
+
   </script>
 
 </head>
@@ -86,14 +171,3 @@
 </body>
 
 </html>
-
-
-<!-- <td><select class="form-select" id="orderchange" size="1" aria-label="size 3 select example"> -->
-<!-- 접수상황에서 셀렉트 박스 안에 원래 진행 중인 접수상태를 보여주고
-      변경하고자 하면 어쩌고 정보를 뭐로 변경하시겠습니까? 하는 
-      alert 창 만들기 -->
-
-      <!-- <td>${getrealtimeorder.order_type ? "주문" : "취소"}</td>
-위의 코드는 getrealtimeorder.order_type 값이 true인 경우 "주문", false인 경우 "취소"로 표시되도록 수정한 부분입니다. 주문 타입에 따라 표시할 내용을 적절하게 변경하시면 됩니다. 예를 들어, 주문 타입이 true일 때 "예약"으로 표시하려면 다음과 같이 코드를 수정할 수 있습니다.
-
-<td>${getrealtimeorder.order_type ? "예약" : "취소"}</td> -->
