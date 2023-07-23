@@ -13,7 +13,7 @@ class AddresshistorydataView(View):
     #커스토머 id로 조회
     def get(self, request, pk):
         
-        addressdata = AddressHistory.objects.filter(customer_id=pk).values()
+        addressdata = AddressHistory.objects.filter(customer_id=pk, is_deleted = False).values()
         if not addressdata:
             return JsonResponse({"error": "Order not found"}, status=404)
         return JsonResponse(list(addressdata) , safe=False)
@@ -25,7 +25,11 @@ class AddresshistorydataView(View):
         p = AddressHistory(
             raw_address=data.get("raw_address"),
             trans_address=data.get("trans_address"),
+            road_address=data.get("road_address"),
+            category_name=data.get("category_name"),
             section_name=data.get("section_name"),
+            location_x=data.get("location_x"),
+            location_y=data.get("location_y"),
             address_type=data.get("address_type"),
             customer_id = pk,
         )
@@ -37,8 +41,6 @@ class AddresshistorydeleteView(View):
     # 삭제
     def put(self, request, pk):
         addressdata = get_object_or_404(AddressHistory, pk=pk)
+        addressdata.delete()
 
-        addressdata.is_deleted = True
-
-        addressdata.save()
         return HttpResponse(status=200)
