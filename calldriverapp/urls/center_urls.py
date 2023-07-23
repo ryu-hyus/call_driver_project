@@ -19,5 +19,7 @@ urlpatterns = [
     path("offcustomerlist/", OffCustomerView.as_view(), name="off_customer_list"),
     path("offtotalorder/", OffTotalOrderView.as_view(), name="off_total_order_list"),
     path("realtimeorder/get/", RealtimeOrderGetView.as_view(), name="realtime_order_get"),
+    path("realtimeorder/get/<int:pk>/", RealtimeOrderGetView.as_view(), name="realtime_order_get_by_id"),
+
 ]
 
