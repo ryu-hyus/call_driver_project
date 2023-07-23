@@ -29,17 +29,12 @@
     }
 
 
-    /* footer */
-    .basefooter {
-      width: 100%;
-      height: 5%;
-    }
   </style>
 
 
   <script>
     $(function () {
-      function getOrderdataList() {
+      function getOrderdonedataList() {
         $.ajax({
           url: "http://localhost:8000/customer/orderdata/",
           method: "GET",
@@ -61,7 +56,7 @@
         });
       }
 
-      getOrderdataList();
+      getOrderdonedataList();
     });
   </script>
 
@@ -88,7 +83,6 @@
   </div>
 
 
-  <footer class="basefooter"></footer>
 </body>
 
 </html>
