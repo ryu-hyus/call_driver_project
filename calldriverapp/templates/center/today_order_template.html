@@ -44,6 +44,7 @@
 
   <script>
     $(function () {
+
       let orderKindText = "";
       let response = [];
 
@@ -56,9 +57,9 @@
           console.log(response);
 
           // 접수된 순서대로 정렬
-          response.sort(function (a, b) {
-            return a.operation_day.localeCompare(b.operation_day);
-          });
+          // response.sort(function (a, b) {
+          //   return a.operation_day.localeCompare(b.operation_day);
+          // });
 
           const tr_array = response.map((today_orderdata, index) => {
             // order_kind에 따라 다른 값을 할당
@@ -118,7 +119,7 @@
           data: JSON.stringify(dataToSend),
           success: function (response) {
             console.log(response);
-            alert("바뀜");
+            alert("접수상황을 변경합니다.");
           },
           error: function (xhr, status, error) {
             console.error(xhr.responseText);
