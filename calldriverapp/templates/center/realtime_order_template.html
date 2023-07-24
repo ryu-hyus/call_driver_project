@@ -26,60 +26,83 @@
       text-align: center;
     }
 
-    /* footer */
-    .basefooter {
-      width: 100%;
-      height: 5%;
+    /* 버튼 안 글씨 크기 조절 */
+    .btn-detail-ask {
+      font-size: 16px;
+    }
+
+    /* 체크박스 스타일*/
+    .form-check-input {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      outline: none;
+      width: 22px;
+      height: 22px;
+      border: 3px solid black;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .form-check-input:checked {
+      background-color: black;
+      border-color: black;
     }
   </style>
 
 
-<script>
-  $(function () {
 
-    let orderKindText = "";
-    let orderButtonColor = "";
 
-    function getRealtimeOrderList() {
-      $.ajax({
-        url: "http://localhost:8000/center/realtimeorder/get/",
-        method: "GET",
-      }).done(function (response) {
-        console.log(response);
+  <script>
+    $(function () {
 
-        const tr_array = response.map((getrealtimeorder, index) => {
+      let orderKindText = "";
+      let orderButtonColor = "";
 
-          // order_kind에 따라 다른 값을 할당
-          if (getrealtimeorder.order_kind === "order") {
-            orderKindText = "주문";
-            orderButtonColor = "danger";
-          } else if (getrealtimeorder.order_kind === "change") {
-            orderKindText = "변경";
-            orderButtonColor = "warning";
-          } else if (getrealtimeorder.order_kind === "cancel") {
-            orderKindText = "취소";
-            orderButtonColor = "success";
-          }
+      function getRealtimeOrderList() {
+        $.ajax({
+          url: "http://localhost:8000/center/realtimeorder/get/",
+          method: "GET",
+        }).done(function (response) {
+          console.log(response);
 
-          return $(
-            `<tr>
-            <td>${index + 1}</td>
-            <td>${getrealtimeorder.phone_number}</td>
-            <td>${getrealtimeorder.gear_type}</td>
-            <td>${getrealtimeorder.start_address}</td>
-            <td>${getrealtimeorder.end_address}</td>
-            <td>${getrealtimeorder.operation_day}</td>
-            <td>
-              <button id="${getrealtimeorder.id}" class="btn btn-${orderButtonColor} btn-sm btn-detail-ask"
-              data-toggle="tooltip" title="클릭 시 고객님께 정보가 전송">
-                ${orderKindText}요청</button>
-            </td>
-            <td>
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" 
-                data-toggle="tooltip" title="클릭 시 오늘 접수 목록으로 이동">
-            </td>
-          </tr>`
-          );
+          const tr_array = response.map((getrealtimeorder, index) => {
+
+            // order_kind에 따라 다른 값을 할당
+            if (getrealtimeorder.order_kind === "order") {
+              orderKindText = "주문";
+              orderButtonColor = "danger";
+            } else if (getrealtimeorder.order_kind === "change") {
+              orderKindText = "변경";
+              orderButtonColor = "warning";
+            } else if (getrealtimeorder.order_kind === "cancel") {
+              orderKindText = "취소";
+              orderButtonColor = "success";
+            }
+
+            return $(
+              `<tr>
+              <td>${index + 1}</td>
+              <td>${getrealtimeorder.phone_number}</td>
+              <td>${getrealtimeorder.gear_type}</td>
+              <td>${getrealtimeorder.start_address}</td>
+              <td>${getrealtimeorder.end_address}</td>
+              <td>${getrealtimeorder.operation_day}</td>
+              <td>
+                <button id="${getrealtimeorder.id}" class="btn btn-${orderButtonColor} btn-sm btn-detail-ask"
+                data-toggle="tooltip" title="클릭 시 고객님께 정보가 전송">
+                  ${orderKindText}요청</button>
+              </td>
+              <td>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" 
+                  data-toggle="tooltip" title="클릭 시 오늘 접수 목록으로 이동">
+              </td>
+            </tr>`
+            );
+          });
+
+          $("#data_table > tbody").append(tr_array);
+
         });
 
         $("#data_table > tbody").append(tr_array);
@@ -91,49 +114,69 @@
   });
 
 
-  // 접수, 변경, 취소 요청 시 
-  $(document).on("click", ".btn-detail-ask", function () {
-    const button = $(this);
-    const orderKindText = button.text();
-    const changeText = orderKindText.replace("요청", "") + "완료";
-    const orderId = button.data("order-id");
-    const buttonClasses = button.attr("class");
-    const orderButtonColor = buttonClasses.split("btn-")[1].split(" ")[0];
 
 
-    const spanElement = $("<span>")
-      .text(changeText)
-      .attr("id", "ask_text")
-      .addClass(`text-${orderButtonColor}`)
-      .css("font-weight", "bold");
+    // 접수, 변경, 취소 요청 시 
+    $(document).on("click", ".btn-detail-ask", function () {
+      const button = $(this);
+      const orderKindText = button.text();
+      const changeText = orderKindText.replace("요청", "") + "완료";
+      const orderId = button.data("order-id");
+      const buttonClasses = button.attr("class");
+      const orderButtonColor = buttonClasses.split("btn-")[1].split(" ")[0];
+
+
+      const spanElement = $("<span>")
+        .text(changeText)
+        .attr("id", "ask_text")
+        .addClass(`text-${orderButtonColor}`)
+        .css("font-weight", "bold");
+
 
     button.replaceWith(spanElement);
 
 
-    // PUT 
-    const pkKey = button.attr("id");
-
-    $.ajax({
-      url: `/center/realtimeorder/get/${pkKey}/`,
-      method: 'PUT',
-      contentType: 'application/json',
-      data: JSON.stringify({ order_type: false }),
-      success: function (response) {
-        console.log(response);
-      },
-      error: function (xhr, status, error) {
-        console.error(xhr.responseText); 
-      }
-    });
 
 
-    // tooltip
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip();
-    });
+      // PUT 
+      const pkKey = button.attr("id");
+
+      $.ajax({
+        url: `/center/realtimeorder/get/${pkKey}/`,
+        method: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify({ order_type: false }),
+        success: function (response) {
+          console.log(response);
+        },
+        error: function (xhr, status, error) {
+          console.error(xhr.responseText); 
+        }
+      });
+
+
+      // tooltip
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
 
 
 
+
+    //   $(document).on("click", "#flexCheckDefault", function () {
+    //   const isChecked = $(this).prop("checked");
+    //   const rowIndex = $(this).closest("tr").index();
+
+    //   if (isChecked) {
+    //     $(`table tr:eq(${rowIndex + 1})`).remove(); // 해당 tr 숨기기
+    //   } else {
+    //     $(`table tr:eq(${rowIndex + 1})`).show(); // 해당 tr 보여주기
+    //   }
+    // });
+
+
+    })
+  </script>
 
   //   $(document).on("click", "#flexCheckDefault", function () {
   //   const isChecked = $(this).prop("checked");
@@ -185,6 +228,6 @@
 </html>
 
 <!-- 접수상황 버튼 누르면 
-//   1. __완료가 text로 되게 (색깔 유의)
+//   1. __완료가 text로 되게 (색깔 유의) -> 성공
 //   2. 최종확인 버튼 활성화면서 깜박깜박거리게 
 //   3. 자바스크립트 인터벌 함수 사용 (5초), 돔 핸들링-->
