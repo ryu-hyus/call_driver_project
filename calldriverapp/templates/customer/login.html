@@ -12,26 +12,6 @@
     crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
   <style>
-    .outerbox {
-      width: 50%;
-      position:absolute;
-      top:50%;
-      left:50%;
-      transform: translate(-50%, -50%);
-    }
-
-    @media screen and (max-width: 992px) {
-      .outerbox {
-        width: 80%;
-      }
-    }
-
-    @media screen and (max-width:600px) {
-      .outerbox {
-        width: 90%;
-      }
-    }
-
     h2 {
       margin: 0 auto;
     }
@@ -44,12 +24,24 @@
       text-decoration: none;
       color: #000;
     }
+
+    a:hover {
+      text-decoration: underline;
+      color: #fead1e;
+    }
+
+    /*태블릿, 브라우저 창 width가 768px보다 커지는 순간부터 적용*/
+    @media all and (min-width: 768px) {
+      .outerbox {
+        width: 50%;
+      }
+    }
   </style>
 </head>
 
-<body >
+<body>
   <div class="modal-dialog outerbox" role="document">
-    <div class="modal-content rounded-5 shadow">
+    <div class="modal-content">
       <div class="modal-header p-5 pb-4 border-bottom-0">
         <h2 class="fw-bold mb-0">로그인</h2>
       </div>
@@ -67,7 +59,6 @@
           <button id="login" class="w-100 mb-2 btn btn-lg btn-outline-success orange text-white" type="submit">
             로그인
           </button>
-          <small class="text-muted">Happy Smile</small>
           <hr class="my-4">
           <button id="singup" class="w-100 mb-2 btn btn-lg btn-outline-success orange text-white" type="submit">
             회원가입
@@ -85,7 +76,7 @@
       console.log('아이디 : ' + username + ', 비밀번호 : ' + password);
 
       $.ajax({
-        method:"POST",
+        method: "POST",
         url: "http://127.0.0.1:8000/customer/login/",
         contentType: "application/json",
         data: JSON.stringify({
@@ -95,10 +86,10 @@
       }).done(function (response) {
         alert('로그인 성공');
         alert(username + '님 반갑습니다!');
-        
+
         sessionStorage.setItem('user_id', response.id);
         sessionStorage.setItem('user_name', response.username);
-        location.href="/customer/home/";
+        location.href = "/customer/home/";
       }).fail(function (response) {
         alert('로그인 실패');
         location.reload();
@@ -107,11 +98,11 @@
     $("#singup").on('click', (e) => {
       e.preventDefault();
       console.log('회원가입창으로 이동');
-      location.href="/customer/signup/";
+      location.href = "/customer/signup/";
     });
     $('#find_id').on('click', (e) => {
       e.preventDefault();
-      location.href="/customer/find_id/";
+      location.href = "/customer/find_id/";
     })
   </script>
 </body>

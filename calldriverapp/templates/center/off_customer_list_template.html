@@ -5,10 +5,9 @@
   <meta charset="UTF-8">
   <title>전체 회원 목록</title>
   {% include 'center/layout/head.html' %}
-  {% include 'center/offmain.html' %}
 
   <style>
-    /* content*/
+    /* content */
     .content {
       width: 83%;
       height: 80%;
@@ -25,58 +24,148 @@
       text-align: center;
     }
 
-    /* footer */
-    .basefooter {
-      width: 100%;
-      height: 5%;
+    .pagination {
+      display: flex;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 83%;
+      float: right;
+    }
+
+    .page {
+      margin-right: 10px;
+      cursor: pointer;
+      font-size: 22px;
+    }
+
+
+    .pagination .page {
+      margin: 0 10px;
+    }
+
+
+    .page.active {
+      font-weight: bold;
     }
   </style>
-
-
-  <script>
-    $(function () {
-      $.ajax({
-        url: "http://127.0.0.1:8000/customer/customer_info/",
-        method: "GET",
-        dataType: 'json'
-      }).done(function (response) {
-        for (var i = 0; i < response.length; i++) {
-          var user = response[i];
-          var row = $("<tr>");
-          $("<td>").text(i).appendTo(row); //td요소를 tr요소에 추가
-          $("<td>").text(user.username).appendTo(row);
-          $("<td>").text(user.phone_number).appendTo(row);
-          $("<td>").text(user.gear_type).appendTo(row);
-          $("#data_table").append(row); //row를 #data_table 에 추가
-        }
-      });
-    })
-  </script>
 
 </head>
 
 <body>
-
-  <div class="content">
-    <table class="table table-hover" id="data_table">
-      <thead class="table-warning">
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">User ID</th>
-          <th scope="col">전화번호</th>
-          <th scope="col">기어</th>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider"></tbody>
-    </table>
-
+  <div class="container-fluid">
+    <div class="row">
+      {% include 'center/offmain.html' %}
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-3">
+        <h3>회원 목록</h3>
+        <div class="table-responsive">
+          <table class="table table-striped table-sm" id="data_table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">User ID</th>
+                <th scope="col">전화번호</th>
+                <th scope="col">기어</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="paginationDiv"></div>
+      </main>
+    </div>
   </div>
+  <script>
+    let rowsPerPage = 11;
+    let response = [];
 
+    $(function () {
+      $.ajax({
 
-  <footer class="basefooter"></footer>
-</body>
+        url: "http://127.0.0.1:8000/customer/customer_info/",
+        method: "GET",
+        dataType: 'json'
 
+      }).done(function (data) {
+
+        response = data;
+        response.sort(function (a, b) {
+          return a.username.localeCompare(b.username);
+        });
+
+        $(".page").on("click", function () {
+          const page = $(this).data("page");
+          showTablePage(page, rowsPerPage);
+        });
+
+        showTablePage(1, rowsPerPage);
+      });
+
+    });
+
+    function showTablePage(page, rowsPerPage) {
+
+      $("#data_table tbody").empty();
+
+      const startIndex = (page - 1) * rowsPerPage;
+      const endIndex = Math.min(startIndex + rowsPerPage, response.length);
+
+      for (let i = startIndex; i < endIndex; i++) {
+        const user = response[i];
+        const row = $("<tr>");
+        $("<td>").text(i + 1).appendTo(row);
+        $("<td>").text(user.username).appendTo(row);
+        $("<td>").text(user.phone_number).appendTo(row);
+        $("<td>").text(user.gear_type).appendTo(row);
+        $("#data_table").append(row);
+      }
+
+      updatePagination(page);
+    }
+
+    function updatePagination(currentPage) {
+      const totalPages = Math.ceil(response.length / rowsPerPage);
+      const paginationDiv = $("#paginationDiv");
+      paginationDiv.empty();
+
+      const maxVisiblePages = 10; // 최대 표시할 페이지 번호 개수
+
+      let startPage = currentPage - Math.floor(maxVisiblePages / 2);
+      let endPage = currentPage + Math.floor(maxVisiblePages / 2);
+
+      if (startPage <= 0) {
+        startPage = 1;
+        endPage = Math.min(maxVisiblePages, totalPages);
+      }
+
+      if (endPage > totalPages) {
+        endPage = totalPages;
+        startPage = Math.max(1, totalPages - maxVisiblePages + 1);
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        const pageElement = $("<span>")
+          .addClass("page")
+          .attr("data-page", i)
+          .text(i);
+
+        if (i === currentPage) {
+          pageElement.addClass("active");
+        }
+
+        paginationDiv.append(pageElement);
+      }
+
+      $(".page").on("click", function () {
+        const page = $(this).data("page");
+        showTablePage(page, rowsPerPage);
+      });
+    }
+  </script> 
+  </body>
 </html>
-
-// <!-- ID 별로 정렬하기 -->
-// <!-- 전화번호 입력하면 search 가능..? (시간되면 하기) -->
