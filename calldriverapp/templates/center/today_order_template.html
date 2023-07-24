@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <title>오늘 접수 목록 확인 페이지</title>
 
-
   {% include 'center/layout/head.html' %}
 
   <style>
@@ -165,6 +164,13 @@
       });
 
     });
+
+    // 5초(5000ms)마다 페이지를 다시 로드하는 함수
+    function reloadPage() {
+      location.reload();
+    }
+
+    setInterval(reloadPage, 5000);
 
   </script>
 

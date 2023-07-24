@@ -82,17 +82,10 @@ class TodayOrderGetView(View):
         orderlist = get_object_or_404(OrderData, pk=pk)
         data = json.loads(request.body)
 
-    # 주문 상태 업데이트
+        # 주문 상태 업데이트
         orderlist.order_type = data.get("order_type") or orderlist.order_type
-        # order_type = data.get("order_type")
-        # if order_type is not None:
-        #     if order_type:
-        #         orderlist.OrderConfirm()
-        #     else:
-        #         orderlist.ReOrder()
-    
+        
         # 숨김 상태 업데이트
-        #orderlist.is_hide = data.get("is_hide") or orderlist.is_hide
         is_hide = data.get("is_hide")
         if is_hide is not None:
             if is_hide:
