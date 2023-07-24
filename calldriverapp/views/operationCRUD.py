@@ -26,17 +26,17 @@ class OperationOnOffView(View):
         return HttpResponse(status=200)
 
     # 수정
-    def put(self, request):
-        data = json.loads(request.body)
-        operation_onoff_value = data.get("operation_onoff")
+    # def put(self, request):
+    #     data = json.loads(request.body)
+    #     operation_onoff_value = data.get("operation_onoff")
 
-        if operation_onoff_value == True:
-            operation_onoff_value.set_off()
-        else:
-            operation_onoff_value.set_on()
+    #     if operation_onoff_value == True:
+    #         operation_onoff_value.set_off()
+    #     else:
+    #         operation_onoff_value.set_on()
 
-        operation_onoff_value.save()
-        return HttpResponse(status=200)
+    #     operation_onoff_value.save()
+    #     return HttpResponse(status=200)
     
 
 
