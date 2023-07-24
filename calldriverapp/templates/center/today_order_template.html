@@ -40,37 +40,37 @@
   </style>
 
 
-<script>
-  $(function () {
+  <script>
+    $(function () {
 
-    let orderKindText = "";
-    let response = [];
+      let orderKindText = "";
+      let response = [];
 
-    function getOrderdonedataList() {
-      $.ajax({
-        url: "http://localhost:8000/center/todayorder/get/",
-        method: "GET",
-      }).done(function (data) {
-        response = data;
-        console.log(response);
+      function getOrderdonedataList() {
+        $.ajax({
+          url: "http://localhost:8000/center/todayorder/get/",
+          method: "GET",
+        }).done(function (data) {
+          response = data;
+          console.log(response);
 
-        // 접수된 순서대로 정렬
-        // response.sort(function (a, b) {
-        //   return a.operation_day.localeCompare(b.operation_day);
-        // });
+          // 접수된 순서대로 정렬
+          // response.sort(function (a, b) {
+          //   return a.operation_day.localeCompare(b.operation_day);
+          // });
 
-        const tr_array = response.map((today_orderdata, index) => {
-          // order_kind에 따라 다른 값을 할당
-          if (today_orderdata.order_kind === "order") {
-            orderKindText = "주문";
-          } else if (today_orderdata.order_kind === "change") {
-            orderKindText = "변경";
-          } else if (today_orderdata.order_kind === "cancel") {
-            orderKindText = "취소";
-          }
+          const tr_array = response.map((today_orderdata, index) => {
+            // order_kind에 따라 다른 값을 할당
+            if (today_orderdata.order_kind === "order") {
+              orderKindText = "주문";
+            } else if (today_orderdata.order_kind === "change") {
+              orderKindText = "변경";
+            } else if (today_orderdata.order_kind === "cancel") {
+              orderKindText = "취소";
+            }
 
-          return $(
-            `<tr>
+            return $(
+              `<tr>
           <td>${index + 1}</td>
           <td>${today_orderdata.username}</td>
           <td>${today_orderdata.phone_number}</td>
@@ -81,68 +81,92 @@
           <td class="for_select">
             <select class="form-select orderStatus" aria-label="Default select example">
               <option selected>${orderKindText}완료</option>
-              <option value="1">주문완료</option>
-              <option value="2">취소완료</option>
-              <option value="3">변경완료</option>
+              <option value="1">주문요청</option>
+              <option value="2">주문완료</option>
+              <option value="3">변경요청</option>
+              <option value="4">변경완료</option>
+              <option value="5">취소요청</option>
+              <option value="6">취소완료</option>
             </select>
           </td>
         </tr>`
-          );
+            );
+          });
+
+          $("#data_table > tbody").empty().append(tr_array);
         });
-
-        $("#data_table > tbody").empty().append(tr_array);
-      });
-    }
-
-    getOrderdonedataList();
-
-
-    function updateOrderStatus(pkKey, selectedValue) {
-      let order_kind = "";
-
-      if (selectedValue === "1") {
-        order_kind = "order";
-      } else if (selectedValue === "2") {
-        order_kind = "cancel";
-      } else if (selectedValue === "3") {
-        order_kind = "change";
       }
 
-      const dataToSend = { order_kind };
+      getOrderdonedataList();
 
-      $.ajax({
-        url: `http://localhost:8000/center/todayorder/get/${pkKey}/`,
-        method: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify(dataToSend),
-        success: function (response) {
-          console.log(response);
-          alert("접수상황을 변경합니다.");
-        },
-        error: function (xhr, status, error) {
-          console.error(xhr.responseText);
+
+      function updateOrderStatus(pkKey, selectedValue) {
+
+        let order_kind = "";
+        let order_type = null;
+        let is_hide = null;
+
+        if (selectedValue === "1") {
+          order_kind = "order";
+          order_type = true;
+          is_hide = false;
+        } else if (selectedValue === "2") {
+          order_kind = "order";
+          order_type = false;
+          is_hide = true;
+        } else if (selectedValue === "3") {
+          order_kind = "change";
+          order_type = true;
+          is_hide = false;
+        } else if (selectedValue === "4") {
+          order_kind = "change";
+          order_type = false;
+          is_hide = true;
+        } else if (selectedValue === "5") {
+          order_kind = "cancel";
+          order_type = true;
+          is_hide = false;
+        } else if (selectedValue === "6") {
+          order_kind = "cancel";
+          order_type = false;
+          is_hide = true;
         }
+
+        const dataToSend = { order_kind, order_type, is_hide };
+
+        $.ajax({
+          url: `http://localhost:8000/center/todayorder/get/${pkKey}/`,
+          method: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify(dataToSend),
+          success: function (response) {
+            console.log(response);
+            alert("접수상황을 변경합니다.");
+          },
+          error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+          }
+        });
+      }
+
+      $("#data_table").on("change", ".orderStatus", function () {
+        const selectedValue = $(this).val();
+        console.log("선택된 값:", selectedValue);
+
+        const selectedRow = $(this).closest("tr");
+        const selectedIndex = selectedRow.index();
+        const selectedTodayOrderdata = response[selectedIndex];
+        console.log(selectedTodayOrderdata);
+
+        const pkKey = selectedTodayOrderdata.id
+
+        updateOrderStatus(pkKey, selectedValue);
+
       });
-    }
-
-    $("#data_table").on("change", ".orderStatus", function () {
-      const selectedValue = $(this).val();
-      console.log("선택된 값:", selectedValue);
-
-      const selectedRow = $(this).closest("tr");
-      const selectedIndex = selectedRow.index();
-      const selectedTodayOrderdata = response[selectedIndex];
-      console.log(selectedTodayOrderdata);
-
-      const pkKey = selectedTodayOrderdata.id
-
-      updateOrderStatus(pkKey, selectedValue);
 
     });
 
-  });
-
-</script>
+  </script>
 
 
 
