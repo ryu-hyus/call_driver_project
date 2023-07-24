@@ -3,7 +3,7 @@ from calldriverapp.views.addresshistoryCRUD import AddresshistorydataView, Addre
 from calldriverapp.views.customer import HomeTemplateView, OrderDetailTemplateView, OrderDetailTemplateView
 
 from calldriverapp.views.customer import OrderMainTemplateView
-from calldriverapp.views.member_info import CustomerLoignView, FindIdView, Logout, MyPageView, SignUpView, update_profile
+from calldriverapp.views.member_info import CustomerLoignView, FindIdView, Logout, MyPageView, SignUpView, check_username, update_profile
 from calldriverapp.views.customer import OrderMainTemplateView, OrderChangeTemplateView, PricePageView
 from calldriverapp.views.orderdataCRUD import OrderdataView, CustomerOrderView
 from calldriverapp.views.pricecaculate import PriceTableView
@@ -12,6 +12,7 @@ from calldriverapp.views.myuserCRUD import CustomerInfoView
 
 urlpatterns = [
     path("signup/", SignUpView.as_view(), name="sign_up"),
+    path("check_username/", check_username, name="check_username"),
     path("login/", CustomerLoignView.as_view(), name="customer_login"),
     path("logout/", Logout, name="customer_login"),
     path("find_id/", FindIdView.as_view(), name="find_id"),

@@ -12,11 +12,6 @@
     crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
   <style>
-    .outerbox {
-      width: 40%;
-      margin-top: 100px;
-    }
-
     h2 {
       margin: 0 auto;
     }
@@ -33,15 +28,21 @@
     .white {
       color: #fff;
     }
+
+    /*태블릿, 브라우저 창 width가 768px보다 커지는 순간부터 적용*/
+    @media all and (min-width: 768px) {
+      .outerbox {
+        width: 50%;
+      }
+    }
   </style>
 </head>
 
 <body>
   <div class="modal-dialog outerbox" role="document">
-    <div class="modal-content rounded-5 shadow">
+    <div class="modal-content">
       <div class="modal-header p-5 pb-4 border-bottom-0">
         <h2 class="fw-bold mb-0">로그인</h2>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body p-5 pt-0">
         <form class="">
@@ -81,7 +82,7 @@
       }).done(function (response) {
         alert('로그인 성공')
         alert(username + '님 반갑습니다!')
-        
+
         location.href = "/center/offmain/"
       }).fail(function (response) {
         alert('로그인 실패')

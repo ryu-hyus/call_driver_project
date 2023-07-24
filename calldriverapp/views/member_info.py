@@ -124,7 +124,10 @@ def update_profile(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         name = data.get("name")
-        phone_number = data.get("phone_number")
+        first_number = data.get("first_number")
+        second_number = data.get("second_number")
+        third_number = data.get("third_number")
+        phone_number = f"{first_number}-{second_number}-{third_number}"
         gear_type = data.get("gear_type")
 
         user = get_object_or_404(MyUser, username=request.user.username) #사용자를 고유하게 식별
@@ -146,3 +149,11 @@ def update_profile(request):
 def Logout(request):
     logout(request)
     return redirect('/customer/login/')
+
+def check_username(request):
+    if request.method == 'GET':
+        username = request.GET.get('username')
+
+        is_duplicate = MyUser.objects.filter(username=username).exists()
+        
+        return JsonResponse({'available' : not is_duplicate})
