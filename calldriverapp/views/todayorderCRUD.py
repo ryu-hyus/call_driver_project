@@ -16,7 +16,7 @@ class TodayOrderGetView(View):
         operationday = OperationDay.objects.filter(id=1).values().first()
         orderdata = OrderData.objects.filter(
             order_type=False,
-            is_hide=True,  # is_hide=False 로 바꿔야 함
+            is_hide=True,  
             operation_day=operationday["operation_day"],
         ).values()
         orderlist = list(orderdata)

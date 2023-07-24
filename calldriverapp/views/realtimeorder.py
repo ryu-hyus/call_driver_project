@@ -15,14 +15,14 @@ class RealtimeOrderGetView(View):
     def get(self, request, pk=None):
         operationday = OperationDay.objects.filter(id=1).values().first()
         orderdata = OrderData.objects.filter(
-            order_type=True, is_hide=False, 
-            operation_day=operationday["operation_day"]).values()
+            is_hide=False, operation_day=operationday["operation_day"]
+        ).values()
         orderlist = list(orderdata)
 
         # 단건조회
         if pk is not None:
             for order in orderlist:
-                if order['id'] == pk:
+                if order["id"] == pk:
                     phonenumber = (
                         MyUser.objects.filter(id=order["customer_id"])
                         .values()
@@ -53,30 +53,29 @@ class RealtimeOrderGetView(View):
                 i["phone_number"] = phonenumber
 
                 geartype = (
-                    MyUser.objects.filter(id=i["customer_id"]).values().first()["gear_type"]
+                    MyUser.objects.filter(id=i["customer_id"])
+                    .values()
+                    .first()["gear_type"]
                 )
                 i["gear_type"] = geartype
 
             return JsonResponse(orderlist, safe=False)
-            
 
     # 수정
     def put(self, request, pk):
         orderlist = get_object_or_404(OrderData, pk=pk)
         data = json.loads(request.body)
 
-        orderlist.order_type = data.get("order_type") or orderlist.order_type
-        orderlist.is_hide = data.get("is_hide") or orderlist.is_hide
-
-        # OrderConfirm 메서드 호출
-        if orderlist.order_type == True:
+        # 주문 상태 업데이트
+        order_type = data.get("order_type")
+        if order_type is not None:
             orderlist.OrderConfirm()
 
-        if orderlist.is_hide == False:
+        # 숨김 상태 업데이트
+        is_hide = data.get("is_hide")
+        if is_hide is not None:
             orderlist.OrderHide()
 
         orderlist.save()
 
         return JsonResponse(data)
-
-
