@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <title>대리운전 홈페이지</title>
   {% include 'center/layout/head.html' %}
-
   <style>
     html,
     body {
@@ -80,106 +79,127 @@
       background-color: orange;
     }
 
-    .selected {
-      background-color: rgb(24, 166, 41);
+    .flex {
+      display: flex;
+      justify-content: space-between;
+      padding:10px;
     }
+    .nav-link {
+      color:#000;
+    }
+    
   </style>
 
 
 
-  <script>
+<script>
 
-    function init() {
-      if (location.href.includes('offtotalorder')) {
-        document.getElementById('tr_totalorder').classList.add('selected')
-      } else if (location.href.includes('offcustomerlist')) {
-        document.getElementById('tr_customerlist').classList.add('selected')
-      }
+  function init() {
+    if (location.href.includes('offtotalorder')) {
+      document.getElementById('tr_totalorder').classList.add('selected')
+    } else if (location.href.includes('offcustomerlist')) {
+      document.getElementById('tr_customerlist').classList.add('selected')
     }
+  }
 
-    $(document).ready(function () {
-      $('#realtime_atag, #todayorder_atag').on('click', function (e) {
-        e.preventDefault();
-        alert("영업시작 버튼을 누르셔야 활성화됩니다.");
-      });
+  $(document).ready(function () {
+    $('#realtime_atag, #todayorder_atag').on('click', function (e) {
+      e.preventDefault();
+      alert("영업시작 버튼을 누르셔야 활성화됩니다.");
     });
+  });
 
 
-    $(document).ready(function () {
-      $('#startclose').on('click', (e) => {
-        e.preventDefault();
+  $(document).ready(function () {
+    $('#startclose').on('click', (e) => {
+      e.preventDefault();
 
-        if (confirm("영업을 시작하시겠습니까?")) {
+      if (confirm("영업을 시작하시겠습니까?")) {
 
-          alert("영업을 시작합니다.");
+        alert("영업을 시작합니다.");
 
-          const isOperationOn = true;
-          const data = { "operation_onoff": isOperationOn };
-          $.ajax({
-            url: '/center/operationonoff/',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-          }).done(function (response) {
-            location.href = '/center/realtimeorder/'
-          }).fail(function (xhr, status, error) {
-            alert('실패: ' + error);
-          });
-          
-        } else {
+        const isOperationOn = true;
+        const data = { "operation_onoff": isOperationOn };
+        $.ajax({
+          url: '/center/operationonoff/',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(data),
+        }).done(function (response) {
+          location.href = '/center/realtimeorder/'
+        }).fail(function (xhr, status, error) {
+          alert('실패: ' + error);
+        });
+        
+      } else {
 
-          alert("영업을 시작하지 않습니다.");
+        alert("영업을 시작하지 않습니다.");
 
-        }
-      })
+      }
     })
+  })
 
-  </script>
+</script>
 
 
 </head>
 
 
 <body onload="init()">
-  <header class="baseheader">
-
-    <!-- 헤더 -->
-    <nav class="navbar">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <img src="logo.png" alt="Logo" width="100" height="40" class="d-inline-block">
+  <header class="bg-dark shadow">
+    <div class="flex bg-dark shadow">
+      <div>
+        <a class="navbar-brand col-md-3 col-lg-2" href="#">
+          <img src="/static/logoimg/logo.png" alt="Logo" width="130" height="40" class="d-inline-block">
         </a>
+      </div>
+      <div>
         <a class="headermidtext" href="/center/offmain/">대리운전</a>
-        <ul class="nav justify-content-end">
-          <li class="nav-item">
-            <button type="button" class="btn  btn-outline-danger btn-lg" id="startclose">영업시작</button>
-          </li>
-        </ul>
       </div>
-    </nav>
+      <div>
+        <button type="button" class="btn btn-danger btn-lg" id="startclose">영업 시작</button>
+      </div>
+    </div>
   </header>
-
   <!-- 왼쪽 카테고리 -->
-  <nav class="basenav">
-    <div class="leftList">
-      <div class="categoryList">
-        <table class="tableList">
-          <tbody>
-            <tr id="tr_realtimeorder">
-              <th scope="row"><a href="#" id="realtime_atag">실시간 접수 상황</a></th>
-            </tr>
-            <tr id="tr_todayorder">
-              <th scope="row"><a href="#" id="todayorder_atag">오늘 접수 목록</a></th>
-            </tr>
-            <tr id="tr_totalorder">
-              <th scope="row" id="totalorder_atag"><a href="/center/offtotalorder/">전체 주문 목록</a></th>
-            </tr>
-            <tr id="tr_customerlist">
-              <th scope="row" id="customerlist_atag"><a href="/center/offcustomerlist/">전체 회원 목록</a></th>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+ 
+  <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+    <div class="position-sticky pt-3 sidebar-sticky">
+      <ul class="nav flex-column">
+        <li class="nav-item"  id="tr_realtimeorder">
+          <a class="nav-link active" aria-current="page" href="#" id="realtime_atag">
+            <span data-feather="home" class="align-text-bottom"></span>
+            실시간 접수 상황
+          </a>
+        </li>
+        <li class="nav-item" id="tr_todayorder">
+          <a class="nav-link" href="#" id="todayorder_atag">
+            <span data-feather="file" class="align-text-bottom"></span>
+            오늘 접수 목록
+          </a>
+        </li>
+        <li class="nav-item" id="tr_totalorder">
+          <a class="nav-link" href="/center/offtotalorder/" id="totalorder_atag">
+            <span data-feather="shopping-cart" class="align-text-bottom"></span>
+            전체 주문 목록
+          </a>
+        </li>
+      </ul>
+
+      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
+        <span>회원 관리</span>
+        <a class="link-secondary" href="#" aria-label="Add a new report">
+          <span data-feather="plus-circle" class="align-text-bottom"></span>
+        </a>
+      </h6>
+      <ul class="nav flex-column mb-2">
+        <li class="nav-item" id="tr_customerlist">
+          <a class="nav-link" href="/center/offcustomerlist/" id="customerlist_atag">
+            <span data-feather="file-text" class="align-text-bottom"></span>
+            전체 회원 목록
+          </a>
+        </li>
+      </ul>
     </div>
   </nav>
 
