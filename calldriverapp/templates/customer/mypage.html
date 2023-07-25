@@ -32,12 +32,6 @@
             color: orange;
         }
 
-        #flex {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
         a,
         p {
             color: green;
@@ -49,18 +43,6 @@
             text-decoration: underline;
         }
 
-        #head {
-            margin-bottom: 30px;
-            border-bottom: 1px solid #ccc;
-            width: calc(100%);
-        }
-
-        #footer {
-            height: 150px;
-            background-color: #ffe47e;
-            padding: 45px;
-        }
-
         .backcolor {
             background-color: #ffe47e;
         }
@@ -68,180 +50,182 @@
         .right {
             float: right;
         }
+        .content_container {
+            height: calc(100vh - 100px);
+            justify-content: center;
+            gap:2.5rem;
+        }
     </style>
 </head>
 
 <body>
     {% include 'customer/layout/header.html' %}
+
     <div id="container">
-        <h1>내정보 관리</h1>
-        <table id="head">
-            <tr>
-                <td style="width:10%">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor"
-                        class="bi bi-person-circle person" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                        <path fill-rule="evenodd"
-                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-                    </svg>
-                </td>
-                <td style="width:90%">
-                    <h2 id="customer_name"></h2>
-                </td>
-            </tr>
-        </table>
-        <div id="flex">
-            <div>
-                <a href="" id="in_customer_info">
-                    <p>회원정보</p>
-                </a>
-            </div>
-            <div>
-                <a id="in_change" href="">
-                    <p>회원정보 수정</p>
-                </a>
-            </div>
-        </div>
+        <div class="content_container d-flex flex-column">
+            <h1>내정보 관리</h1>
+            <table id="head">
+                <tr>
+                    <td style="width:10%">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor"
+                            class="bi bi-person-circle person" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                            <path fill-rule="evenodd"
+                                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                        </svg>
+                    </td>
+                    <td style="width:90%">
+                        <h2 id="customer_name"></h2>
+                    </td>
+                </tr>
+            </table>
+                <div>
+                    <a id="in_change" href="">
+                        <p>회원정보 수정</p>
+                    </a>
+                </div>
 
-        <div id="customer_info_text">
-            <div class="form-floating mb-3">
-                <input type="text" name="check_name" class="form-control rounded-4" id="check_name" readonly>
-                <label for="check_name">이름</label>
+            <div id="customer_info_text">
+                <div class="form-floating mb-3">
+                    <input type="text" name="check_name" class="form-control rounded-4" id="check_name" readonly>
+                    <label for="check_name">이름</label>
+                </div>
+                <div class="form-floating mb-3 phone" style="display: flex;">
+                    <input type="text" name="check_first_number" id="check_first_number"
+                        class="form-control rounded-4 tel" readonly style="margin-right:10px;" maxlength="3">
+                    <input type="text" name="check_second_number" id="check_second_number"
+                        class="form-control rounded-4 tel" readonly style="margin-right:10px;" maxlength="4">
+                    <input type="text" name="check_third_number" id="check_third_number"
+                        class="form-control rounded-4 tel" readonly maxlength="4">
+                    <label>전화번호</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" name="check_gear" class="form-control rounded-4" id="check_gear" readonly>
+                    <label for="check_gear">기어 종류</label>
+                </div>
             </div>
-            <div class="form-floating mb-3 phone" style="display: flex;">
-                <input type="text" name="check_first_number" id="check_first_number" class="form-control rounded-4 tel"
-                    readonly style="margin-right:10px;" maxlength="3">
-                <input type="text" name="check_second_number" id="check_second_number"
-                    class="form-control rounded-4 tel" readonly style="margin-right:10px;" maxlength="4">
-                <input type="text" name="check_third_number" id="check_third_number" class="form-control rounded-4 tel"
-                    readonly maxlength="4">
-                <label>전화번호</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" name="check_gear" class="form-control rounded-4" id="check_gear" readonly>
-                <label for="check_gear">기어 종류</label>
-            </div>
-        </div>
 
-        <form method="post" id="customer_info_put" style="display: none;">
-            {% csrf_token %}
-            <div class="form-floating mb-3">
-                <input type="text" name="name" class="form-control rounded-4" id="name" placeholder="이름을 입력해주세요">
-                <label for="name">이름</label>
-            </div>
-            <div class="form-floating mb-3 phone" style="display: flex;">
-                <input type="text" name="first_number" id="first_number" class="form-control rounded-4 tel"
-                    style="margin-right:10px;" maxlength="3">
-                <input type="text" name="second_number" id="second_number" class="form-control rounded-4 tel"
-                    style="margin-right:10px;" maxlength="4">
-                <input type="text" name="third_number" id="third_number" class="form-control rounded-4 tel"
-                    maxlength="4">
-                <label>전화번호</label>
-            </div>
-            <fieldset class="row mb-3">
-                <legend class="col-form-label col-sm-2 pt-0">기어 선택</legend>
-                <div class="col-sm-10">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="auto" value="auto">
-                        <label class="form-check-label" for="auto">
-                            자동
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="manual" value="manual">
-                        <label class="form-check-label" for="manual">
-                            수동
-                        </label>
-                    </div>
-                    <div class="right">
-                        <button id="change" type="button" class="btn me-3 btn-warning btn-lg"
-                            style="margin-bottom: -45px; text-decoration: none;">수정하기</button>
-                        <button id="my_home" type="button" class="btn btn-warning btn-lg"
-                            style="margin-bottom: -45px;">취소하기</button>
-                    </div>
-            </fieldset>
-        </form>
+            <form method="post" id="customer_info_put" style="display: none;">
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                    <input type="text" name="name" class="form-control rounded-4" id="name" placeholder="이름을 입력해주세요">
+                    <label for="name">이름</label>
+                </div>
+                <div class="form-floating mb-3 phone" style="display: flex;">
+                    <input type="text" name="first_number" id="first_number" class="form-control rounded-4 tel"
+                        style="margin-right:10px;" maxlength="3">
+                    <input type="text" name="second_number" id="second_number" class="form-control rounded-4 tel"
+                        style="margin-right:10px;" maxlength="4">
+                    <input type="text" name="third_number" id="third_number" class="form-control rounded-4 tel"
+                        maxlength="4">
+                    <label>전화번호</label>
+                </div>
+                <fieldset class="row mb-3">
+                    <legend class="col-form-label col-sm-2 pt-0">기어 선택</legend>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="auto" value="auto">
+                            <label class="form-check-label" for="auto">
+                                자동
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="manual"
+                                value="manual">
+                            <label class="form-check-label" for="manual">
+                                수동
+                            </label>
+                        </div>
+                        <div class="right">
+                            <button id="change" type="button" class="btn me-3 btn-warning btn-lg"
+                                style="margin-bottom: -45px; text-decoration: none;">수정하기</button>
+                            <button id="my_home" type="button" class="btn btn-warning btn-lg"
+                                style="margin-bottom: -45px;">취소하기</button>
+                        </div>
+                </fieldset>
+            </form>
+        </div>
     </div>
-    {% include 'customer/layout/footer.html' %}
-    <script>
-        $(function () {
-            $.ajaxSetup({
-                headers: { "X-CSRFToken": "{{ csrf_token }}" } // 모든 AJAX 요청에 CSRF 토큰 포함
-            });
-
-            var user_id = sessionStorage.getItem('user_id');
-
-            $.ajax({
-                url: `http://127.0.0.1:8000/customer/customer_info/${user_id}/`,
-                method: "GET",
-                dataType: 'json',
-            }).done(function (response) {
-                console.log(response);
-                $('#customer_name').text(response.name);
-                $('#check_name').val(response.name);
-                $('#name').val(response.name);
-                $('#check_first_number').val(response.phone_number.slice(0, 3));
-                $('#check_second_number').val(response.phone_number.slice(4, 8));
-                $('#check_third_number').val(response.phone_number.slice(9));
-                $('#first_number').val(response.phone_number.slice(0, 3));
-                $('#second_number').val(response.phone_number.slice(4, 8));
-                $('#third_number').val(response.phone_number.slice(9));
-
-                if (response.gear_type === 'auto') {
-                    $('#check_gear').val(response.gear_type);
-                    $('#auto').prop('checked', true);
-                } else if (response.gear_type === 'manual') {
-                    $('#check_gear').val(response.gear_type);
-                    $('#manual').prop('checked', true);
-                }
-            });
-        });
-        $('#in_customer_info').on('click', (e) => {
-            e.preventDefault();
-            $('#customer_info_put').css('display', 'none');
-            $('#customer_info_text').css('display', 'block');
-        })
-
-        $('#in_change').on('click', (e) => {
-            e.preventDefault();
-            $('#customer_info_put').css('display', 'block');
-            $('#customer_info_text').css('display', 'none');
+</body>
+{% include 'customer/layout/footer.html' %}
+<script>
+    $(function () {
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": "{{ csrf_token }}" } // 모든 AJAX 요청에 CSRF 토큰 포함
         });
 
-        $('#change').on('click', function (e) {
-            e.preventDefault();
+        var user_id = sessionStorage.getItem('user_id');
 
-            let name = $('#name').val();
-            let first_number = $('#first_number').val();
-            let second_number = $('#second_number').val();
-            let third_number = $('#third_number').val();
-            let gear_type = $('input[type="radio"]:checked').val();
+        $.ajax({
+            url: `http://127.0.0.1:8000/customer/customer_info/${user_id}/`,
+            method: "GET",
+            dataType: 'json',
+        }).done(function (response) {
+            console.log(response);
+            $('#customer_name').text(response.name);
+            $('#check_name').val(response.name);
+            $('#name').val(response.name);
+            $('#check_first_number').val(response.phone_number.slice(0, 3));
+            $('#check_second_number').val(response.phone_number.slice(4, 8));
+            $('#check_third_number').val(response.phone_number.slice(9));
+            $('#first_number').val(response.phone_number.slice(0, 3));
+            $('#second_number').val(response.phone_number.slice(4, 8));
+            $('#third_number').val(response.phone_number.slice(9));
 
-            $.ajax({
-                url: "http://127.0.0.1:8000/customer/mypage/update_profile/",
-                method: "POST",
-                ontentType: "application/json",
-                data: JSON.stringify({
-                    "name": name,
-                    "first_number": first_number,
-                    "second_number": second_number,
-                    "third_number": third_number,
-                    "gear_type": gear_type
-                }),
-            }).done(function (response) {
-                // 성공적으로 수정되었을 때 처리할 내용
-                alert(response.message);
-            }).fail(function (xhr, status, error) {
-                // 오류 발생 시 처리할 내용
-                alert('회원정보 수정에 실패했습니다.');
-            });
+            if (response.gear_type === 'auto') {
+                $('#check_gear').val(response.gear_type);
+                $('#auto').prop('checked', true);
+            } else if (response.gear_type === 'manual') {
+                $('#check_gear').val(response.gear_type);
+                $('#manual').prop('checked', true);
+            }
         });
+    });
+    $('#in_customer_info').on('click', (e) => {
+        e.preventDefault();
+        $('#customer_info_put').css('display', 'none');
+        $('#customer_info_text').css('display', 'block');
+    })
 
-        $("#my_home").on('click', (e) => {
-            e.preventDefault();
-            location.href = "/customer/mypage/";
+    $('#in_change').on('click', (e) => {
+        e.preventDefault();
+        $('#customer_info_put').css('display', 'block');
+        $('#customer_info_text').css('display', 'none');
+    });
+
+    $('#change').on('click', function (e) {
+        e.preventDefault();
+
+        let name = $('#name').val();
+        let first_number = $('#first_number').val();
+        let second_number = $('#second_number').val();
+        let third_number = $('#third_number').val();
+        let gear_type = $('input[type="radio"]:checked').val();
+
+        $.ajax({
+            url: "http://127.0.0.1:8000/customer/mypage/update_profile/",
+            method: "POST",
+            ontentType: "application/json",
+            data: JSON.stringify({
+                "name": name,
+                "first_number": first_number,
+                "second_number": second_number,
+                "third_number": third_number,
+                "gear_type": gear_type
+            }),
+        }).done(function (response) {
+            // 성공적으로 수정되었을 때 처리할 내용
+            alert(response.message);
+        }).fail(function (xhr, status, error) {
+            // 오류 발생 시 처리할 내용
+            alert('회원정보 수정에 실패했습니다.');
         });
-    </script>
+    });
+    $('#my_home').on('click', (e) => {
+        e.preventDefault();
+        location.href='/customer/mypage/'
+    })
+</script>
 </body>
 
 </html>

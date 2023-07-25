@@ -26,31 +26,12 @@
       text-align: center;
     }
 
-    /* 버튼 안 글씨 크기 조절 */
-    .btn-detail-ask {
-      font-size: 16px;
-    }
-
-    /* 체크박스 스타일*/
-    .form-check-input {
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      outline: none;
-      width: 22px;
-      height: 22px;
-      border: 3px solid black;
-      border-radius: 3px;
-      cursor: pointer;
-    }
-
-    .form-check-input:checked {
-      background-color: black;
-      border-color: black;
+    /* footer */
+    .basefooter {
+      width: 100%;
+      height: 5%;
     }
   </style>
-
-
 
 
   <script>
@@ -67,6 +48,8 @@
           console.log(response);
 
           const tr_array = response.map((getrealtimeorder, index) => {
+
+            const buttonId = `btn-detail-ask-${index}`;
 
             // order_kind에 따라 다른 값을 할당
             if (getrealtimeorder.order_kind === "order") {
@@ -89,34 +72,28 @@
               <td>${getrealtimeorder.end_address}</td>
               <td>${getrealtimeorder.operation_day}</td>
               <td>
-                <button id="${getrealtimeorder.id}" class="btn btn-${orderButtonColor} btn-sm btn-detail-ask"
-                data-toggle="tooltip" title="클릭 시 고객님께 정보가 전송">
+                <button id="${buttonId}" class="btn btn-${orderButtonColor} btn-sm btn-detail-ask">
                   ${orderKindText}요청</button>
               </td>
               <td>
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" 
-                  data-toggle="tooltip" title="클릭 시 오늘 접수 목록으로 이동">
+                <button class="btn btn-dark btn-sm btn-detail-confirm" data-order-id="${getrealtimeorder.is_hide}">
+                  최종확인
+                </button>
               </td>
             </tr>`
             );
           });
 
           $("#data_table > tbody").append(tr_array);
-
         });
+      }
 
-        $("#data_table > tbody").append(tr_array);
-      });
-    }
+      getRealtimeOrderList();
 
-    getRealtimeOrderList();
-
-  });
+    });
 
 
-
-
-    // 접수, 변경, 취소 요청 시 
+    // // 접수, 변경, 취소 요청 시 
     $(document).on("click", ".btn-detail-ask", function () {
       const button = $(this);
       const orderKindText = button.text();
@@ -132,69 +109,31 @@
         .addClass(`text-${orderButtonColor}`)
         .css("font-weight", "bold");
 
-
-    button.replaceWith(spanElement);
-
+      button.replaceWith(spanElement);
 
 
-
-      // PUT 
-      const pkKey = button.attr("id");
-
-      $.ajax({
-        url: `/center/realtimeorder/get/${pkKey}/`,
-        method: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify({ order_type: false }),
-        success: function (response) {
-          console.log(response);
-        },
-        error: function (xhr, status, error) {
-          console.error(xhr.responseText); 
-        }
-      });
-
-
-      // tooltip
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-      });
+      // $.ajax({
+      //   url: '/center/realtimeorder/get/',
+      //   method: 'POST',
+      //   contentType: 'application/json',
+      //   data: { order_type: false },
+      // }).done(function (response) {
+      //   console.log(data);
+      // }).fail(function (xhr, status, error) {
+      //   alert('실패: ' + error);
+      // });
 
 
 
-
-    //   $(document).on("click", "#flexCheckDefault", function () {
-    //   const isChecked = $(this).prop("checked");
-    //   const rowIndex = $(this).closest("tr").index();
-
-    //   if (isChecked) {
-    //     $(`table tr:eq(${rowIndex + 1})`).remove(); // 해당 tr 숨기기
-    //   } else {
-    //     $(`table tr:eq(${rowIndex + 1})`).show(); // 해당 tr 보여주기
-    //   }
-    // });
+    });
 
 
-    })
+
   </script>
-
-  //   $(document).on("click", "#flexCheckDefault", function () {
-  //   const isChecked = $(this).prop("checked");
-  //   const rowIndex = $(this).closest("tr").index();
-
-  //   if (isChecked) {
-  //     $(`table tr:eq(${rowIndex + 1})`).remove(); // 해당 tr 숨기기
-  //   } else {
-  //     $(`table tr:eq(${rowIndex + 1})`).show(); // 해당 tr 보여주기
-  //   }
-  // });
-
-
-  })
-</script>
 
 
 </head>
+
 
 <body>
   <div class="container-fluid">
@@ -228,6 +167,6 @@
 </html>
 
 <!-- 접수상황 버튼 누르면 
-//   1. __완료가 text로 되게 (색깔 유의) -> 성공
+//   1. __완료가 text로 되게 (색깔 유의)
 //   2. 최종확인 버튼 활성화면서 깜박깜박거리게 
 //   3. 자바스크립트 인터벌 함수 사용 (5초), 돔 핸들링-->
