@@ -26,19 +26,34 @@
       text-align: center;
     }
 
-    /* footer */
-    .basefooter {
-      width: 100%;
-      height: 5%;
+    /* 버튼 안 글씨 크기 조절 */
+    .btn-detail-ask {
+      font-size: 16px;
+    }
+
+    /* 체크박스 스타일*/
+    .form-check-input {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      outline: none;
+      width: 22px;
+      height: 22px;
+      border: 3px solid black;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .form-check-input:checked {
+      background-color: black;
+      border-color: black;
     }
   </style>
 
 
   <script>
-    $(function () {
 
-      let orderKindText = "";
-      let orderButtonColor = "";
+    $(function () {
 
       function getRealtimeOrderList() {
         $.ajax({
@@ -49,43 +64,86 @@
 
           const tr_array = response.map((getrealtimeorder, index) => {
 
+            let orderKindText = "";
+            let orderButtonColor = "";
+            let ordertime = "";
+            let realdatetime = '';
+
+            response.sort(function (a, b) {
+              const dateA = new Date(a.realdatetime);
+              const dateB = new Date(b.realdatetime);
+              return dateB.getTime() - dateA.getTime();
+            });
+
             // order_kind에 따라 다른 값을 할당
             if (getrealtimeorder.order_kind === "order") {
               orderKindText = "주문";
               orderButtonColor = "danger";
+              ordertime = getrealtimeorder.created_at.slice(11, 19);
+              realdatetime = getrealtimeorder.created_at;
             } else if (getrealtimeorder.order_kind === "change") {
               orderKindText = "변경";
               orderButtonColor = "warning";
+              ordertime = getrealtimeorder.updated_at.slice(11, 19);
+              realdatetime = getrealtimeorder.updated_at;
             } else if (getrealtimeorder.order_kind === "cancel") {
               orderKindText = "취소";
               orderButtonColor = "success";
+              ordertime = getrealtimeorder.updated_at.slice(11, 19);
+              realdatetime = getrealtimeorder.updated_at;
             }
+
+            let actionElement;
+
+            if (getrealtimeorder.order_type === true) {
+
+              // If order_type === true, 버튼
+              actionElement = $(`
+          <button id="${getrealtimeorder.id}" class="btn btn-${orderButtonColor} btn-sm btn-detail-ask"
+            data-toggle="tooltip" title="클릭 시 고객님께 정보가 전송">
+            ${orderKindText}요청
+          </button>
+        `);
+
+            } else {
+
+              // If order_type === false, 텍스트
+              actionElement = $("<span>")
+                .text(orderKindText + "완료")
+                .attr("id", "ask_text")
+                .addClass(`text-${orderButtonColor}`)
+                .css("font-weight", "bold");
+
+            }
+
+            // ordertime 최근 것이 맨 위
+            response.sort(function (a, b) {
+              return new Date(a.ordertime) - new Date(b.ordertime);
+            });
 
             return $(
               `<tr>
-              <td>${index + 1}</td>
-              <td>${getrealtimeorder.phone_number}</td>
-              <td>${getrealtimeorder.gear_type}</td>
-              <td>${getrealtimeorder.start_address}</td>
-              <td>${getrealtimeorder.end_address}</td>
-              <td>${getrealtimeorder.created_at}</td>
-              <td>
-                <button id="${getrealtimeorder.id}" class="btn btn-${orderButtonColor} btn-sm btn-detail-ask"
-                data-toggle="tooltip" title="클릭 시 고객님께 정보가 전송">
-                  ${orderKindText}요청</button>
-              </td>
-              <td>
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" 
-                  data-toggle="tooltip" title="클릭 시 오늘 접수 목록으로 이동">
-              </td>
-            </tr>`
+          <td>${index + 1}</td>
+          <td>${getrealtimeorder.phone_number}</td>
+          <td>${getrealtimeorder.gear_type}</td>
+          <td>${getrealtimeorder.start_address}</td>
+          <td>${getrealtimeorder.end_address}</td>
+          <td>${ordertime}</td>
+          <td>
+            ${actionElement.prop('outerHTML')}
+          </td>
+          <td>
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" 
+              data-toggle="tooltip" title="클릭 시 오늘 접수 목록으로 이동"
+              data-pkkey="${getrealtimeorder.id}" data-ordertype="${getrealtimeorder.order_type}">
+          </td>
+        </tr>`
             );
           });
 
           $("#data_table > tbody").append(tr_array);
         });
       }
-
       getRealtimeOrderList();
 
     });
@@ -93,6 +151,7 @@
 
     // 접수, 변경, 취소 요청 시 (버튼 처리)
     $(document).on("click", ".btn-detail-ask", function () {
+
       const button = $(this);
       const orderKindText = button.text();
       const changeText = orderKindText.replace("요청", "") + "완료";
@@ -113,41 +172,69 @@
 
       // PUT - 접수 상태 변경 요청
       $.ajax({
+
         url: `/center/realtimeorder/get/${pkKey}/`,
         method: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({ order_type: false }),
+
         success: function (response) {
           console.log(response);
+
+          // 체크박스 클릭
+          $(document).on("click", ".form-check-input", function () {
+
+            const isChecked = $(this).prop("checked");
+            const pkKey = $(this).data("pkkey");
+
+            if (isChecked) {
+              $.ajax({
+                url: `/center/realtimeorder/get/${pkKey}/`,
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify({ is_hide: true }),
+                success: function (response) {
+                  console.log(response);
+                },
+                error: function (xhr, status, error) {
+                  console.error(xhr.responseText);
+                }
+              });
+
+            }
+          });
         },
+
         error: function (xhr, status, error) {
           console.error(xhr.responseText);
         }
       });
 
 
-      // 체크박스 클릭
-      $(document).on("click", "#flexCheckDefault", function () {
-        const isChecked = $(this).prop("checked");
-        const rowIndex = $(this).closest("tr").index();
+    // 체크박스 클릭
+    $(document).on("click", ".form-check-input", function () {
 
-        if (isChecked) {
+      const isChecked = $(this).prop("checked");
+      const pkKey = $(this).data("pkkey");
+      const orderType = $(this).data("ordertype");
 
-          $.ajax({
-            url: `/center/realtimeorder/get/${pkKey}/`,
-            method: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify({ is_hide: true }),
-            success: function (response) {
-              console.log(response);
-            },
-            error: function (xhr, status, error) {
-              console.error(xhr.responseText);
-            }
-          });
-        }
-      });
+      if (isChecked && orderType == false) {
+        $.ajax({
+          url: `/center/realtimeorder/get/${pkKey}/`,
+          method: 'PUT',
+          contentType: 'application/json',
+          data: JSON.stringify({ is_hide: true }),
+          success: function (response) {
+            console.log(response);
+          },
+          error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+          }
+        });
+
+      }
     });
+
 
     // tooltip
     $(function () {
@@ -164,9 +251,7 @@
 
   </script>
 
-
 </head>
-
 
 <body>
   <div class="container-fluid">
