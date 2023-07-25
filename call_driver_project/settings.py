@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-w&*^rpy#alj$0c+_@)ec%n7ht(n98j=ka81)a!t=77xldim#f*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["ec2-43-200-169-248.ap-northeast-2.compute.amazonaws.com"]
+ALLOWED_HOSTS = ["ec2-43-200-169-248.ap-northeast-2.compute.amazonaws.com","localhost","127.0.0.1"]
 
 
 # Application definition
@@ -92,8 +92,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'CALLDRIVER_DB',
-        'USER': 'calldriver',
-        'PASSWORD': 'calldriver202307*',
+        'USER': 'call_driver',
+        'PASSWORD': 'calldriver2023*',
         'HOST': '43.200.169.248',
         'PORT': '3306',
         'OPTIONS': {
