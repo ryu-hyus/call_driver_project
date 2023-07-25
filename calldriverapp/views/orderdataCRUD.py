@@ -38,6 +38,10 @@ class OrderdataView(View):
         orderdata.order_type = data.get("order_type") or orderdata.order_type
         orderdata.is_hide = data.get("is_hide") or orderdata.is_hide
         orderdata.calculated_price = data.get("calculated_price") or orderdata.calculated_price
+        orderdata.start_x = data.get("start_x") or orderdata.start_x
+        orderdata.start_y = data.get("start_y") or orderdata.start_y
+        orderdata.end_x = data.get("end_x") or orderdata.end_x
+        orderdata.end_y = data.get("end_y") or orderdata.end_y
 
         orderdata.save()
         return JsonResponse(data)
@@ -54,6 +58,10 @@ class OrderdataView(View):
             end_section=data.get("end_section"),
             customer_id=data.get("customer_id"),
             calculated_price = data.get("calculated_price"),
+            start_x = data.get("start_x"),
+            start_y = data.get("start_y"),
+            end_x = data.get("end_x"),
+            end_y = data.get("end_y"),
             operation_day = center_day,
         )
         p.save()

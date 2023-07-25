@@ -15,5 +15,5 @@ class BaseModel(models.Model):
     
     def delete(self, using=None, keep_parents=False):
         self.is_deleted = True
-        self.deleted_at = datetime.now()
+        self.deleted_at = datetime.datetime.now()
         self.save()

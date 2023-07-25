@@ -1,5 +1,5 @@
 from django.urls import path
-from calldriverapp.views.addresshistoryCRUD import AddresshistorydataView, AddresshistorydeleteView
+from calldriverapp.views.addresshistoryCRUD import AddresshistorydataView, AddresshistorydeleteView, EndAddresshistorydataView, StartAddresshistorydataView
 from calldriverapp.views.customer import HomeTemplateView, OrderDetailTemplateView, OrderDetailTemplateView
 
 from calldriverapp.views.customer import OrderMainTemplateView
@@ -28,6 +28,8 @@ urlpatterns = [
     path("orderdata/<int:pk>/", OrderdataView.as_view(), name= "order_method_select"), # 오더 id로 단건 조회
     path("userorder/<int:pk>/", CustomerOrderView.as_view(), name= "customer_order_method_select"), #커스토머 id로 데이터 조회 
     path("addresshistory/<int:pk>/", AddresshistorydataView.as_view(), name= "addresshistory_CRUD"), #커스토머 id로 주소 검색 기록 검색/등록
+    path("addresshistory/start/<int:pk>/", StartAddresshistorydataView.as_view(), name= "startaddresshistory_get"), #커스토머 id 출발지 검색 기록 검색/등록
+    path("addresshistory/end/<int:pk>/", EndAddresshistorydataView.as_view(), name= "endaddresshistory_get"), #커스토머 id 목적지 검색 기록 검색/등록
     path("addresshistory/delete/<int:pk>/", AddresshistorydeleteView.as_view(), name= "addresshistory_delete"), #히스토리 id로 삭제
     path("pricecalculate/<str:ss>/<str:es>/", PriceTableView.as_view(), name= "calculate_price"), # 요금 계산 url / ss: 출발지, es: 도착지로 검색
     path("pricepage/", PricePageView.as_view(), name= "pricepage"), #요금표 페이지

@@ -44,11 +44,10 @@
 
       function getuserorderlist() {
         $.ajax({
-          url: `http://localhost:8000/customer/userorder/${customer_id}/`,
+          url: `/customer/userorder/${customer_id}/`,
           method: 'GET'
         })
           .done(function (response) {
-            console.log(response);
             displayorderlist(response);
           })
           .fail(function (response) {
@@ -58,6 +57,7 @@
       }
 
       getuserorderlist();
+      setInterval(getuserorderlist, 5000);
     })
 
     function displayorderlist(data) {

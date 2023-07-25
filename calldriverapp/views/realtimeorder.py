@@ -15,7 +15,7 @@ class RealtimeOrderGetView(View):
     def get(self, request, pk=None):
         operationday = OperationDay.objects.filter(id=1).values().first()
         orderdata = OrderData.objects.filter(
-            is_hide=False, operation_day=operationday["operation_day"]
+            is_hide=False, operation_day=operationday["operation_day"], is_deleted = False
         ).values()
         orderlist = list(orderdata)
 

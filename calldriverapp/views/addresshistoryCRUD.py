@@ -44,3 +44,24 @@ class AddresshistorydeleteView(View):
         addressdata.delete()
 
         return HttpResponse(status=200)
+
+@method_decorator(csrf_exempt, name="dispatch")
+class StartAddresshistorydataView(View):
+    #커스토머 id로 조회
+    def get(self, request, pk):
+        
+        addressdata = AddressHistory.objects.filter(customer_id=pk, is_deleted = False, address_type = "start").values()
+        if not addressdata:
+            return JsonResponse({"error": "Order not found"}, status=404)
+        return JsonResponse(list(addressdata) , safe=False)
+    
+
+@method_decorator(csrf_exempt, name="dispatch")
+class EndAddresshistorydataView(View):
+    #커스토머 id로 조회
+    def get(self, request, pk):
+        
+        addressdata = AddressHistory.objects.filter(customer_id=pk, is_deleted = False, address_type = "end").values()
+        if not addressdata:
+            return JsonResponse({"error": "Order not found"}, status=404)
+        return JsonResponse(list(addressdata) , safe=False)
