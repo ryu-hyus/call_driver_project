@@ -8,6 +8,7 @@ from calldriverapp.views.member_info import StaffLoginView
 from calldriverapp.views.operationCRUD import OperationOnOffView
 from calldriverapp.views.realtimeorder import RealtimeOrderGetView
 from calldriverapp.views.todayorderCRUD import TodayOrderGetView
+from calldriverapp.views.totalorderCRUD import TotalOrderGetView
 
 urlpatterns = [
     path("", StaffLoginView.as_view(), name="superuser_login"),
@@ -19,9 +20,12 @@ urlpatterns = [
     path("offmain/", OffMainView.as_view(), name="center_main"),
     path("offcustomerlist/", OffCustomerView.as_view(), name="off_customer_list"),
     path("offtotalorder/", OffTotalOrderView.as_view(), name="off_total_order_list"),
-    path("realtimeorder/get/", RealtimeOrderGetView.as_view(), name="realtime_order_get"),
+    path("realtimeorder/get/", RealtimeOrderGetView.as_view(), name="realtime_order_get_all"),
     path("realtimeorder/get/<int:pk>/", RealtimeOrderGetView.as_view(), name="realtime_order_get_by_id"),
-    path("todayorder/get/", TodayOrderGetView.as_view(), name="today_order_get"),
+    path("todayorder/get/", TodayOrderGetView.as_view(), name="today_order_get_all"),
     path("todayorder/get/<int:pk>/", TodayOrderGetView.as_view(), name="today_order_get_by_id"),
+    path("totalorder/get/", TotalOrderGetView.as_view(), name="total_order_get_all"),
+    path("totalorder/get/<int:pk>/", TotalOrderGetView.as_view(), name="total_order_get_by_id"),
+
 ]
 
