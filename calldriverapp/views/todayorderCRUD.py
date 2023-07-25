@@ -16,7 +16,7 @@ class TodayOrderGetView(View):
         operationday = OperationDay.objects.filter(id=1).values().first()
         orderdata = OrderData.objects.filter(
             order_type=False,
-            is_hide=True,  # is_hide=False 로 바꿔야 함
+            is_hide=True,  
             operation_day=operationday["operation_day"],
         ).values()
         orderlist = list(orderdata)
@@ -82,7 +82,21 @@ class TodayOrderGetView(View):
         orderlist = get_object_or_404(OrderData, pk=pk)
         data = json.loads(request.body)
 
-        orderlist.order_kind = data.get("order_kind") or orderlist.order_kind
-        orderlist.save()
+        # 주문 상태 업데이트
+        orderlist.order_type = data.get("order_type") or orderlist.order_type
+        
+        # 숨김 상태 업데이트
+        is_hide = data.get("is_hide")
+        if is_hide is not None:
+            if is_hide:
+                orderlist.OrderHide()
+            else:
+                orderlist.ReOrderVisi()
 
+        # order_kind 
+        orderlist.order_kind = data.get("order_kind") or orderlist.order_kind
+    
+        orderlist.save()
+    
         return JsonResponse(data)
+

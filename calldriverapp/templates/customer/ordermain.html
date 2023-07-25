@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% include 'customer/layout/head.html' %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=248cf1c7c8449d3df65c6ea12e991541"></script>
+
     <style>
         .modal {
             display: none;
@@ -35,7 +35,7 @@
 <body>
     {% include 'customer/layout/header.html' %}
 
-    <div>Map Section</div>
+    <div id="map" style="height:350px;"></div>
 
     <div class="container">
         <div class=" input-group mb-3">
@@ -80,7 +80,7 @@
         <div style="display: flex; align-items: center;">
             <span class="badge bg-secondary">예상 요금</span>
             <div style="margin: 0 0 0 10px; display: flex; align-items: center;">
-                <div id="expectedprice">10</div>
+                <div id="expectedprice">12</div>
                 <div>,000 원</div>
             </div>
         </div>
@@ -97,6 +97,124 @@
             <button id='homebtn' type="button" class="btn btn-primary btn-block btn-custom mt-0 mb-2">Home</button>
         </div>
     </div>
+
+    <!-- Map 컨트롤 script -->
+    <script>
+        const current_x = sessionStorage.getItem('current_x')
+        const current_y = sessionStorage.getItem('current_y')
+
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+            mapOption = {
+                center: new kakao.maps.LatLng(current_y, current_x), // 지도의 중심좌표
+                level: 4, // 지도의 확대 레벨
+                mapTypeId : kakao.maps.MapTypeId.ROADMAP
+            }; 
+
+        // 지도를 생성한다 
+        var map = new kakao.maps.Map(mapContainer, mapOption); 
+        //map.setDraggable(false);
+
+        // 지도에 마커를 생성하고 표시한다
+        var currentmarker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(current_y, current_x), // 마커의 좌표
+            map: map // 마커를 표시할 지도 객체
+        });
+
+        // 커스텀 오버레이를 생성하고 지도에 표시한다
+        var currentcustomOverlay = new kakao.maps.CustomOverlay({
+            map: map,
+            content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">현재위치</div>', 
+            position: new kakao.maps.LatLng(current_y, current_x), // 커스텀 오버레이를 표시할 좌표
+            xAnchor: 0.5, // 컨텐츠의 x 위치
+            yAnchor: 2.7 // 컨텐츠의 y 위치
+        });
+
+        var startpoint
+        var endpoint
+        // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+        var bounds = new kakao.maps.LatLngBounds();
+        function setBound(){
+            if (startpoint != null){
+                bounds.extend(startpoint);
+            }
+            if (endpoint != null){
+                bounds.extend(endpoint);
+            }
+        }
+        
+        
+        var startmarker
+        var startcustomOverlay
+        function addstartmarker(x,y){
+            if (startmarker != null || startcustomOverlay != null){
+                hideMarkers(startmarker, startcustomOverlay);
+            }
+            // 출발지 마커를 생성합니다
+            startmarker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(y, x),
+            });
+            startcustomOverlay = new kakao.maps.CustomOverlay({
+                content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">출발지</div>', 
+                position: new kakao.maps.LatLng(y, x), // 커스텀 오버레이를 표시할 좌표
+                xAnchor: 0.5, // 컨텐츠의 x 위치
+                yAnchor: 2.7 // 컨텐츠의 y 위치
+            });
+
+            // 마커가 지도 위에 표시되도록 설정합니다
+            startmarker.setMap(map);
+            startcustomOverlay.setMap(map);
+            hideMarkers(currentmarker, currentcustomOverlay);
+            setCenter(x,y);
+            startpoint = new kakao.maps.LatLng(y, x);
+            if(startpoint != null || endpoint != null){
+                setBound();
+                map.setBounds(bounds);
+            }
+        }
+        var endmarker
+        var endcustomOverlay
+        function addendmarker(x,y){
+            if (endmarker != null || endcustomOverlay != null){
+                hideMarkers(endmarker, endcustomOverlay);
+            }
+            // 도착지 마커를 생성합니다
+            endmarker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(y, x),
+            });
+            endcustomOverlay = new kakao.maps.CustomOverlay({
+                content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">목적지</div>', 
+                position: new kakao.maps.LatLng(y, x), // 커스텀 오버레이를 표시할 좌표
+                xAnchor: 0.5, // 컨텐츠의 x 위치
+                yAnchor: 2.7 // 컨텐츠의 y 위치
+            });
+
+            // 마커가 지도 위에 표시되도록 설정합니다
+            endmarker.setMap(map);
+            endcustomOverlay.setMap(map);
+            hideMarkers(currentmarker, currentcustomOverlay);
+            setCenter(x,y);
+            endpoint = new kakao.maps.LatLng(y, x);
+            if(startpoint != null || endpoint != null){
+                setBound();
+                map.setBounds(bounds);
+                setCenter(((startpoint.getLng()+endpoint.getLng())/2),((startpoint.getLat()+endpoint.getLat())/2));
+            }
+        }
+
+        function setCenter(x,y) {            
+            // 이동할 위도 경도 위치를 생성합니다 
+            var moveLatLon = new kakao.maps.LatLng(y, x);
+            
+            // 지도 중심을 이동 시킵니다
+            map.setCenter(moveLatLon);
+        }
+
+        function hideMarkers(marker, CustomOverlay) {
+            marker.setMap(null);  
+            CustomOverlay.setMap(null);
+        }
+
+    </script>
 
     <script>
         var address_type = ''
@@ -283,9 +401,11 @@
                 if (address_type == 'start') {
                     uploadStartSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
                     setValueAndCloseStart(placeName);
+                    addstartmarker(x,y);
                 } else if (address_type == 'end') {
                     uploadEndSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
                     setValueAndCloseEnd(placeName);
+                    addendmarker(x,y);
                 }
             });
         });

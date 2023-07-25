@@ -14,8 +14,6 @@ urlpatterns = [
     path("customerlist/", CustomerListView.as_view(), name="customer_list_view"),
     path("realtimeorder/", RealtimeOrderView.as_view(), name="realtime_order_list"),
     path("todayorder/", TodayOrderView.as_view(), name="today_order_list"),
-    path("todayorder/get/", TodayOrderGetView.as_view(), name="today_order_get"),
-    path("todayorder/get/<int:pk>/", TodayOrderGetView.as_view(), name="today_order_get_by_id"),
     path("totalorder/", TotalOrderView.as_view(), name="total_order_list"),
     path("operationonoff/", OperationOnOffView.as_view(), name="operation_onoff"),
     path("offmain/", OffMainView.as_view(), name="center_main"),
@@ -23,6 +21,7 @@ urlpatterns = [
     path("offtotalorder/", OffTotalOrderView.as_view(), name="off_total_order_list"),
     path("realtimeorder/get/", RealtimeOrderGetView.as_view(), name="realtime_order_get"),
     path("realtimeorder/get/<int:pk>/", RealtimeOrderGetView.as_view(), name="realtime_order_get_by_id"),
-
+    path("todayorder/get/", TodayOrderGetView.as_view(), name="today_order_get"),
+    path("todayorder/get/<int:pk>/", TodayOrderGetView.as_view(), name="today_order_get_by_id"),
 ]
 
