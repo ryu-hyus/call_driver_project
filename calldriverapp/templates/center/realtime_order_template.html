@@ -27,10 +27,27 @@
       text-align: center;
     }
 
-    /* footer */
-    .basefooter {
-      width: 100%;
-      height: 5%;
+    /* 버튼 안 글씨 크기 조절 */
+    .btn-detail-ask {
+      font-size: 16px;
+    }
+
+    /* 체크박스 스타일*/
+    .form-check-input {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      outline: none;
+      width: 22px;
+      height: 22px;
+      border: 3px solid black;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .form-check-input:checked {
+      background-color: black;
+      border-color: black;
     }
   </style>
 
@@ -40,6 +57,7 @@
 
       let orderKindText = "";
       let orderButtonColor = "";
+      let ordertime = "";
 
       function getRealtimeOrderList() {
         $.ajax({
@@ -51,16 +69,25 @@
           const tr_array = response.map((getrealtimeorder, index) => {
 
             // order_kind에 따라 다른 값을 할당
+            // ordertime 시간만 출력 (최근 것이 맨 위)
             if (getrealtimeorder.order_kind === "order") {
               orderKindText = "주문";
               orderButtonColor = "danger";
+              ordertime = getrealtimeorder.created_at.slice(11, 19);
             } else if (getrealtimeorder.order_kind === "change") {
               orderKindText = "변경";
               orderButtonColor = "warning";
+              ordertime = getrealtimeorder.updated_at.slice(11, 19);
             } else if (getrealtimeorder.order_kind === "cancel") {
               orderKindText = "취소";
               orderButtonColor = "success";
+              ordertime = getrealtimeorder.updated_at.slice(11, 19);
             }
+
+            // ordertime 최근 것이 맨 위
+            response.sort(function (a, b) {
+              return new Date(a.ordertime) - new Date(b.ordertime);
+            });
 
             return $(
               `<tr>
@@ -69,7 +96,7 @@
               <td>${getrealtimeorder.gear_type}</td>
               <td>${getrealtimeorder.start_address}</td>
               <td>${getrealtimeorder.end_address}</td>
-              <td>${getrealtimeorder.created_at}</td>
+              <td>${ordertime}</td>
               <td>
                 <button id="${getrealtimeorder.id}" class="btn btn-${orderButtonColor} btn-sm btn-detail-ask"
                 data-toggle="tooltip" title="클릭 시 고객님께 정보가 전송">
@@ -91,7 +118,7 @@
 
     });
 
-    
+
     // 접수, 변경, 취소 요청 시 (버튼 처리)
     $(document).on("click", ".btn-detail-ask", function () {
       const button = $(this);
@@ -125,7 +152,7 @@
           console.error(xhr.responseText);
         }
       });
-      
+
 
       // 체크박스 클릭
       $(document).on("click", "#flexCheckDefault", function () {
@@ -193,11 +220,3 @@
 </body>
 
 </html>
-
-<!-- 접수상황 버튼 누르면 
-//   1. __완료가 text로 되게 (색깔 유의)
-//   2. 최종확인 버튼 활성화면서 깜박깜박거리게 
-//   3. 자바스크립트 인터벌 함수 사용 (5초), 돔 핸들링-->
-
-<!-- 주석 -->
-

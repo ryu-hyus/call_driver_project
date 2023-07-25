@@ -44,6 +44,7 @@
 
       let orderKindText = "";
       let response = [];
+      let ordertime = "";
 
       function getOrderdonedataList() {
         $.ajax({
@@ -53,20 +54,25 @@
           response = data;
           console.log(response);
 
-          // 접수된 순서대로 정렬
-          // response.sort(function (a, b) {
-          //   return a.operation_day.localeCompare(b.operation_day);
-          // });
-
           const tr_array = response.map((today_orderdata, index) => {
+
             // order_kind에 따라 다른 값을 할당
+            // ordertime 시간만 출력 (최근 것이 맨 위)
             if (today_orderdata.order_kind === "order") {
               orderKindText = "주문";
+              ordertime = today_orderdata.created_at.slice(11, 19);
             } else if (today_orderdata.order_kind === "change") {
               orderKindText = "변경";
+              ordertime = today_orderdata.updated_at.slice(11, 19);
             } else if (today_orderdata.order_kind === "cancel") {
               orderKindText = "취소";
+              ordertime = today_orderdata.updated_at.slice(11, 19);
             }
+
+            // ordertime 최근 것이 맨 위
+            response.sort(function (a, b) {
+              return new Date(a.ordertime) - new Date(b.ordertime);
+            });
 
             return $(
               `<tr>
@@ -76,7 +82,7 @@
           <td>${today_orderdata.gear_type}</td>
           <td>${today_orderdata.start_address}</td>
           <td>${today_orderdata.end_address}</td>
-          <td>${today_orderdata.operation_day}</td>
+          <td>${ordertime}</td>
           <td class="for_select">
             <select class="form-select orderStatus" aria-label="Default select example">
               <option selected>${orderKindText}완료</option>
