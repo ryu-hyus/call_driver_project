@@ -78,7 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'call_driver_project.wsgi.application'
 
-CSRF_TRUSTED_ORIGINS = ["localhost","127.0.0.1","jejuemo.com"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost","http://127.0.0.1","http://jejuemo.com"]
 CSRF_COOKIE_HTTPONLY = False
 
 # Database

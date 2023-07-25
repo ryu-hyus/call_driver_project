@@ -89,7 +89,7 @@
     <!-- 버튼 섹션 -->
     <div class="row btn-row justify-content-evenly">
         <div class="col-10 align">
-            <button type="button" class="btn btn-primary btn-block btn-custom mt-2 mb-2" id="postorder">접수 요청</button>
+            <button id="postorder" type="button" class="btn btn-primary btn-block btn-custom mt-2 mb-2">접수 요청</button>
         </div>
     </div>
     <div class="row btn-row justify-content-evenly">
@@ -100,34 +100,65 @@
 
     <!-- Map 컨트롤 script -->
     <script>
-        const current_x = sessionStorage.getItem('current_x')
-        const current_y = sessionStorage.getItem('current_y')
+        $(document).ready(function(){
+            getLocation();
+            
+        })
 
-        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-            mapOption = {
-                center: new kakao.maps.LatLng(current_y, current_x), // 지도의 중심좌표
-                level: 4, // 지도의 확대 레벨
-                mapTypeId : kakao.maps.MapTypeId.ROADMAP
-            }; 
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
 
-        // 지도를 생성한다 
-        var map = new kakao.maps.Map(mapContainer, mapOption); 
-        //map.setDraggable(false);
+                    console.log("위도: " + latitude + ", 경도: " + longitude);
+                    sessionStorage.setItem('current_x', longitude);
+                    sessionStorage.setItem('current_y', latitude);
 
-        // 지도에 마커를 생성하고 표시한다
-        var currentmarker = new kakao.maps.Marker({
-            position: new kakao.maps.LatLng(current_y, current_x), // 마커의 좌표
-            map: map // 마커를 표시할 지도 객체
-        });
+                    SetCurrentMap();
 
-        // 커스텀 오버레이를 생성하고 지도에 표시한다
-        var currentcustomOverlay = new kakao.maps.CustomOverlay({
-            map: map,
-            content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">현재위치</div>', 
-            position: new kakao.maps.LatLng(current_y, current_x), // 커스텀 오버레이를 표시할 좌표
-            xAnchor: 0.5, // 컨텐츠의 x 위치
-            yAnchor: 2.7 // 컨텐츠의 y 위치
-        });
+                }, function (error) {
+                    // 위치 정보를 얻지 못한 경우 또는 오류가 발생한 경우
+                    console.error("위치 정보를 얻을 수 없습니다.");
+                });
+            } else {
+                // Geolocation API를 지원하지 않는 경우
+                console.error("Geolocation API를 지원하지 않습니다.");
+            }
+        }
+
+        function SetCurrentMap(){
+            console.log("맵만든다");
+            const current_x = sessionStorage.getItem('current_x')
+            const current_y = sessionStorage.getItem('current_y')
+    
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                mapOption = {
+                    center: new kakao.maps.LatLng(current_y, current_x), // 지도의 중심좌표
+                    level: 4, // 지도의 확대 레벨
+                    mapTypeId : kakao.maps.MapTypeId.ROADMAP
+                }; 
+    
+            // 지도를 생성한다 
+            var map = new kakao.maps.Map(mapContainer, mapOption); 
+            //map.setDraggable(false);
+    
+            // 지도에 마커를 생성하고 표시한다
+            var currentmarker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(current_y, current_x), // 마커의 좌표
+                map: map // 마커를 표시할 지도 객체
+            });
+    
+            // 커스텀 오버레이를 생성하고 지도에 표시한다
+            var currentcustomOverlay = new kakao.maps.CustomOverlay({
+                map: map,
+                content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">현재위치</div>', 
+                position: new kakao.maps.LatLng(current_y, current_x), // 커스텀 오버레이를 표시할 좌표
+                xAnchor: 0.5, // 컨텐츠의 x 위치
+                yAnchor: 2.7 // 컨텐츠의 y 위치
+            });
+
+        }
 
         var startpoint
         var endpoint
@@ -214,14 +245,12 @@
             CustomOverlay.setMap(null);
         }
 
-    </script>
-
-    <script>
+    
+        //오더 관련 js
         var address_type = ''
 
         $(document).ready(function () {
             keepDesiredValueOnly();
-            getLocation();
             calculatePrice();
 
             //출발지 서치바 클릭
@@ -430,6 +459,10 @@
             const end_section = sessionStorage.getItem("end_sectionName")
             const calculated_price = sessionStorage.getItem("calculated_price")
             const customer_id = sessionStorage.getItem("user_id")
+            const start_x = sessionStorage.getItem("start_x")
+            const start_y = sessionStorage.getItem("start_y")
+            const end_x = sessionStorage.getItem("end_x")
+            const end_y = sessionStorage.getItem("end_y")
             
             //오더 데이터 포스트
             $.ajax({
@@ -442,16 +475,17 @@
                     start_section: start_section,
                     end_section: end_section,
                     calculated_price: calculated_price,
-                    customer_id: customer_id
+                    customer_id: customer_id,
+                    start_x: start_x,
+                    start_y: start_y,
+                    end_x: end_x,
+                    end_y: end_y
                 })
             })
 
             const start_trans_address = sessionStorage.getItem("start_address_name")
             const start_road_address = sessionStorage.getItem("start_road_address_name")
             const start_category_name = sessionStorage.getItem("start_category_group_name")
-            const start_x = sessionStorage.getItem("start_x")
-            const start_y = sessionStorage.getItem("start_y")
-
             //AddressHistory 포스트
             $.ajax({
                 url: `/customer/addresshistory/${customer_id}/`,
@@ -472,9 +506,6 @@
             const end_trans_address = sessionStorage.getItem("end_address_name")
             const end_road_address = sessionStorage.getItem("end_road_address_name")
             const end_category_name = sessionStorage.getItem("end_category_group_name")
-            const end_x = sessionStorage.getItem("end_x")
-            const end_y = sessionStorage.getItem("end_y")
-
             $.ajax({
                 url: `/customer/addresshistory/${customer_id}/`,
                 method: 'POST',
@@ -520,26 +551,6 @@
                 } else {
                     sessionStorage.removeItem(key);
                 }
-            }
-        }
-
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
-
-                    console.log("위도: " + latitude + ", 경도: " + longitude);
-                    sessionStorage.setItem('current_x', longitude);
-                    sessionStorage.setItem('current_y', latitude);
-
-                }, function (error) {
-                    // 위치 정보를 얻지 못한 경우 또는 오류가 발생한 경우
-                    console.error("위치 정보를 얻을 수 없습니다.");
-                });
-            } else {
-                // Geolocation API를 지원하지 않는 경우
-                console.error("Geolocation API를 지원하지 않습니다.");
             }
         }
 

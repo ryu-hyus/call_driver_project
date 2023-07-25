@@ -22,8 +22,10 @@ class OrderData(BaseModel):
     order_type = models.BooleanField(default=True)
     is_hide = models.BooleanField(default=False)
     calculated_price = models.IntegerField(default=12)
-
-
+    start_x = models.CharField(max_length=255, default='')
+    start_y = models.CharField(max_length=255, default='')
+    end_x = models.CharField(max_length=255, default='')
+    end_y = models.CharField(max_length=255, default='')
 
     def OrderConfirm(self):
         self.order_type = False
