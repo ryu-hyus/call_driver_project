@@ -24,6 +24,7 @@
       text-align: center;
     }
 
+    /* 페이지 설정 */
     .pagination {
       display: flex;
       position: fixed;
@@ -41,7 +42,7 @@
     .page {
       margin-right: 10px;
       cursor: pointer;
-      font-size: 22px;
+      font-size: 18px;
     }
 
 
@@ -53,6 +54,7 @@
     .page.active {
       font-weight: bold;
     }
+
   </style>
 
 </head>
@@ -97,6 +99,7 @@
         response = data;
         response.sort(function (a, b) {
           return a.username.localeCompare(b.username);
+
         });
 
         $(".page").on("click", function () {
@@ -105,6 +108,7 @@
         });
 
         showTablePage(1, rowsPerPage);
+
       });
 
     });
