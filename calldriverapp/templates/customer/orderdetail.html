@@ -10,27 +10,32 @@
     .search-bar {
       position: relative;
     }
+
+    .content_container {
+      height: calc(100vh - 190px);
+      justify-content: center;
+    }
   </style>
-  
+
   <title>주문 상세 화면</title>
 </head>
 
 <body>
   {% include 'customer/layout/header.html' %}
+  <div class="container">
+    <div class="content_container d-flex flex-column">
+      <div id="order-list">
+      </div>
 
-  <div id="order-list">
-  </div>
-
-  <div class="text-center">
-    <p class="m-1"><a href="/customer/ordermain/" class="link-primary">추가 접수하기</a></p>
-  </div>
-
-  <div class="row btn-row justify-content-evenly">
-    <div class="col-10 align">
-        <button id = 'homebtn' type='button' class='btn btn-primary btn-block btn-custom mt-0 mb-2'>Home</button>
+      <div class="row btn-row justify-content-evenly mt-3">
+        <div class="col-10 align mt-3">
+          <button type='button' class='btn btn-primary btn-block btn-custom mt-3'>
+            <a href="/customer/ordermain/" class="link-primary text-white">추가 접수하기</a>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-
   {% include 'customer/layout/footer.html' %}
 
   <script>
@@ -38,21 +43,21 @@
       const customer_id = sessionStorage.getItem('user_id')
 
       function getuserorderlist() {
-      $.ajax({
-        url: `http://localhost:8000/customer/userorder/${customer_id}/`,
-        method: 'GET'
-      })
-      .done(function (response) {
-        console.log(response);
-        displayorderlist(response);
-      })
-      .fail(function(response){
-        console.log('불러오기 실패');
-        nonedata();
-      })
-    }
+        $.ajax({
+          url: `http://localhost:8000/customer/userorder/${customer_id}/`,
+          method: 'GET'
+        })
+          .done(function (response) {
+            console.log(response);
+            displayorderlist(response);
+          })
+          .fail(function (response) {
+            console.log('불러오기 실패');
+            nonedata();
+          })
+      }
 
-    getuserorderlist();
+      getuserorderlist();
     })
 
     function displayorderlist(data) {
@@ -62,15 +67,15 @@
       // 검색 결과를 반복문을 통해 표시
       var i = 0;
       data.forEach(function (order) {
-          var orderid = order.id;
-          var start_address = order.start_address;
-          var end_address = order.end_address;
-          var order_kind = order.order_kind;
-          var order_type = order.order_type;
-          var calculated_price = order.calculated_price;
+        var orderid = order.id;
+        var start_address = order.start_address;
+        var end_address = order.end_address;
+        var order_kind = order.order_kind;
+        var order_type = order.order_type;
+        var calculated_price = order.calculated_price;
 
-          resultsDiv.append(
-              `<!-- 접수확인 창 -->
+        resultsDiv.append(
+          `<!-- 접수확인 창 -->
               <div class="border m-2">
                 <!-- 주문번호 -->
                 <div style="display: flex; justify-content: left; align-items: center; height: 3vh;" class="mt-2 ml-3">
@@ -117,38 +122,38 @@
                   </div>
                 </div>
               </div>`
-          );
+        );
 
-          if((order_kind == 'order') && (order_type==true)){
-            $(`#order-status${i}`).text("주문 접수 중입니다.");
-          } else if((order_kind == 'order') && (order_type==false)){
-            $(`#order-status${i}`).text("주문이 접수되었습니다.");
-          } else if((order_kind == 'change') && (order_type==true)){
-            $(`#order-status${i}`).text("주문을 변경 중입니다.");
-          } else if((order_kind == 'change') && (order_type==false)){
-            $(`#order-status${i}`).text("변경이 완료되었습니다.");
-          } else if((order_kind == 'cancel') && (order_type==true)){
-            $(`#order-status${i}`).text("취소 요청 중입니다. 취소 완료시 창에서 사라집니다");
-          }
-          
-          if(sessionStorage.getItem(`ordertype${orderid}`) === null){
-            console.log("변동없음");            
-          }else if(order_type.toString() == sessionStorage.getItem(`ordertype${orderid}`)){
-            console.log("변동없음");
-          }else if(order_type.toString() != sessionStorage.getItem(`ordertype${orderid}`)){
-            alert(`${orderid}번 주문의 상태가 업데이트되었습니다!`);
-            $(`#order-status${i}`).addClass('fw-bold text-danger');
-          }
+        if ((order_kind == 'order') && (order_type == true)) {
+          $(`#order-status${i}`).text("주문 접수 중입니다.");
+        } else if ((order_kind == 'order') && (order_type == false)) {
+          $(`#order-status${i}`).text("주문이 접수되었습니다.");
+        } else if ((order_kind == 'change') && (order_type == true)) {
+          $(`#order-status${i}`).text("주문을 변경 중입니다.");
+        } else if ((order_kind == 'change') && (order_type == false)) {
+          $(`#order-status${i}`).text("변경이 완료되었습니다.");
+        } else if ((order_kind == 'cancel') && (order_type == true)) {
+          $(`#order-status${i}`).text("취소 요청 중입니다. 취소 완료시 창에서 사라집니다");
+        }
+
+        if (sessionStorage.getItem(`ordertype${orderid}`) === null) {
+          console.log("변동없음");
+        } else if (order_type.toString() == sessionStorage.getItem(`ordertype${orderid}`)) {
+          console.log("변동없음");
+        } else if (order_type.toString() != sessionStorage.getItem(`ordertype${orderid}`)) {
+          alert(`${orderid}번 주문의 상태가 업데이트되었습니다!`);
+          $(`#order-status${i}`).addClass('fw-bold text-danger');
+        }
 
 
-          sessionStorage.setItem(`ordertype${orderid}`,order_type);
-          i ++;
+        sessionStorage.setItem(`ordertype${orderid}`, order_type);
+        i++;
       });
-  }
+    }
 
-  function nonedata(){
-    var resultsDiv = $("#order-list");
-    resultsDiv.append(`<table style="height: 50vh;" class="table text-center m-0">
+    function nonedata() {
+      var resultsDiv = $("#order-list");
+      resultsDiv.append(`<table style="height: 50vh;" class="table text-center m-0">
       <tbody>
         <tr>
           <td class="fs-1 align-middle">현재 주문이 없습니다.</td>
@@ -156,29 +161,29 @@
       </tbody>
     </table>`)
 
-    var nonedata_confirm = confirm("현재 주문이 없습니다. 홈으로 이동하시겠습니까?")
-    if (nonedata_confirm == true){
-      location.href = "/customer/home/" 
+      var nonedata_confirm = confirm("현재 주문이 없습니다. 홈으로 이동하시겠습니까?")
+      if (nonedata_confirm == true) {
+        location.href = "/customer/home/"
+      }
     }
-  }
 
-  $('#homebtn').click(function (e) {
-    e.preventDefault();
-    location.href = "/customer/home/"
-    keepDesiredValueOnly();
-  })
+    $('#homebtn').click(function (e) {
+      e.preventDefault();
+      location.href = "/customer/home/"
+      keepDesiredValueOnly();
+    })
 
-  //세션스토리지 비우기(user_id, user_name 제외하고)
-  function keepDesiredValueOnly() {
-    var desiredKeyList = ["user_id", "user_name", "current_x", "current_y"];
+    //세션스토리지 비우기(user_id, user_name 제외하고)
+    function keepDesiredValueOnly() {
+      var desiredKeyList = ["user_id", "user_name", "current_x", "current_y"];
 
-    for (var key in sessionStorage) {
+      for (var key in sessionStorage) {
         if (desiredKeyList.includes(key)) {
         } else {
-            sessionStorage.removeItem(key);
+          sessionStorage.removeItem(key);
         }
+      }
     }
-  }
 
 
   </script>
