@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-w&*^rpy#alj$0c+_@)ec%n7ht(n98j=ka81)a!t=77xldim#f*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost","127.0.0.1","jejuemo.com"]
 
 
 # Application definition
@@ -78,7 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'call_driver_project.wsgi.application'
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS = ["localhost","127.0.0.1","jejuemo.com"]
 CSRF_COOKIE_HTTPONLY = False
 
 # Database
@@ -88,7 +88,18 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'CALLDRIVER_DB',
+    #     'USER': 'call_driver',
+    #     'PASSWORD': 'calldriver2023*',
+    #     'HOST': '3.39.61.233',
+    #     'PORT': '3306',
+    #     'OPTIONS': {
+    #         'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
+    #     }
+    # }
 }
 
 
