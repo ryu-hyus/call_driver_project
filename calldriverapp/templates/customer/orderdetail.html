@@ -12,8 +12,11 @@
     }
 
     .content_container {
-      height: calc(100vh - 190px);
+      height: calc(100vh - 150px);
       justify-content: center;
+    }
+    #order-list {
+      overflow: auto;
     }
   </style>
 
@@ -29,8 +32,8 @@
 
       <div class="row btn-row justify-content-evenly mt-3">
         <div class="col-10 align mt-3">
-          <button type='button' class='btn btn-primary btn-block btn-custom mt-3'>
-            <a href="/customer/ordermain/" class="link-primary text-white">추가 접수하기</a>
+          <button type='button' class='btn btn-block btn-custom mt-3 te' style="background-color: #5472d3;">
+            <a href="/customer/ordermain/" class="link-light text-white" style="text-decoration: none;">추가 접수하기</a>
           </button>
         </div>
       </div>
@@ -44,10 +47,11 @@
 
       function getuserorderlist() {
         $.ajax({
-          url: `/customer/userorder/${customer_id}/`,
+          url: `http://localhost:8000/customer/userorder/${customer_id}/`,
           method: 'GET'
         })
           .done(function (response) {
+            console.log(response);
             displayorderlist(response);
           })
           .fail(function (response) {
@@ -57,7 +61,6 @@
       }
 
       getuserorderlist();
-      setInterval(getuserorderlist, 5000);
     })
 
     function displayorderlist(data) {
@@ -99,7 +102,7 @@
                     </div>
                   </div>
                   <div>
-                    <button class="btn btn-danger mr-3" id="changeorderbutton" onclick="location.href='/customer/orderchange/?id=${orderid}'">변경/취소</button>
+                    <button class="btn mr-3 text-white" id="changeorderbutton" style="background-color: #c43e00;" onclick="location.href='/customer/orderchange/?id=${orderid}'">변경/취소</button>
                   </div>
                 </div>
                 <!-- 예상 요금 -->
