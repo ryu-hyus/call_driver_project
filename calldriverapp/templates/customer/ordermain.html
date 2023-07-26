@@ -98,36 +98,73 @@
                 </div>
             </div>
 
-            <!-- Map 컨트롤 script -->
             <script>
-                const current_x = sessionStorage.getItem('current_x')
-                const current_y = sessionStorage.getItem('current_y')
+                //Map 컨트롤 script
+                $(document).ready(function () {
+                    getLocation();
 
-                var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-                    mapOption = {
-                        center: new kakao.maps.LatLng(current_y, current_x), // 지도의 중심좌표
-                        level: 4, // 지도의 확대 레벨
-                        mapTypeId: kakao.maps.MapTypeId.ROADMAP
-                    };
+                })
 
-                // 지도를 생성한다 
-                var map = new kakao.maps.Map(mapContainer, mapOption);
-                //map.setDraggable(false);
+                function getLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            var latitude = position.coords.latitude;
+                            var longitude = position.coords.longitude;
 
-                // 지도에 마커를 생성하고 표시한다
-                var currentmarker = new kakao.maps.Marker({
-                    position: new kakao.maps.LatLng(current_y, current_x), // 마커의 좌표
-                    map: map // 마커를 표시할 지도 객체
-                });
+                            console.log("위도: " + latitude + ", 경도: " + longitude);
+                            sessionStorage.setItem('current_x', longitude);
+                            sessionStorage.setItem('current_y', latitude);
 
-                // 커스텀 오버레이를 생성하고 지도에 표시한다
-                var currentcustomOverlay = new kakao.maps.CustomOverlay({
-                    map: map,
-                    content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">현재위치</div>',
-                    position: new kakao.maps.LatLng(current_y, current_x), // 커스텀 오버레이를 표시할 좌표
-                    xAnchor: 0.5, // 컨텐츠의 x 위치
-                    yAnchor: 2.7 // 컨텐츠의 y 위치
-                });
+                            SetCurrentMap();
+
+                        }, function (error) {
+                            // 위치 정보를 얻지 못한 경우 또는 오류가 발생한 경우
+                            console.error("위치 정보를 얻을 수 없습니다.");
+                            SetCurrentMap();
+                        });
+                    } else {
+                        // Geolocation API를 지원하지 않는 경우
+                        console.error("Geolocation API를 지원하지 않습니다.");
+                        SetCurrentMap();
+                    }
+                }
+
+                var map;
+                var currentmarker;
+                var currentcustomOverlay;
+
+                function SetCurrentMap() {
+                    console.log("맵생성완료");
+                    const current_x = sessionStorage.getItem('current_x')
+                    const current_y = sessionStorage.getItem('current_y')
+
+                    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                        mapOption = {
+                            center: new kakao.maps.LatLng(current_y, current_x), // 지도의 중심좌표
+                            level: 4, // 지도의 확대 레벨
+                            mapTypeId: kakao.maps.MapTypeId.ROADMAP
+                        };
+
+                    // 지도를 생성한다 
+                    map = new kakao.maps.Map(mapContainer, mapOption);
+                    //map.setDraggable(false);
+
+                    // 지도에 마커를 생성하고 표시한다
+                    currentmarker = new kakao.maps.Marker({
+                        position: new kakao.maps.LatLng(current_y, current_x), // 마커의 좌표
+                        map: map // 마커를 표시할 지도 객체
+                    });
+
+                    // 커스텀 오버레이를 생성하고 지도에 표시한다
+                    currentcustomOverlay = new kakao.maps.CustomOverlay({
+                        map: map,
+                        content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">현재위치</div>',
+                        position: new kakao.maps.LatLng(current_y, current_x), // 커스텀 오버레이를 표시할 좌표
+                        xAnchor: 0.5, // 컨텐츠의 x 위치
+                        yAnchor: 2.7 // 컨텐츠의 y 위치
+                    });
+
+                }
 
                 var startpoint
                 var endpoint
@@ -214,14 +251,12 @@
                     CustomOverlay.setMap(null);
                 }
 
-            </script>
 
-            <script>
+                //오더 관련 js
                 var address_type = ''
 
                 $(document).ready(function () {
                     keepDesiredValueOnly();
-                    getLocation();
                     calculatePrice();
 
                     //출발지 서치바 클릭
@@ -246,6 +281,7 @@
                 // 모달 닫기
                 function closeModal() {
                     $('#addressModal').css('display', 'none');
+                    hideHistory();
                 }
 
                 function setValueStart(value) {
@@ -301,6 +337,7 @@
                         success: function (response) {
                             // AJAX 요청이 성공하면 실행될 콜백 함수
                             displayResults(response);
+                            hideHistory();
                         },
                         error: function (error) {
                             // AJAX 요청이 실패하면 실행될 콜백 함수
@@ -323,8 +360,8 @@
                     resultsDiv.empty(); // 이전 검색 결과 지우기
                     if (data.documents.length === 0) {
                         resultsDiv.append(`<div class = "m-2">서비스 지역이 아니거나 해당 키워드의 검색 결과가 없습니다.</div>
-                <div class = "m-2">다시 검색해주세요.</div>
-                <div class = "m-2">서비스 지역은 화면 아래에 있는 "요금안내"를 참고해주세요.</div>`)
+                        <div class = "m-2">다시 검색해주세요.</div>
+                        <div class = "m-2">서비스 지역은 화면 아래에 있는 "요금안내"를 참고해주세요.</div>`)
                     } else {
                         // 검색 결과를 반복문을 통해 표시
                         data.documents.forEach(function (place) {
@@ -337,15 +374,15 @@
 
                             resultsDiv.append(
                                 `<a class="list-group-item list-group-item-action" aria-current="true">
-                    <div class="d-flex w-100 justify-content-between">
-                    <h6 class="mb-1" id="placeName">${placeName}</h6>
-                    <small id="categoryGroupName">${categoryGroupName}</small>
-                    </div>
-                    <p class="mb-1" id="roadAddressName" value="${roadAddressName}"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;${roadAddressName}</p>
-                    <p class="mb-1" id="addressName" value="${addressName}"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;${addressName}</p>
-                    <input type="hidden" style="display:none;" id="address_x" value="${address_x}"></input>
-                    <input type="hidden" style="display:none;" id="address_y" value="${address_y}"></input>
-                    </a>`
+                            <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1" id="placeName">${placeName}</h6>
+                            <small id="categoryGroupName">${categoryGroupName}</small>
+                            </div>
+                            <p class="mb-1" id="roadAddressName" value="${roadAddressName}"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;${roadAddressName}</p>
+                            <p class="mb-1" id="addressName" value="${addressName}"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;${addressName}</p>
+                            <input type="hidden" style="display:none;" id="address_x" value="${address_x}"></input>
+                            <input type="hidden" style="display:none;" id="address_y" value="${address_y}"></input>
+                            </a>`
                             );
                         });
                     }
@@ -360,11 +397,12 @@
                         } else {
                             var keyword = $("#keywordInput").val();
                             searchPlaces(keyword);
+                            hideHistory();
                         }
                     });
 
 
-                    // 검색 결과의 각 주소를 클릭하면 onAddressClick 함수를 호출하도록 수정
+                    // 검색 결과의 각 주소를 클릭
                     $("#searchResults").on("click", "a.list-group-item", function () {
                         var addressName = $(this).find("#addressName").attr('value');
                         var roadAddressName = $(this).find("#roadAddressName").attr('value');
@@ -422,6 +460,132 @@
                     calculatePrice();
                 }
 
+                var historyselected_start = false;
+                var historyselected_end = false;
+
+                //AddressHistory 관련 js
+                $('#keywordInput').click(function () {
+                    if (address_type == "start") {
+                        getstarthistorylist();
+                    } else {
+                        getendhistorylist();
+                    }
+                    // History 검색 결과의 각 주소를 클릭
+                    $("#searchHistory").on("click", "a.list-group-item", function () {
+                        var raw_address = $(this).text();
+                        var trans_address = $(this).find("#trans_address").attr('value');
+                        var road_address = $(this).find("#road_address").attr('value');
+                        var category_name = $(this).find("#category_name").attr('value');
+                        var section_name = $(this).find("#section_name").attr('value');
+                        var x = $(this).find("#location_x").attr('value');
+                        var y = $(this).find("#location_y").attr('value');
+
+                        if (address_type == 'start') {
+                            uploadStartSession(trans_address, road_address, raw_address, category_name, x, y, section_name);
+                            setValueAndCloseStart(raw_address);
+                            addstartmarker(x, y);
+                            historyselected_start = true;
+                        } else if (address_type == 'end') {
+                            uploadEndSession(trans_address, road_address, raw_address, category_name, x, y, section_name);
+                            setValueAndCloseEnd(raw_address);
+                            addendmarker(x, y);
+                            historyselected_end = true;
+                        }
+                    });
+                });
+
+                function showHistory() {
+                    $('#searchHistory').css('display', 'block');
+                }
+                function hideHistory() {
+                    $('#searchHistory').css('display', 'none');
+                }
+
+                function getstarthistorylist() {
+                    const customer_id = sessionStorage.getItem('user_id');
+                    $.ajax({
+                        url: `/customer/addresshistory/start/${customer_id}/`,
+                        method: 'GET'
+                    })
+                        .done(function (response) {
+                            displayhistorylist(response);
+                            showHistory();
+                        })
+                        .fail(function (response) {
+                            console.log('기록 없음');
+                            hideHistory();
+                        })
+                }
+                function getendhistorylist() {
+                    const customer_id = sessionStorage.getItem('user_id');
+
+                    $.ajax({
+                        url: `/customer/addresshistory/end/${customer_id}/`,
+                        method: 'GET'
+                    })
+                        .done(function (response) {
+                            console.log(response);
+                            displayhistorylist(response);
+                            showHistory();
+                        })
+                        .fail(function (response) {
+                            console.log('기록 없음');
+                            hideHistory();
+                        })
+                }
+
+                function DeletHistory(historyid) {
+                    $.ajax({
+                        url: `/customer/addresshistory/delete/${historyid}/`,
+                        method: 'PUT'
+                    }).done(function (response) {
+                        console.log("삭제 완료");
+                        if (address_type == "start") {
+                            getstarthistorylist();
+                        } else {
+                            getendhistorylist();
+                        }
+                    })
+                        .fail(function (response) {
+                            console.log('해당 기록 없음');
+                        })
+                }
+
+                function displayhistorylist(data) {
+                    var resultsDiv = $("#searchHistory");
+                    resultsDiv.empty(); // 이전 검색 결과 지우기
+
+                    // 검색 결과를 반복문을 통해 표시
+                    data.forEach(function (data) {
+                        var historyid = data.id;
+                        var raw_address = data.raw_address;
+                        var trans_address = data.trans_address;
+                        var road_address = data.road_address;
+                        var category_name = data.category_name;
+                        var section_name = data.section_name;
+                        var location_x = data.location_x;
+                        var location_y = data.location_y;
+
+                        resultsDiv.append(
+                            `<div class="row">
+                            <div class="col-10 br-0 pr-0 border-end-0">
+                                <a class="list-group-item list-group-item-action border-end-0" id="raw_address">${raw_address}
+                                    <input type="hidden" style="display:none;" id="trans_address" value="${trans_address}"></input>
+                                    <input type="hidden" style="display:none;" id="road_address" value="${road_address}"></input>
+                                    <input type="hidden" style="display:none;" id="category_name" value="${category_name}"></input>
+                                    <input type="hidden" style="display:none;" id="section_name" value="${section_name}"></input>
+                                    <input type="hidden" style="display:none;" id="location_x" value="${location_x}"></input>
+                                    <input type="hidden" style="display:none;" id="location_y" value="${location_y}"></input>
+                                </a>
+                            </div>
+                            <div class="col-2 bl-0 p-0 align-middle border border-start-0">
+                                <button id ="historydelbtn" type="button" class="btn btn-danger mt-1" onclick="DeletHistory(${historyid});">X</button>
+                            </div>
+                        </div>`
+                        );
+                    })
+                }
+
                 //접수 요청 버튼 관련 js
                 $('#postorder').click(function (e) {
                     const start_address = sessionStorage.getItem("start_place_name")
@@ -430,6 +594,55 @@
                     const end_section = sessionStorage.getItem("end_sectionName")
                     const calculated_price = sessionStorage.getItem("calculated_price")
                     const customer_id = sessionStorage.getItem("user_id")
+                    const start_point_x = sessionStorage.getItem("start_x")
+                    const start_point_y = sessionStorage.getItem("start_y")
+                    const end_point_x = sessionStorage.getItem("end_x")
+                    const end_point_y = sessionStorage.getItem("end_y")
+
+                    const start_trans_address = sessionStorage.getItem("start_address_name")
+                    const start_road_address = sessionStorage.getItem("start_road_address_name")
+                    const start_category_name = sessionStorage.getItem("start_category_group_name")
+
+                    const end_trans_address = sessionStorage.getItem("end_address_name")
+                    const end_road_address = sessionStorage.getItem("end_road_address_name")
+                    const end_category_name = sessionStorage.getItem("end_category_group_name")
+
+                    //AddressHistory 포스트
+                    if (historyselected_start == false) {
+                        $.ajax({
+                            url: `/customer/addresshistory/${customer_id}/`,
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                raw_address: start_address,
+                                trans_address: start_trans_address,
+                                road_address: start_road_address,
+                                category_name: start_category_name,
+                                section_name: start_section,
+                                location_x: start_point_x,
+                                location_y: start_point_y,
+                                address_type: "start",
+                            })
+                        })
+                    }
+
+                    if (historyselected_end == false) {
+                        $.ajax({
+                            url: `/customer/addresshistory/${customer_id}/`,
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                raw_address: end_address,
+                                trans_address: end_trans_address,
+                                road_address: end_road_address,
+                                category_name: end_category_name,
+                                section_name: end_section,
+                                location_x: end_point_x,
+                                location_y: end_point_y,
+                                address_type: "end"
+                            })
+                        })
+                    }
 
                     //오더 데이터 포스트
                     $.ajax({
@@ -442,52 +655,11 @@
                             start_section: start_section,
                             end_section: end_section,
                             calculated_price: calculated_price,
-                            customer_id: customer_id
-                        })
-                    })
-
-                    const start_trans_address = sessionStorage.getItem("start_address_name")
-                    const start_road_address = sessionStorage.getItem("start_road_address_name")
-                    const start_category_name = sessionStorage.getItem("start_category_group_name")
-                    const start_x = sessionStorage.getItem("start_x")
-                    const start_y = sessionStorage.getItem("start_y")
-
-                    //AddressHistory 포스트
-                    $.ajax({
-                        url: `/customer/addresshistory/${customer_id}/`,
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            raw_address: start_address,
-                            trans_address: start_trans_address,
-                            road_address: start_road_address,
-                            category_name: start_category_name,
-                            section_name: start_section,
-                            location_x: start_x,
-                            location_y: start_y,
-                            address_type: "start",
-                        })
-                    })
-
-                    const end_trans_address = sessionStorage.getItem("end_address_name")
-                    const end_road_address = sessionStorage.getItem("end_road_address_name")
-                    const end_category_name = sessionStorage.getItem("end_category_group_name")
-                    const end_x = sessionStorage.getItem("end_x")
-                    const end_y = sessionStorage.getItem("end_y")
-
-                    $.ajax({
-                        url: `/customer/addresshistory/${customer_id}/`,
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            raw_address: end_address,
-                            trans_address: end_trans_address,
-                            road_address: end_road_address,
-                            category_name: end_category_name,
-                            section_name: end_section,
-                            location_x: end_x,
-                            location_y: end_y,
-                            address_type: "end"
+                            customer_id: customer_id,
+                            start_x: start_point_x,
+                            start_y: start_point_y,
+                            end_x: end_point_x,
+                            end_y: end_point_y,
                         })
                     })
                         .done(function (response) {
@@ -523,26 +695,6 @@
                     }
                 }
 
-                function getLocation() {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function (position) {
-                            var latitude = position.coords.latitude;
-                            var longitude = position.coords.longitude;
-
-                            console.log("위도: " + latitude + ", 경도: " + longitude);
-                            sessionStorage.setItem('current_x', longitude);
-                            sessionStorage.setItem('current_y', latitude);
-
-                        }, function (error) {
-                            // 위치 정보를 얻지 못한 경우 또는 오류가 발생한 경우
-                            console.error("위치 정보를 얻을 수 없습니다.");
-                        });
-                    } else {
-                        // Geolocation API를 지원하지 않는 경우
-                        console.error("Geolocation API를 지원하지 않습니다.");
-                    }
-                }
-
                 function calculatePrice() {
                     const ss = sessionStorage.getItem('start_sectionName')
                     const es = sessionStorage.getItem('end_sectionName')
@@ -557,7 +709,7 @@
 
                 function getcalculatedPrice(ss, es) {
                     $.ajax({
-                        url: `http://localhost:8000/customer/pricecalculate/${ss}/${es}/`,
+                        url: `/customer/pricecalculate/${ss}/${es}/`,
                         method: 'GET'
                     })
                         .done(function (response) {
@@ -574,6 +726,7 @@
                 }
 
             </script>
+
         </div>
     </div>
     {% include 'customer/layout/footer.html' %}

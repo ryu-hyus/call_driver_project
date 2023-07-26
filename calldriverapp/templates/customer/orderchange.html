@@ -28,6 +28,7 @@
             border: 1px solid #888;
             width: 100%;
         }
+
         .content_container {
             height: calc(100vh - 150px);
             justify-content: center;
@@ -77,8 +78,9 @@
                     </div>
                     <!-- 검색 결과 표시 창 -->
                     <div class="list-group rounded-0" id="searchResults" style="height: 50vh;"></div>
+                    <!-- 검색 결과 표시 창 -->
+                    <div class="list-group rounded-0" id="searchResults" style="height: 50vh;"></div>
                 </div>
-
             </div>
 
             <!-- 예상 요금 섹션 -->
@@ -95,39 +97,48 @@
             <!-- 버튼 섹션 -->
             <div class="row btn-row justify-content-evenly">
                 <div class="col-10 align">
-                    <button id='orderchangebtn' type="button" class="btn btn-block btn-custom mt-2 text-white" style="background-color: #5472d3;">변경
+                    <button id='orderchangebtn' type="button" class="btn btn-block btn-custom mt-2 text-white"
+                        style="background-color: #5472d3;">변경
                         요청</button>
                 </div>
             </div>
 
             <div class="row btn-row justify-content-evenly">
                 <div class="col-10 align">
-                    <button id='ordercancelbtn' type="button" class="btn btn-block btn-custom mt-2 mb-2 text-white" style="background-color: #c43e00;">취소
+                    <button id='ordercancelbtn' type="button" class="btn btn-block btn-custom mt-2 mb-2 text-white"
+                        style="background-color: #c43e00;">취소
                         요청</button>
                 </div>
             </div>
 
-            <!-- Map 컨트롤 script -->
             <script>
-                const current_x = sessionStorage.getItem('current_x')
-                const current_y = sessionStorage.getItem('current_y')
 
-                var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-                    mapOption = {
-                        center: new kakao.maps.LatLng(current_y, current_x), // 지도의 중심좌표
-                        level: 4, // 지도의 확대 레벨
-                        mapTypeId: kakao.maps.MapTypeId.ROADMAP
-                    };
+                var map
+                function createMap(x, y) {
+                    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                        mapOption = {
+                            center: new kakao.maps.LatLng(y, x), // 지도의 중심좌표
+                            level: 4, // 지도의 확대 레벨
+                            mapTypeId: kakao.maps.MapTypeId.ROADMAP
+                        };
 
-                // 지도를 생성한다 
-                var map = new kakao.maps.Map(mapContainer, mapOption);
-                //map.setDraggable(false);
+                    // 지도를 생성한다 
+                    map = new kakao.maps.Map(mapContainer, mapOption);
+                    //map.setDraggable(false);
+                }
+
 
                 var startpoint
                 var endpoint
                 // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
                 var bounds = new kakao.maps.LatLngBounds();
                 function setBound() {
+                    const order_start_x = sessionStorage.getItem('start_x')
+                    const order_start_y = sessionStorage.getItem('start_y')
+                    const order_end_x = sessionStorage.getItem('end_x')
+                    const order_end_y = sessionStorage.getItem('end_y')
+                    var startpoint = new kakao.maps.LatLng(order_start_y, order_start_x)
+                    var endpoint = new kakao.maps.LatLng(order_end_y, order_end_x)
                     if (startpoint != null) {
                         bounds.extend(startpoint);
                     }
@@ -207,9 +218,8 @@
                     CustomOverlay.setMap(null);
                 }
 
-            </script>
+                // 오더 관련 스크립트
 
-            <script>
                 var address_type = ''
 
                 $(document).ready(function () {
@@ -222,7 +232,7 @@
 
                     function getidorderdata() {
                         $.ajax({
-                            url: `http://localhost:8000/customer/orderdata/${order_id}/`,
+                            url: `/customer/orderdata/${order_id}/`,
                             method: 'GET'
                         })
                             .done(function (response) {
@@ -231,7 +241,15 @@
                                 setValueEnd(response.end_address);
                                 sessionStorage.setItem('start_sectionName', response.start_section);
                                 sessionStorage.setItem('end_sectionName', response.end_section);
+                                sessionStorage.setItem('start_x', response.start_x);
+                                sessionStorage.setItem('start_y', response.start_y);
+                                sessionStorage.setItem('end_x', response.end_x);
+                                sessionStorage.setItem('end_y', response.end_y);
+                                setBound();
                                 calculatePrice();
+                                createMap(response.start_x, response.start_y);
+                                addstartmarker(response.start_x, response.start_y);
+                                addendmarker(response.end_x, response.end_y);
                             })
                             .fail(function (response) {
                                 console.log('불러오기 실패');
@@ -346,8 +364,8 @@
                     resultsDiv.empty(); // 이전 검색 결과 지우기
                     if (data.documents.length === 0) {
                         resultsDiv.append(`<div class = "m-2">서비스 지역이 아니거나 해당 키워드의 검색 결과가 없습니다.</div>
-                <div class = "m-2">다시 검색해주세요.</div>
-                <div class = "m-2">서비스 지역은 화면 아래에 있는 "요금안내"를 참고해주세요.</div>`)
+                        <div class = "m-2">다시 검색해주세요.</div>
+                        <div class = "m-2">서비스 지역은 화면 아래에 있는 "요금안내"를 참고해주세요.</div>`)
                     } else {
                         // 검색 결과를 반복문을 통해 표시
                         data.documents.forEach(function (place) {
@@ -360,15 +378,15 @@
 
                             resultsDiv.append(
                                 `<a class="list-group-item list-group-item-action" aria-current="true">
-                    <div class="d-flex w-100 justify-content-between">
-                    <h6 class="mb-1" id="placeName">${placeName}</h6>
-                    <small id="categoryGroupName">${categoryGroupName}</small>
-                    </div>
-                    <p class="mb-1" id="roadAddressName" value="${roadAddressName}"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;${roadAddressName}</p>
-                    <p class="mb-1" id="addressName" value="${addressName}"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;${addressName}</p>
-                    <input type="hidden" style="display:none;" id="address_x" value="${address_x}"></input>
-                    <input type="hidden" style="display:none;" id="address_y" value="${address_y}"></input>
-                    </a>`
+                            <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1" id="placeName">${placeName}</h6>
+                            <small id="categoryGroupName">${categoryGroupName}</small>
+                            </div>
+                            <p class="mb-1" id="roadAddressName" value="${roadAddressName}"><span class="badge bg-secondary" style="width: 50px;">도로명</span>&nbsp;${roadAddressName}</p>
+                            <p class="mb-1" id="addressName" value="${addressName}"><span class="badge bg-secondary" style="width: 50px;">지&nbsp;번</span>&nbsp;${addressName}</p>
+                            <input type="hidden" style="display:none;" id="address_x" value="${address_x}"></input>
+                            <input type="hidden" style="display:none;" id="address_y" value="${address_y}"></input>
+                            </a>`
                             );
                         });
                     }
@@ -424,9 +442,11 @@
                         if (address_type == 'start') {
                             uploadStartSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
                             setValueAndCloseStart(placeName);
+                            addstartmarker(x, y);
                         } else if (address_type == 'end') {
                             uploadEndSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
                             setValueAndCloseEnd(placeName);
+                            addendmarker(x, y);
                         }
                     });
                 });
@@ -443,6 +463,131 @@
                     closeModal();
                     calculatePrice();
                     sessionStorage.setItem('end_change_confirm', true);
+                }
+
+                var historyselected_start = false;
+                var historyselected_end = false;
+                //AddressHistory 관련 js
+                $('#keywordInput').click(function () {
+                    if (address_type == "start") {
+                        getstarthistorylist();
+                    } else {
+                        getendhistorylist();
+                    }
+                    // History 검색 결과의 각 주소를 클릭
+                    $("#searchHistory").on("click", "a.list-group-item", function () {
+                        var raw_address = $(this).text();
+                        var trans_address = $(this).find("#trans_address").attr('value');
+                        var road_address = $(this).find("#road_address").attr('value');
+                        var category_name = $(this).find("#category_name").attr('value');
+                        var section_name = $(this).find("#section_name").attr('value');
+                        var x = $(this).find("#location_x").attr('value');
+                        var y = $(this).find("#location_y").attr('value');
+
+                        if (address_type == 'start') {
+                            uploadStartSession(trans_address, road_address, raw_address, category_name, x, y, section_name);
+                            setValueAndCloseStart(raw_address);
+                            addstartmarker(x, y);
+                            historyselected_start = true;
+                        } else if (address_type == 'end') {
+                            uploadEndSession(trans_address, road_address, raw_address, category_name, x, y, section_name);
+                            setValueAndCloseEnd(raw_address);
+                            addendmarker(x, y);
+                            historyselected_end = true;
+                        }
+                    });
+                });
+
+                function showHistory() {
+                    $('#searchHistory').css('display', 'block');
+                }
+                function hideHistory() {
+                    $('#searchHistory').css('display', 'none');
+                }
+
+                function getstarthistorylist() {
+                    const customer_id = sessionStorage.getItem('user_id');
+                    $.ajax({
+                        url: `/customer/addresshistory/start/${customer_id}/`,
+                        method: 'GET'
+                    })
+                        .done(function (response) {
+                            displayhistorylist(response);
+                            showHistory();
+                        })
+                        .fail(function (response) {
+                            console.log('기록 없음');
+                            hideHistory();
+                        })
+                }
+                function getendhistorylist() {
+                    const customer_id = sessionStorage.getItem('user_id');
+
+                    $.ajax({
+                        url: `/customer/addresshistory/end/${customer_id}/`,
+                        method: 'GET'
+                    })
+                        .done(function (response) {
+                            console.log(response);
+                            displayhistorylist(response);
+                            showHistory();
+                        })
+                        .fail(function (response) {
+                            console.log('기록 없음');
+                            hideHistory();
+                        })
+                }
+
+                function DeletHistory(historyid) {
+                    $.ajax({
+                        url: `/customer/addresshistory/delete/${historyid}/`,
+                        method: 'PUT'
+                    }).done(function (response) {
+                        console.log("삭제 완료");
+                        if (address_type == "start") {
+                            getstarthistorylist();
+                        } else {
+                            getendhistorylist();
+                        }
+                    })
+                        .fail(function (response) {
+                            console.log('해당 기록 없음');
+                        })
+                }
+
+                function displayhistorylist(data) {
+                    var resultsDiv = $("#searchHistory");
+                    resultsDiv.empty(); // 이전 검색 결과 지우기
+
+                    // 검색 결과를 반복문을 통해 표시
+                    data.forEach(function (data) {
+                        var historyid = data.id;
+                        var raw_address = data.raw_address;
+                        var trans_address = data.trans_address;
+                        var road_address = data.road_address;
+                        var category_name = data.category_name;
+                        var section_name = data.section_name;
+                        var location_x = data.location_x;
+                        var location_y = data.location_y;
+
+                        resultsDiv.append(
+                            `<div class="row">
+                            <div class="col-10 br-0 pr-0 border-end-0">
+                                <a class="list-group-item list-group-item-action border-end-0" id="raw_address">${raw_address}
+                                    <input type="hidden" style="display:none;" id="trans_address" value="${trans_address}"></input>
+                                    <input type="hidden" style="display:none;" id="road_address" value="${road_address}"></input>
+                                    <input type="hidden" style="display:none;" id="category_name" value="${category_name}"></input>
+                                    <input type="hidden" style="display:none;" id="section_name" value="${section_name}"></input>
+                                    <input type="hidden" style="display:none;" id="location_x" value="${location_x}"></input>
+                                    <input type="hidden" style="display:none;" id="location_y" value="${location_y}"></input>
+                                </a>
+                            </div>
+                            <div class="col-2 bl-0 p-0 align-middle border border-start-0">
+                                <button id ="historydelbtn" type="button" class="btn btn-danger mt-1" onclick="DeletHistory(${historyid});">X</button>
+                            </div>
+                        </div>`
+                        );
+                    })
                 }
 
                 //변경 요청 버튼 관련 js
@@ -486,7 +631,9 @@
                                     calculated_price: calculated_price,
                                     order_kind: "change",
                                     order_type: true,
-                                    is_hide: false
+                                    is_hide: false,
+                                    start_x: start_x,
+                                    start_y: start_y,
                                 })
                             })
                             startHistoryPost();
@@ -502,7 +649,9 @@
                                     calculated_price: calculated_price,
                                     order_kind: "change",
                                     order_type: true,
-                                    is_hide: false
+                                    is_hide: false,
+                                    end_x: end_x,
+                                    end_y: end_y,
                                 })
                             })
                             endHistoryPost();
@@ -520,7 +669,11 @@
                                     calculated_price: calculated_price,
                                     order_kind: "change",
                                     order_type: true,
-                                    is_hide: false
+                                    is_hide: false,
+                                    start_x: start_x,
+                                    start_y: start_y,
+                                    end_x: end_x,
+                                    end_y: end_y,
                                 })
                             })
                             startHistoryPost();
@@ -541,38 +694,42 @@
                     }
                     //AddressHistory 포스트 함수
                     function startHistoryPost() {
-                        $.ajax({
-                            url: `/customer/addresshistory/${customer_id}/`,
-                            method: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify({
-                                raw_address: start_address,
-                                trans_address: start_trans_address,
-                                road_address: start_road_address,
-                                category_name: start_category_name,
-                                section_name: start_section,
-                                location_x: start_x,
-                                location_y: start_y,
-                                address_type: "start",
+                        if (historyselected_start == false) {
+                            $.ajax({
+                                url: `/customer/addresshistory/${customer_id}/`,
+                                method: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify({
+                                    raw_address: start_address,
+                                    trans_address: start_trans_address,
+                                    road_address: start_road_address,
+                                    category_name: start_category_name,
+                                    section_name: start_section,
+                                    location_x: start_x,
+                                    location_y: start_y,
+                                    address_type: "start",
+                                })
                             })
-                        })
+                        }
                     }
                     function endHistoryPost() {
-                        $.ajax({
-                            url: `/customer/addresshistory/${customer_id}/`,
-                            method: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify({
-                                raw_address: end_address,
-                                trans_address: end_trans_address,
-                                road_address: end_road_address,
-                                category_name: end_category_name,
-                                section_name: end_section,
-                                location_x: end_x,
-                                location_y: end_y,
-                                address_type: "end"
+                        if (historyselected_end == false) {
+                            $.ajax({
+                                url: `/customer/addresshistory/${customer_id}/`,
+                                method: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify({
+                                    raw_address: end_address,
+                                    trans_address: end_trans_address,
+                                    road_address: end_road_address,
+                                    category_name: end_category_name,
+                                    section_name: end_section,
+                                    location_x: end_x,
+                                    location_y: end_y,
+                                    address_type: "end"
+                                })
                             })
-                        })
+                        }
                     }
                 })
 
@@ -631,7 +788,7 @@
 
                 function getcalculatedPrice(ss, es) {
                     $.ajax({
-                        url: `http://localhost:8000/customer/pricecalculate/${ss}/${es}/`,
+                        url: `/customer/pricecalculate/${ss}/${es}/`,
                         method: 'GET'
                     })
                         .done(function (response) {
