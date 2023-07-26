@@ -16,12 +16,14 @@
       margin: 0 auto;
     }
 
-    .orange {
+    #login:hover {
       background-color: #ffa040;
     }
-    #login:hover {
+
+    .blue {
       background-color: #5472d3;
     }
+
     a {
       text-decoration: none;
       color: #000;
@@ -53,9 +55,13 @@
             <input type="password" class="form-control rounded-4" id="password" placeholder="비밀번호를 입력해주세요">
             <label for="password">비밀번호</label>
           </div>
-          <small class="text-muted">Happy Smile</small>
+          <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="remember-me" id="username_keep"> 로그인 상태 유지
+            </label>
+          </div>
           <hr class="my-4">
-          <button id="login" class="w-100 mb-2 btn btn-lg orange text-white" type="submit">
+          <button id="login" class="w-100 mb-2 btn btn-lg text-white blue" type="submit">
             로그인
           </button>
         </form>
@@ -65,28 +71,44 @@
   <script>
     $('#login').on('click', (e) => {
       e.preventDefault();
-      let username = $('#username').val();
-      let password = $('#password').val();
-      console.log('아이디 : ' + username + ', 비밀번호 : ' + password);
+      loginstaff($('#username').val(), $('#password').val());
+    })
 
+    $(document).ready(function() {
+      const stored_id = localStorage.getItem('user_id')
+      const stored_username = localStorage.getItem('user_name')
+
+      if (stored_id != null && stored_username != null) {
+        location.href='/center/offmain/';
+      }
+    })
+
+    function loginstaff(id, pw) {
+      let username = id;
+      let password = pw;
+      console.log('아이디 : ' + username + ', 비밀번호 : ' + password);
       $.ajax({
         method: "POST",
-        url: "http://127.0.0.1:8000/center/",
+        url: "/center/login/",
         contentType: "application/json",
         data: JSON.stringify({
           "username": username,
           "password": password
         }),
       }).done(function (response) {
-        alert('로그인 성공')
-        alert(username + '님 반갑습니다!')
-
-        location.href = "/center/offmain/"
+        alert('로그인 성공');
+        alert(username + '님 반갑습니다!');
+        location.href = "/center/offmain/";
+        if ($('#username_keep').prop('checked')) {
+          localStorage.setItem('user_id', response.id);
+          localStorage.setItem('user_name', response.username);
+          localStorage.setItem('user_password', response.password);
+        }
       }).fail(function (response) {
-        alert('로그인 실패')
+        alert('로그인 실패');
         location.reload();
       });
-    })
+    }
   </script>
 </body>
 
