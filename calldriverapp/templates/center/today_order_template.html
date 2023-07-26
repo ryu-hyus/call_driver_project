@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>오늘 접수 목록 확인 페이지</title>
+  <title>오늘 접수 확인 페이지</title>
 
   {% include 'center/layout/head.html' %}
 
@@ -24,89 +24,86 @@
       border: 1.6px solid black;
       text-align: center;
     }
-
-    .for_select {
-      width: 170px;
-      height: 50px;
-    }
-
-    /* 셀렉트 박스 */
-    .form-select {
-      width: 120px;
-      height: 35px;
-      text-align: center;
-    }
   </style>
 
-
   <script>
+
     $(function () {
 
-      let orderKindText = "";
-      let response = [];
-      let ordertime = "";
+      let table;
 
-      function getOrderdonedataList() {
+      function getOrderdoneList() {
         $.ajax({
-          url: "http://localhost:8000/center/todayorder/get/",
+
+          url: "/center/todayorder/get/",
           method: "GET",
-        }).done(function (data) {
-          response = data;
+
+        }).done(function (response) {
           console.log(response);
 
-          const tr_array = response.map((today_orderdata, index) => {
+          if (!table) {
+            table = $('#data_table').DataTable({
+              data: response,
+              columns: [
+                { title: 'ID', data: 'id', className: 'dt-head-center' },
+                { title: '전화번호', data: 'phone_number', className: 'dt-head-center' },
+                { title: '기어', data: 'gear_type', className: 'dt-head-center' },
+                { title: '출발지', data: 'start_address', className: 'dt-head-center' },
+                { title: '도착지', data: 'end_address', className: 'dt-head-center' },
+                {
+                  title: '접수시간',
+                  data: null,
+                  className: 'dt-head-center',
+                  render: function (data, type, row) {
+                    let datetime;
 
-            // order_kind에 따라 다른 값을 할당
-            // ordertime 시간만 출력 (최근 것이 맨 위)
-            if (today_orderdata.order_kind === "order") {
-              orderKindText = "주문";
-              ordertime = today_orderdata.created_at.slice(11, 19);
-            } else if (today_orderdata.order_kind === "change") {
-              orderKindText = "변경";
-              ordertime = today_orderdata.updated_at.slice(11, 19);
-            } else if (today_orderdata.order_kind === "cancel") {
-              orderKindText = "취소";
-              ordertime = today_orderdata.updated_at.slice(11, 19);
-            }
+                    if (row.order_kind === "order") {
+                      datetime = row.created_at;
+                    } else if (row.order_kind === "change" || row.order_kind === "cancel") {
+                      datetime = row.updated_at;
+                    } else {                  
+                      datetime = ""; 
+                    }
+                    const date = new Date(datetime);
+                    return date.toLocaleString('ko-KR', { hour12: true, hour: 'numeric', minute: 'numeric', second: 'numeric' });
+                  }
+                },
+                {
+                  title: '접수정보',
+                  data: null,
+                  className: 'dt-head-center',
+                  render: function (data) {
+                    const orderKindText = data.order_kind === "order" ? '주문' : data.order_kind === "change" ? '변경' : data.order_kind === "cancel" ? '취소' : '';
+                    const orderTypeText = data.order_type ? '요청' : '완료';
+                    const pkKey = data.id;
 
-            // ordertime 최근 것이 맨 위
-            response.sort(function (a, b) {
-              return new Date(a.ordertime) - new Date(b.ordertime);
+                    return `
+              <select class="form-select orderStatus" aria-label="Default select example" 
+                      onchange="updateOrderStatus(${pkKey}, this.value)"
+                      style="text-align-last: center;">
+                <option selected>${orderKindText}${orderTypeText}</option>
+                <option value="1">주문요청</option>
+                <option value="2">주문완료</option>
+                <option value="3">변경요청</option>
+                <option value="4">변경완료</option>
+                <option value="5">취소요청</option>
+                <option value="6">취소완료</option>
+              </select>
+            `;
+                  }
+                }
+              ]
             });
-
-            return $(
-              `<tr>
-          <td>${index + 1}</td>
-          <td>${today_orderdata.username}</td>
-          <td>${today_orderdata.phone_number}</td>
-          <td>${today_orderdata.gear_type}</td>
-          <td>${today_orderdata.start_address}</td>
-          <td>${today_orderdata.end_address}</td>
-          <td>${ordertime}</td>
-          <td class="for_select">
-            <select class="form-select orderStatus" aria-label="Default select example">
-              <option selected>${orderKindText}완료</option>
-              <option value="1">주문요청</option>
-              <option value="2">주문완료</option>
-              <option value="3">변경요청</option>
-              <option value="4">변경완료</option>
-              <option value="5">취소요청</option>
-              <option value="6">취소완료</option>
-            </select>
-          </td>
-        </tr>`
-            );
-          });
-
-          $("#data_table > tbody").empty().append(tr_array);
+          } else {
+            table.clear().rows.add(response).draw(); // Clear existing data and add new data
+          }
         });
       }
 
-      getOrderdonedataList();
-
+      getOrderdoneList();
+      setInterval(getOrderdoneList, 5000); // 5초마다 페이지 reload
 
       function updateOrderStatus(pkKey, selectedValue) {
-
         let order_kind = "";
         let order_type = null;
         let is_hide = null;
@@ -140,7 +137,7 @@
         const dataToSend = { order_kind, order_type, is_hide };
 
         $.ajax({
-          url: `http://localhost:8000/center/todayorder/get/${pkKey}/`,
+          url: `/center/todayorder/get/${pkKey}/`,
           method: 'PUT',
           contentType: 'application/json',
           data: JSON.stringify(dataToSend),
@@ -154,37 +151,61 @@
         });
       }
 
-      $("#data_table").on("change", ".orderStatus", function () {
-        const selectedValue = $(this).val();
-        console.log("선택된 값:", selectedValue);
-
-        const selectedRow = $(this).closest("tr");
-        const selectedIndex = selectedRow.index();
-        const selectedTodayOrderdata = response[selectedIndex];
-        console.log(selectedTodayOrderdata);
-
-        const pkKey = selectedTodayOrderdata.id
-
-        updateOrderStatus(pkKey, selectedValue);
-
-      });
-
     });
 
 
-    // // 5초(5000ms)마다 페이지를 다시 로드하는 함수
-    function reloadPage() {
-      location.reload();
-    }
+    function updateOrderStatus(pkKey, selectedValue) {
 
-    setInterval(reloadPage, 5000);
+      let order_kind = "";
+      let order_type = null;
+      let is_hide = null;
+
+      if (selectedValue === "1") {
+        order_kind = "order";
+        order_type = true;
+        is_hide = false;
+      } else if (selectedValue === "2") {
+        order_kind = "order";
+        order_type = false;
+        is_hide = true;
+      } else if (selectedValue === "3") {
+        order_kind = "change";
+        order_type = true;
+        is_hide = false;
+      } else if (selectedValue === "4") {
+        order_kind = "change";
+        order_type = false;
+        is_hide = true;
+      } else if (selectedValue === "5") {
+        order_kind = "cancel";
+        order_type = true;
+        is_hide = false;
+      } else if (selectedValue === "6") {
+        order_kind = "cancel";
+        order_type = false;
+        is_hide = true;
+      }
+
+      const dataToSend = { order_kind, order_type, is_hide };
+
+      $.ajax({
+        url: `/center/todayorder/get/${pkKey}/`,
+        method: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(dataToSend),
+        success: function (response) {
+          console.log(response);
+          alert("접수상황을 변경합니다.");
+        },
+        error: function (xhr, status, error) {
+          console.error(xhr.responseText);
+        }
+      });
+    }
 
   </script>
 
-
-
 </head>
-
 
 <body>
   <div class="container-fluid">
@@ -193,20 +214,9 @@
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-3">
         <h3>오늘 접수 목록</h3>
         <div class="table-responsive">
-          <table class="table table-striped table-sm" id="data_table">
-            <thead>
-              <tr>
-                <th scope="col"></th>
-                <th scope="col">ID</th>
-                <th scope="col">전화번호</th>
-                <th scope="col">기어</th>
-                <th scope="col">출발지</th>
-                <th scope="col">목적지</th>
-                <th scope="col">등록시간</th>
-                <th scope="col">접수상황</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
+          <table class="table table-hover" id="data_table">
+            <thead></thead>
+            <tbody class="table-group-divider"></tbody>
           </table>
         </div>
       </main>
