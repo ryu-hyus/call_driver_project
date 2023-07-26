@@ -6,7 +6,6 @@
   <title>실시간 접수 상황 확인 페이지</title>
 
   {% include 'center/layout/head.html' %}
-  {% include 'center/layout/base.html' %}
 
 
   <style>
@@ -256,23 +255,31 @@
 </head>
 
 <body>
-  <div class="content">
-    <table class="table table-hover" id="data_table">
-      <thead class="table-warning">
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">전화번호</th>
-          <th scope="col">기어</th>
-          <th scope="col">출발지</th>
-          <th scope="col">목적지</th>
-          <th scope="col">등록시간</th>
-          <th scope="col">접수상황</th>
-          <th scope="col">최종확인</th>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider"></tbody>
-    </table>
-
+  <div class="container-fluid">
+    <div class="row">
+      {% include 'center/layout/base.html' %}
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-3">
+        <h3>실시간 접수 상황</h3>
+        <div class="table-responsive">
+          <table class="table table-striped table-sm" id="data_table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">전화번호</th>
+                <th scope="col">기어</th>
+                <th scope="col">출발지</th>
+                <th scope="col">목적지</th>
+                <th scope="col">등록시간</th>
+                <th scope="col">접수상황</th>
+                <th scope="col">최종확인</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="paginationDiv"></div>
+      </main>
+    </div>
   </div>
 
 </body>

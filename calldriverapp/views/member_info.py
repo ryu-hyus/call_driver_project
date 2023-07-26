@@ -146,7 +146,7 @@ def update_profile(request):
         return JsonResponse(response_data, status=400)
     
 @method_decorator(csrf_exempt)
-def Logout(request):
+def Customer_Logout(request):
     logout(request)
     return redirect('/customer/login/')
 

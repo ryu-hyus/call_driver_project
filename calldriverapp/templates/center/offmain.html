@@ -87,11 +87,19 @@
     .nav-link {
       color:#000;
     }
+    .nav-link:hover {
+      color: #000;
+    }
     nav {
       height:calc(100vh - 86px);
     }
+    .selected {
+      background-color: #ffa040;
+    }
   </style>
-
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
+  </style>
 
 
 <script>
@@ -132,16 +140,6 @@
         }).fail(function (xhr, status, error) {
           alert('실패: ' + error);
         });
-
-        $.ajax({
-          url: '/center/operationdayset/',
-          method: 'PUT',
-        }).done(function (response) {
-          location.href = '/center/realtimeorder/'
-          console.log("response")
-        }).fail(function (xhr, status, error) {
-          alert('실패: ' + error);
-        });
         
       } else {
 
@@ -158,15 +156,13 @@
 
 
 <body onload="init()">
-  <header class="bg-dark shadow">
-    <div class="flex bg-dark shadow">
+  <header class="shadow" style="background-color: #5472d3;">
+    <div class="flex shadow">
       <div>
-        <a class="navbar-brand col-md-3 col-lg-2" href="#">
-          <img src="/static/logoimg/logo.png" alt="Logo" width="130" height="40" class="d-inline-block">
-        </a>
+
       </div>
       <div>
-        <a class="headermidtext" href="/center/offmain/">대리운전</a>
+        <a class="headermidtext text-white" href="/center/offmain/" style="font-family: 'Do Hyeon', sans-serif;">대리운전</a>
       </div>
       <div>
         <button type="button" class="btn btn-danger btn-lg" id="startclose">영업 시작</button>
@@ -175,39 +171,36 @@
   </header>
   <!-- 왼쪽 카테고리 -->
  
-  <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+  <nav class="col-md-3 col-lg-2 d-md-block bg-light">
     <div class="position-sticky pt-3 sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item"  id="tr_realtimeorder">
           <a class="nav-link active" aria-current="page" href="#" id="realtime_atag">
-            <span data-feather="home" class="align-text-bottom"></span>
+            <span\></span>
             실시간 접수 상황
           </a>
         </li>
         <li class="nav-item" id="tr_todayorder">
           <a class="nav-link" href="#" id="todayorder_atag">
-            <span data-feather="file" class="align-text-bottom"></span>
+            <span></span>
             오늘 접수 목록
           </a>
         </li>
         <li class="nav-item" id="tr_totalorder">
           <a class="nav-link" href="/center/offtotalorder/" id="totalorder_atag">
-            <span data-feather="shopping-cart" class="align-text-bottom"></span>
+            <span></span>
             전체 주문 목록
           </a>
         </li>
       </ul>
 
-      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase">
+      <h6 class="sidebar-heading px-3 mt-4">
         <span>회원 관리</span>
-        <a class="link-secondary" href="#" aria-label="Add a new report">
-          <span data-feather="plus-circle" class="align-text-bottom"></span>
-        </a>
       </h6>
       <ul class="nav flex-column mb-2">
         <li class="nav-item" id="tr_customerlist">
           <a class="nav-link" href="/center/offcustomerlist/" id="customerlist_atag">
-            <span data-feather="file-text" class="align-text-bottom"></span>
+            <span></span>
             전체 회원 목록
           </a>
         </li>

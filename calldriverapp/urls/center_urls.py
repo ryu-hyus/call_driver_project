@@ -11,7 +11,7 @@ from calldriverapp.views.todayorderCRUD import TodayOrderGetView
 from calldriverapp.views.totalorderCRUD import TotalOrderGetView
 
 urlpatterns = [
-    path("", StaffLoginView.as_view(), name="superuser_login"),
+    path("", StaffLoginView.as_view(), name="staff_login"),
     path("customerlist/", CustomerListView.as_view(), name="customer_list_view"),
     path("realtimeorder/", RealtimeOrderView.as_view(), name="realtime_order_list"),
     path("todayorder/", TodayOrderView.as_view(), name="today_order_list"),
