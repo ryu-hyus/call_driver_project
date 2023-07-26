@@ -30,7 +30,3 @@ class OffCustomerView(TemplateView):
  
 class OffTotalOrderView(TemplateView):
     template_name = "center/off_total_order_template.html"
-
-# 삭제필요
-class Practice(TemplateView):
-    template_name = "center/practice.html"

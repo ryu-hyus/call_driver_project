@@ -1,5 +1,5 @@
 from django.urls import path
-from calldriverapp.views.center import OffCustomerView, OffMainView, OffTotalOrderView, Practice
+from calldriverapp.views.center import OffCustomerView, OffMainView, OffTotalOrderView
 from calldriverapp.views.center import CustomerListView
 from calldriverapp.views.center import RealtimeOrderView
 from calldriverapp.views.center import TodayOrderView
@@ -27,6 +27,5 @@ urlpatterns = [
     path("totalorder/get/", TotalOrderGetView.as_view(), name="total_order_get_all"),
     path("totalorder/get/<int:pk>/", TotalOrderGetView.as_view(), name="total_order_get_by_id"),
 
-    path("pratice/", Practice.as_view(), name="tid"),
 ]
 
