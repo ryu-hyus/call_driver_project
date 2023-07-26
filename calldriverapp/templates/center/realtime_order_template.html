@@ -69,12 +69,6 @@
             let ordertime = "";
             let realdatetime = '';
 
-            response.sort(function (a, b) {
-              const dateA = new Date(a.realdatetime);
-              const dateB = new Date(b.realdatetime);
-              return dateB.getTime() - dateA.getTime();
-            });
-
             // order_kind에 따라 다른 값을 할당
             if (getrealtimeorder.order_kind === "order") {
               orderKindText = "주문";
@@ -116,9 +110,9 @@
 
             }
 
-            // ordertime 최근 것이 맨 위
+            // realdatetime 최근 것이 맨 아래로
             response.sort(function (a, b) {
-              return new Date(a.ordertime) - new Date(b.ordertime);
+              return new Date(a.realdatetime) - new Date(b.realdatetime);
             });
 
             return $(
@@ -133,18 +127,20 @@
             ${actionElement.prop('outerHTML')}
           </td>
           <td>
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" 
+            <input class="form-check-input" type="checkbox" value="" id="${getrealtimeorder.id}hide" 
               data-toggle="tooltip" title="클릭 시 오늘 접수 목록으로 이동"
               data-pkkey="${getrealtimeorder.id}" data-ordertype="${getrealtimeorder.order_type}">
           </td>
         </tr>`
             );
           });
-
+          $("#data_table > tbody").empty();
           $("#data_table > tbody").append(tr_array);
         });
       }
+      
       getRealtimeOrderList();
+      setInterval(getRealtimeOrderList, 5000);
 
     });
 
@@ -182,7 +178,7 @@
           console.log(response);
 
           // 체크박스 클릭
-          $(document).on("click", ".form-check-input", function () {
+          $(document).on("click", `${pkKey}hide`, function () {
 
             const isChecked = $(this).prop("checked");
             const pkKey = $(this).data("pkkey");
@@ -243,12 +239,12 @@
     });
 
 
-    // 5초(5000ms)마다 페이지를 다시 로드하는 함수
-    function reloadPage() {
-      location.reload();
-    }
+    // // 5초(5000ms)마다 페이지를 다시 로드하는 함수
+    // function reloadPage() {
+    //   location.reload();
+    // }
 
-    setInterval(reloadPage, 5000);
+    // setInterval(getRealtimeOrderList, 5000);
 
   </script>
 

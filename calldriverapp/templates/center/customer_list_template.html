@@ -5,6 +5,11 @@
   <meta charset="UTF-8">
   <title>전체 회원 목록</title>
   {% include 'center/layout/head.html' %}
+  <link
+        href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css"
+        rel="stylesheet"
+        crossorigin="anonymous"/>
+
 
   <style>
     /* content */
@@ -23,38 +28,6 @@
       border: 1.6px solid black;
       text-align: center;
     }
-
-    /* 페이지 설정 */
-    .pagination {
-      display: flex;
-      position: fixed;
-      right: 0;
-      bottom: 0;
-      height: 100px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      width: 83%;
-      float: right;
-    }
-
-    .page {
-      margin-right: 10px;
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-
-    .pagination .page {
-      margin: 0 10px;
-    }
-
-
-    .page.active {
-      font-weight: bold;
-    }
-
   </style>
 
 </head>
@@ -67,112 +40,43 @@
         <h3>회원 목록</h3>
         <div class="table-responsive">
           <table class="table table-striped table-sm" id="data_table">
-            <thead>
-              <tr>
-                <th scope="col"></th>
-                <th scope="col">User ID</th>
-                <th scope="col">전화번호</th>
-                <th scope="col">기어</th>
-              </tr>
-            </thead>
+            <thead></thead>
             <tbody></tbody>
           </table>
         </div>
-        <div class="pagination" id="paginationDiv"></div>
       </main>
     </div>
   </div>
 
   <script>
-    let rowsPerPage = 11;
-    let response = [];
 
     $(function () {
-      $.ajax({
 
-        url: "http://127.0.0.1:8000/customer/customer_info/",
-        method: "GET",
-        dataType: 'json'
+      function getCustomerList() {
+        $.ajax({
+          url: "http://localhost:8000/customer/customer_info/",
+          method: "GET",
+        }).done(function (response) {
+          console.log(response);
+          $('#data_table').DataTable({
+            data: response,
+            columns: [
+              { title: 'ID', data: 'id', className : 'dt-head-center' },
+              { title: 'USERNAME', data: 'username', className : 'dt-head-center'},
+              { title: 'GEAR', data: 'gear_type',className : 'dt-head-center' }
+            ]
+          });
 
-      }).done(function (data) {
-
-        response = data;
-        response.sort(function (a, b) {
-          return a.username.localeCompare(b.username);
         });
+      }
 
-        $(".page").on("click", function () {
-          const page = $(this).data("page");
-          showTablePage(page, rowsPerPage);
-        });
-
-        showTablePage(1, rowsPerPage);
-
-      });
-
+      getCustomerList();
     });
 
-    function showTablePage(page, rowsPerPage) {
 
-      $("#data_table tbody").empty();
-
-      const startIndex = (page - 1) * rowsPerPage;
-      const endIndex = Math.min(startIndex + rowsPerPage, response.length);
-
-      for (let i = startIndex; i < endIndex; i++) {
-        const user = response[i];
-        const row = $("<tr>");
-        $("<td>").text(i + 1).appendTo(row);
-        $("<td>").text(user.username).appendTo(row);
-        $("<td>").text(user.phone_number).appendTo(row);
-        $("<td>").text(user.gear_type).appendTo(row);
-        $("#data_table").append(row);
-      }
-
-      updatePagination(page);
-    }
-
-    function updatePagination(currentPage) {
-      const totalPages = Math.ceil(response.length / rowsPerPage);
-      const paginationDiv = $("#paginationDiv");
-      paginationDiv.empty();
-
-      const maxVisiblePages = 10; // 최대 표시할 페이지 번호 개수
-
-      let startPage = currentPage - Math.floor(maxVisiblePages / 2);
-      let endPage = currentPage + Math.floor(maxVisiblePages / 2);
-
-      if (startPage <= 0) {
-        startPage = 1;
-        endPage = Math.min(maxVisiblePages, totalPages);
-      }
-
-      if (endPage > totalPages) {
-        endPage = totalPages;
-        startPage = Math.max(1, totalPages - maxVisiblePages + 1);
-      }
-
-      for (let i = startPage; i <= endPage; i++) {
-        const pageElement = $("<span>")
-          .addClass("page")
-          .attr("data-page", i)
-          .text(i);
-
-        if (i === currentPage) {
-          pageElement.addClass("active");
-        }
-
-        paginationDiv.append(pageElement);
-      }
-
-      $(".page").on("click", function () {
-        const page = $(this).data("page");
-        showTablePage(page, rowsPerPage);
-      });
-    }
-    
   </script>
 
 </body>
 
 </html>
+<!-- 예림 -->
