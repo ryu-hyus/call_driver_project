@@ -129,7 +129,7 @@
 
         $.ajax({
           method: "POST",
-          url: 'http://127.0.0.1:8000/customer/signup/',
+          url: '/customer/signup/',
           contentType: "application/json",
           data: JSON.stringify({
             "username": username,
@@ -153,23 +153,23 @@
     function checkUsername() {
       let username = document.getElementById('username').value;
 
-      if (username) {
-        $.ajax({
-          method: "GET",
-          url: 'http://127.0.0.1:8000/customer/check_username/',
-          dataType: "json",
-          data: { username: username },
-        }).done(function (response) {
-          if (response.available) {
-            alert('사용 가능한 아이디입니다.');
-          } else {
-            alert('이미 사용 중인 아이디입니다.');
-          }
-        }).fail(function (response) {
-          alert('실패');
-        });
+        if (username) {
+          $.ajax({
+            method: "GET",
+            url: '/customer/check_username/',
+            dataType: "json",
+            data: { username: username },
+          }).done(function (response) {
+            if (response.available) {
+              alert('사용 가능한 아이디입니다.');
+            } else {
+              alert('이미 사용 중인 아이디입니다.');
+            }
+          }).fail(function (response) {
+            alert('실패');
+          });
+        }
       }
-    }
   </script>
 </body>
 

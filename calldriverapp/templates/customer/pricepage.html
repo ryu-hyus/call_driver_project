@@ -145,7 +145,7 @@
                     console.log(endAddressId);
                     // Send the startAddressId and endAddressId to the server for fare price calculation
                     $.ajax({
-                        url: `http://localhost:8000/customer/pricecalculate/${startAddressId}/${endAddressId}/`,
+                        url: `/customer/pricecalculate/${startAddressId}/${endAddressId}/`,
                         type: 'GET',
                         dataType: 'json',
                     }).done(function (response) {

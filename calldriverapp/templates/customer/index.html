@@ -62,18 +62,35 @@
 
     {% include 'customer/layout/footer.html' %}
     <script>
+        userID = sessionStorage.getItem('user_id')
         $('#order').on('click', (e) => {
             e.preventDefault();
-            location.href = "/customer/ordermain/"
+            if(userID == null){
+                alert("로그인이 필요합니다.");
+                location.href = "/customer/login/"
+            } else {
+                location.href = "/customer/ordermain/"
+            }
         })
         $('#modify').on('click', (e) => {
             e.preventDefault();
-            location.href = "/customer/orderdetail/"
+            if(userID == null){
+                alert("로그인이 필요합니다.");
+                location.href = "/customer/login/"
+            } else {
+                location.href = "/customer/orderdetail/"
+            }
         })
         $('#cancel').on('click', (e) => {
             e.preventDefault();
-            location.href = "/customer/orderchange/"
+            if(userID == null){
+                alert("로그인이 필요합니다.");
+                location.href = "/customer/login/"
+            } else {
+                location.href = "/customer/orderdetail/"
+            }
         })
+
     </script>
 </body>
 
