@@ -128,7 +128,7 @@
 
         $.ajax({
           method: "POST",
-          url: 'http://127.0.0.1:8000/customer/signup/',
+          url: '/customer/signup/',
           contentType: "application/json",
           data: JSON.stringify({
             "username": username,
@@ -155,7 +155,7 @@
         if (username) {
           $.ajax({
             method: "GET",
-            url: 'http://127.0.0.1:8000/customer/check_username/',
+            url: '/customer/check_username/',
             dataType: "json",
             data: { username: username },
           }).done(function (response) {
