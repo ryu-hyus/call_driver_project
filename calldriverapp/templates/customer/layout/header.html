@@ -1,8 +1,8 @@
-<header>
+<header class="bg-light shadow-sm mb-5">
   <div class="wrap">
     <div class="d-flex flex-wrap justify-content-between">
       <img src="/static/logoimg/logo.png" alt="Logo" width="250" height="40"
-        class="d-flex text-white text-decoration-none bi logo">
+        class="d-flex text-white text-decoration-none bi logo text-white">
       <ul class="nav col-12 col-lg-auto justify-content-end text-small">
         <li>
           <a href="/customer/home/" class="nav-link">
@@ -11,7 +11,7 @@
               <path
                 d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z" />
             </svg>
-            <span class="blue">Home</span>
+            <span class="blue">홈으로</span>
           </a>
         </li>
         <li>
@@ -22,11 +22,11 @@
               <path fill-rule="evenodd"
                 d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
             </svg>
-            <span id="user_name" class="blue"></span>
+            <span class="blue">마이페이지</span>
           </a>
         </li>
         <li>
-          <a href="/customer/logout/" class="nav-link">
+          <a href="#" class="nav-link" id="logout">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
               class="bi d-block mx-auto mb-1 icon" viewBox="0 0 16 16">
               <path fill-rule="evenodd"
@@ -34,7 +34,7 @@
               <path fill-rule="evenodd"
                 d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
             </svg>
-            <span class="blue">Logout</span>
+            <span class="blue">로그아웃</span>
           </a>
         </li>
       </ul>
@@ -43,9 +43,11 @@
 
 </header>
 <script>
-  $(function () {
-    var user_name = sessionStorage.getItem('user_name');
+  $('#logout').on('click', (e) => {
+    e.preventDefault();
 
-    $('#user_name').text(user_name);
+    location.href="/customer/logout/";
+    sessionStorage.clear();
+    localStorage.clear();
   })
 </script>

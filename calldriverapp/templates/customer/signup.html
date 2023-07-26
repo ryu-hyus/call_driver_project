@@ -17,7 +17,11 @@
     }
 
     .orange {
-      background-color: orange;
+      background-color: #5472d3;
+    }
+
+    #signup:hover {
+      background-color: #ffa040;
     }
 
     a {
@@ -34,19 +38,15 @@
       .outerbox {
         width: 50%;
       }
-      .double_check {
-        width:85%;
+
+      .double {
+        width:20%;
       }
     }
 
     @media all and (max-width: 768px) {
-      .double_check {
-        width:85%;
-      }
-    }
-    @media all and (max-width: 500px) {
-      .double_check {
-        width:67%;
+      .double {
+        width:40%;
       }
     }
   </style>
@@ -61,8 +61,9 @@
       <div class="modal-body p-5 pt-0">
         <form method="post">
           <div class="form-floating mb-3" style="display: flex;">
-            <input type="text" class="form-control rounded-4 me-3 double_check" id="username">
-            <button type="button" class="btn-outline-dark" style="height:40px; margin-top:10px;"  onclick="checkUsername()">중복 체크</button>
+            <input type="text" class="form-control rounded-4 me-3" id="username">
+            <button type="button" class="btn-outline-dark double" style="height:40px; margin-top:10px;"
+              onclick="checkUsername()">중복 체크</button>
             <label for="username">아이디</label>
           </div>
           <div class="form-floating mb-3 phone" style="display: flex;">
@@ -101,7 +102,7 @@
               </div>
           </fieldset>
           <hr class="my-3">
-          <button id="signup" class="w-100 mb-2 btn btn-lg btn-outline-success orange" type="submit">
+          <button id="signup" class="w-100 mb-2 btn btn-lg orange" type="submit">
             <a href="">회원가입</a>
           </button>
         </form>
@@ -150,25 +151,25 @@
     });
 
     function checkUsername() {
-        let username = document.getElementById('username').value;
+      let username = document.getElementById('username').value;
 
-        if (username) {
-          $.ajax({
-            method: "GET",
-            url: 'http://127.0.0.1:8000/customer/check_username/',
-            dataType: "json",
-            data: { username: username },
-          }).done(function (response) {
-            if (response.available) {
-              alert('사용 가능한 아이디입니다.');
-            } else {
-              alert('이미 사용 중인 아이디입니다.');
-            }
-          }).fail(function (response) {
-            alert('실패');
-          });
-        }
+      if (username) {
+        $.ajax({
+          method: "GET",
+          url: 'http://127.0.0.1:8000/customer/check_username/',
+          dataType: "json",
+          data: { username: username },
+        }).done(function (response) {
+          if (response.available) {
+            alert('사용 가능한 아이디입니다.');
+          } else {
+            alert('이미 사용 중인 아이디입니다.');
+          }
+        }).fail(function (response) {
+          alert('실패');
+        });
       }
+    }
   </script>
 </body>
 

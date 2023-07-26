@@ -88,13 +88,19 @@
     .nav-link {
       color:#000;
     }
+    .nav-link:hover {
+      color:#000;
+    }
     .selected {
-      background-color:orange;
+      background-color:#ffa040;
     }
     nav {
       height:calc(100vh - 86px);
     }
   </style>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
+</style>
 
 
 
@@ -149,12 +155,13 @@
 <body onload="init()">
 
   <header class="bg-dark shadow">
-    <div class="flex bg-dark shadow">
+    <div class="bg-dark flex shadow">
       <div>
         
       </div>
       <div>
-        <a class="headermidtext" href="/center/realtimeorder/">대리운전</a>
+        <a class="headermidtext text-white" href="/center/realtimeorder/" style="font-family: 'Do Hyeon', sans-serif;"
+        >대리운전</a>
       </div>
       <div>
         <button type="button" class="btn btn-primary btn-lg" id="startclose">영업종료</button>
@@ -169,19 +176,19 @@
       <ul class="nav flex-column">
         <li class="nav-item" id="tr_realtimeorder">
           <a class="nav-link active" aria-current="page" href="/center/realtimeorder/">
-            <span data-feather="home" class="align-text-bottom"></span>
+            <span></span>
             실시간 접수 상황
           </a>
         </li>
         <li class="nav-item" id="tr_todayorder">
           <a class="nav-link" href="/center/todayorder/">
-            <span data-feather="file" class="align-text-bottom"></span>
+            <span></span>
             오늘 접수 목록
           </a>
         </li>
         <li class="nav-item" id="tr_totalorder">
           <a class="nav-link" href="/center/totalorder/">
-            <span data-feather="shopping-cart" class="align-text-bottom"></span>
+            <span></span>
             전체 주문 목록
           </a>
         </li>
@@ -190,10 +197,10 @@
       <h6 class="sidebar-heading px-3 mt-4">
         <span>회원 관리</span>
       </h6>
-      <ul class="nav mb-2">
+      <ul class="nav mb-2 flex-column">
         <li class="nav-item" id="tr_customerlist">
           <a class="nav-link" href="/center/customerlist/">
-            <span data-feather="file-text" class="align-text-bottom"></span>
+            <span></span>
             전체 회원 목록
           </a>
         </li>

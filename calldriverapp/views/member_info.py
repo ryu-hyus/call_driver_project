@@ -1,4 +1,8 @@
 import json
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.response import Response
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, logout
@@ -13,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 
 @method_decorator(csrf_exempt, name='dispatch')
-class CustomerLoignView(View):
+class CustomerLoginnView(View):
     def get(self, request):
         return render(request,'customer/login.html')
 
@@ -157,3 +161,11 @@ def check_username(request):
         is_duplicate = MyUser.objects.filter(username=username).exists()
         
         return JsonResponse({'available' : not is_duplicate})
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def verify_token(request):
+    # 토큰 검증 로직
+    # 토큰이 유효하면 인증 성공을 응답하고, 유효하지 않으면 401 Unauthorized 응답을 반환합니다.
+    return Response({'status': 'success', 'user': request.user.username})
