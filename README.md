@@ -15,5 +15,11 @@ Price Table(요금표) DB업뎃 방법
 - calldriverapp/uploads 디렉토리에 fare_table.csv 파일 수정
 - 터미널에 python manage.py shell 입력
 - exec(open("./calldriverapp/makepricetable.py").read()) 명령어 입력
+-------------------------------------------------------------------
+장고 Admin을 이용한 Price Table(요금표) DB업뎃 방법
+- host/admin 접속 및 superuser 로그인
+- pricefile에 add
+- fare_table.csv 업로드 및 save
+
 
 
