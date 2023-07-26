@@ -15,15 +15,16 @@
 
         @media (min-width: 800px) {
             select {
-            width: 93%;
-            height: 30px;
-        }
+                width: 93%;
+                height: 30px;
+            }
         }
     </style>
 </head>
 
 <body>
     {% include 'customer/layout/header.html' %}
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     {% load static %}
@@ -144,20 +145,21 @@
                     console.log(endAddressId);
                     // Send the startAddressId and endAddressId to the server for fare price calculation
                     $.ajax({
-                        url: `http://localhost:8000/customer/pricecalculate/${startAddressId}/${endAddressId}/`,
+                        url: `/customer/pricecalculate/${startAddressId}/${endAddressId}/`,
                         type: 'GET',
                         dataType: 'json',
                     }).done(function (response) {
                         console.log(response);
                         $('#showprice').text('예상요금은' + " " + JSON.stringify(response).slice(-3, -1) + ',000원');
-            
+
                     })
-            
+
                 };
             </script>
 
             <!-- Place this button wherever you want it to appear -->
-            <button id="calculate_button" class="btn btn-primary" onclick=calculatePrice()>예상요금 계산하기</button>
+            <button id="calculate_button" class="btn text-white" style="background-color: #5472d3;"
+                onclick=calculatePrice()>예상요금 계산하기</button>
             <span id="showprice"></span>
         </div>
     </div>

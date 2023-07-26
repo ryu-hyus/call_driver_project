@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views import View
-from calldriverapp.models.operation import OperationOnOff
+from calldriverapp.models.operation import OperationDay, OperationOnOff
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -23,4 +23,13 @@ class OperationOnOffView(View):
 
         operation_onoff = OperationOnOff(operation_onoff=operation_onoff_value)
         operation_onoff.save()
+        return HttpResponse(status=200)
+
+    
+@method_decorator(csrf_exempt, name="dispatch")
+class OperationDaySetView(View):
+    def put(self, request):
+        operationday = OperationDay.objects.filter(id=1).first()
+        operationday.set_day()
+        operationday.save()
         return HttpResponse(status=200)

@@ -29,12 +29,12 @@
         .person {
             display: block;
             margin: 30px;
-            color: orange;
+            color: #5472d3;
         }
 
         a,
         p {
-            color: green;
+            color: #5472d3;
             text-decoration: none;
             font-weight: 600;
         }
@@ -54,6 +54,10 @@
             height: calc(100vh - 100px);
             justify-content: center;
             gap:2.5rem;
+        }
+        .flex {
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -79,7 +83,8 @@
                     </td>
                 </tr>
             </table>
-                <div>
+                <div class="flex">
+                    <div></div>
                     <a id="in_change" href="">
                         <p>회원정보 수정</p>
                     </a>
@@ -157,7 +162,7 @@
         var user_id = sessionStorage.getItem('user_id');
 
         $.ajax({
-            url: `http://127.0.0.1:8000/customer/customer_info/${user_id}/`,
+            url: `/customer/customer_info/${user_id}/`,
             method: "GET",
             dataType: 'json',
         }).done(function (response) {
@@ -203,7 +208,7 @@
         let gear_type = $('input[type="radio"]:checked').val();
 
         $.ajax({
-            url: "http://127.0.0.1:8000/customer/mypage/update_profile/",
+            url: "/customer/mypage/update_profile/",
             method: "POST",
             ontentType: "application/json",
             data: JSON.stringify({

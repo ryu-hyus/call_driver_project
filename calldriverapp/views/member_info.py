@@ -9,8 +9,8 @@ from calldriverapp.models.customer import MyUser
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login as login
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CustomerLoignView(View):
@@ -119,7 +119,6 @@ class MyPageView(View):
         return JsonResponse(user_info)
    
 
-
 def update_profile(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -146,9 +145,14 @@ def update_profile(request):
         return JsonResponse(response_data, status=400)
     
 @method_decorator(csrf_exempt)
-def Logout(request):
+def Customer_Logout(request):
     logout(request)
     return redirect('/customer/login/')
+
+@method_decorator(csrf_exempt)
+def Staff_Logout(request):
+    logout(request)
+    return redirect('/center/login/')
 
 def check_username(request):
     if request.method == 'GET':
