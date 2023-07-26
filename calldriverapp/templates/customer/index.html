@@ -28,70 +28,80 @@
 <body>
     {% include 'customer/layout/header.html' %}
     <div class="container">
-        <div class="content_container d-flex flex-column">
-            <div class="align btn1">
-                {% if disable_button %}
-
-                <button type="button" id="order" class="btn btn-block btn-custom text-white"
-                    style="background-color: #5472d3;">접수하기</button>
-                {% else %}
-                <button type="button" class="btn btn-block btn-custom text-white" style="background-color: #5472d3;"
-                    disabled>접수하기</button>
-                {% endif %}
-            </div>
-            <div class="align btn2">
-                {% if disable_button %}
-                <button type="button" id="modify" class="btn btn-block btn-custom text-white"
-                    style="background-color: #0d47a1;">접수확인</button>
-                {% else %}
-                <button type="button" class="btn btn-block btn-custom text-white" style="background-color: #0d47a1;"
-                    disabled>접수확인</button>
-                {% endif %}
-            </div>
-            <div class="align btn3">
-                {% if disable_button %}
-                <button type="button" id="cancel" class="btn btn-block btn-custom text-white"
-                    style="background-color: #002171;">변경/취소</button>
-                {% else %}
-                <button type="button" class="btn btn-block btn-custom text-white" style="background-color: #002171;"
-                    disabled>변경/취소</button>
-                {% endif %}
+        {% if disable_button %}
+        {% else %}
+        <div class="row text-center">
+            <div class="col-12">
+                <p>영업시간이 아닙니다.</p>
             </div>
         </div>
-    </div>
+        {% endif %}
 
-    {% include 'customer/layout/footer.html' %}
-    <script>
-        userID = sessionStorage.getItem('user_id')
-        $('#order').on('click', (e) => {
-            e.preventDefault();
-            if(userID == null){
-                alert("로그인이 필요합니다.");
-                location.href = "/customer/login/"
-            } else {
-                location.href = "/customer/ordermain/"
-            }
-        })
-        $('#modify').on('click', (e) => {
-            e.preventDefault();
-            if(userID == null){
-                alert("로그인이 필요합니다.");
-                location.href = "/customer/login/"
-            } else {
-                location.href = "/customer/orderdetail/"
-            }
-        })
-        $('#cancel').on('click', (e) => {
-            e.preventDefault();
-            if(userID == null){
-                alert("로그인이 필요합니다.");
-                location.href = "/customer/login/"
-            } else {
-                location.href = "/customer/orderdetail/"
-            }
-        })
+        <div class="container">
+            <div class="content_container d-flex flex-column">
+                <div class="align btn1">
+                    {% if disable_button %}
 
-    </script>
+                    <button type="button" id="order" class="btn btn-block btn-custom text-white"
+                        style="background-color: #5472d3;">접수하기</button>
+                    {% else %}
+                    <button type="button" class="btn btn-block btn-custom text-white" style="background-color: #5472d3;"
+                        disabled>접수하기</button>
+                    {% endif %}
+                </div>
+                <div class="align btn2">
+                    {% if disable_button %}
+                    <button type="button" id="modify" class="btn btn-block btn-custom text-white"
+                        style="background-color: #0d47a1;">접수확인</button>
+                    {% else %}
+                    <button type="button" class="btn btn-block btn-custom text-white" style="background-color: #0d47a1;"
+                        disabled>접수확인</button>
+                    {% endif %}
+                </div>
+                <div class="align btn3">
+                    {% if disable_button %}
+                    <button type="button" id="cancel" class="btn btn-block btn-custom text-white"
+                        style="background-color: #002171;">변경/취소</button>
+                    {% else %}
+                    <button type="button" class="btn btn-block btn-custom text-white" style="background-color: #002171;"
+                        disabled>변경/취소</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% include 'customer/layout/footer.html' %}
+        <script>
+            userID = sessionStorage.getItem('user_id')
+            $('#order').on('click', (e) => {
+                e.preventDefault();
+                if (userID == null) {
+                    alert("로그인이 필요합니다.");
+                    location.href = "/customer/login/"
+                } else {
+                    location.href = "/customer/ordermain/"
+                }
+            })
+            $('#modify').on('click', (e) => {
+                e.preventDefault();
+                if (userID == null) {
+                    alert("로그인이 필요합니다.");
+                    location.href = "/customer/login/"
+                } else {
+                    location.href = "/customer/orderdetail/"
+                }
+            })
+            $('#cancel').on('click', (e) => {
+                e.preventDefault();
+                if (userID == null) {
+                    alert("로그인이 필요합니다.");
+                    location.href = "/customer/login/"
+                } else {
+                    location.href = "/customer/orderdetail/"
+                }
+            })
+
+        </script>
 </body>
 
 </html>

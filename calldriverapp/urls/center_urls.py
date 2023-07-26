@@ -4,14 +4,15 @@ from calldriverapp.views.center import CustomerListView
 from calldriverapp.views.center import RealtimeOrderView
 from calldriverapp.views.center import TodayOrderView
 from calldriverapp.views.center import TotalOrderView
-from calldriverapp.views.member_info import StaffLoginView
+from calldriverapp.views.member_info import Staff_Logout, StaffLoginView
 from calldriverapp.views.operationCRUD import OperationDaySetView, OperationOnOffView
 from calldriverapp.views.realtimeorder import RealtimeOrderGetView
 from calldriverapp.views.todayorderCRUD import TodayOrderGetView
 from calldriverapp.views.totalorderCRUD import TotalOrderGetView
 
 urlpatterns = [
-    path("", StaffLoginView.as_view(), name="staff_login"),
+    path("login/", StaffLoginView.as_view(), name="staff_login"),
+    path("logout/", Staff_Logout, name="staff_logout"),
     path("customerlist/", CustomerListView.as_view(), name="customer_list_view"),
     path("realtimeorder/", RealtimeOrderView.as_view(), name="realtime_order_list"),
     path("todayorder/", TodayOrderView.as_view(), name="today_order_list"),

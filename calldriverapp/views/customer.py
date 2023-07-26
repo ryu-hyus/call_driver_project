@@ -2,6 +2,8 @@ from django.views.generic import TemplateView
 
 from calldriverapp.models import OperationOnOff
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 class HomeTemplateView(TemplateView):
     template_name = "customer/index.html"
@@ -14,15 +16,18 @@ class HomeTemplateView(TemplateView):
         return context
 
 
-class OrderMainTemplateView(TemplateView):
+class OrderMainTemplateView(LoginRequiredMixin, TemplateView):
+    login_url = "/customer/login/"
     template_name = "customer/ordermain.html"
 
 
-class OrderDetailTemplateView(TemplateView):
+class OrderDetailTemplateView(LoginRequiredMixin, TemplateView):
+    login_url = "/customer/login/"
     template_name = "customer/orderdetail.html"
 
 
-class OrderChangeTemplateView(TemplateView):
+class OrderChangeTemplateView(LoginRequiredMixin, TemplateView):
+    login_url = "/customer/login/"
     template_name = "customer/orderchange.html"
 
 
