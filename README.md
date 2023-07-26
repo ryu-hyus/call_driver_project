@@ -10,16 +10,20 @@ python version 3.8.2
  - cd call_driver_project
  - pip install -r requirements.txt ## 라이브러리 설치
 
+-------------------------------------------------------------------
+시스템 사용 전 체크사항
+- Price Table 업데이트
+- Operationday 업로드
+
+-------------------------------------------------------------------
 
 Price Table(요금표) DB업뎃 방법
 - calldriverapp/uploads 디렉토리에 fare_table.csv 파일 수정
 - 터미널에 python manage.py shell 입력
 - exec(open("./calldriverapp/makepricetable.py").read()) 명령어 입력
--------------------------------------------------------------------
+
 장고 Admin을 이용한 Price Table(요금표) DB업뎃 방법
 - host/admin 접속 및 superuser 로그인
 - pricefile에 add
 - fare_table.csv 업로드 및 save
-
-
 
