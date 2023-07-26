@@ -34,349 +34,348 @@
 
 <body>
     {% include 'customer/layout/header.html' %}
-
-    <div id="map" style="height:350px;"></div>
-
     <div class="container">
-        <div class=" input-group mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-default">출발지</span>
-            <input type="text" class="form-control" id="search-start-point" placeholder="출발지를 검색하여 입력하세요" readonly>
-        </div>
+        <div class="content_container d-flex flex-column">
+            <div id="map" style="height:350px;"></div>
 
-        <div class=" input-group mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-default">목적지</span>
-            <input type="text" class="form-control" id="search-end-point" placeholder="목적지를 검색하여 입력하세요" readonly>
-        </div>
-    </div>
+            <div class="container">
+                <div class=" input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">출발지</span>
+                    <input type="text" class="form-control" id="search-start-point" placeholder="출발지를 검색하여 입력하세요"
+                        readonly>
+                </div>
 
-    <!-- 모달 주소검색창 -->
-    <div id="addressModal" class="modal rounded-0">
-        <div class="modal-content rounded-0">
-            <div class="input-group border border-2 rounded-0">
-                <input class="form-control rounded-0" id="keywordInput" placeholder="주소를 입력하세요." />
-                <button class="btn btn-light search-button rounded-0" id="searchButton">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-search" viewBox="0 0 16 16">
-                        <path
-                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                    </svg>
-                </button>
-                <button class="btn btn-light rounded-0" id="exit_button" onclick="closeModal();">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-x-lg" viewBox="0 0 16 16">
-                        <path
-                            d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-                    </svg>
-                </button>
+                <div class=" input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">목적지</span>
+                    <input type="text" class="form-control" id="search-end-point" placeholder="목적지를 검색하여 입력하세요"
+                        readonly>
+                </div>
             </div>
-            <!-- 검색 기록 창 -->
-            <div id="searchHistory" class="list-group rounded-0" style="display: none;"></div>
 
-            <!-- 검색 결과 표시 창 -->
-            <div id="searchResults" class="list-group rounded-0 mt-1" style="height: 50vh;"></div>
-        </div>
-    </div>
+            <!-- 모달 주소검색창 -->
+            <div id="addressModal" class="modal rounded-0">
+                <div class="modal-content rounded-0">
+                    <div class="input-group border border-2 rounded-0">
+                        <input class="form-control rounded-0" id="keywordInput" placeholder="주소를 입력하세요." />
+                        <button class="btn btn-light search-button rounded-0" id="searchButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg>
+                        </button>
+                        <button class="btn btn-light rounded-0" id="exit_button" onclick="closeModal();">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-x-lg" viewBox="0 0 16 16">
+                                <path
+                                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- 검색 기록 창 -->
+                    <div id="searchHistory" class="list-group rounded-0" style="display: none;"></div>
 
-    <!-- 예상 요금 섹션 -->
-    <div style="display: flex; justify-content: center; align-items: center; height: 5vh;">
-        <div style="display: flex; align-items: center;">
-            <span class="badge bg-secondary">예상 요금</span>
-            <div style="margin: 0 0 0 10px; display: flex; align-items: center;">
-                <div id="expectedprice">12</div>
-                <div>,000 원</div>
+                    <!-- 검색 결과 표시 창 -->
+                    <div id="searchResults" class="list-group rounded-0 mt-1" style="height: 50vh;"></div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <!-- 버튼 섹션 -->
-    <div class="row btn-row justify-content-evenly">
-        <div class="col-10 align">
-            <button id="postorder" type="button" class="btn btn-primary btn-block btn-custom mt-2 mb-2">접수 요청</button>
-        </div>
-    </div>
-    <div class="row btn-row justify-content-evenly">
-        <div class="col-10 align">
-            <button id='homebtn' type="button" class="btn btn-primary btn-block btn-custom mt-0 mb-2">Home</button>
-        </div>
-    </div>
+            <!-- 예상 요금 섹션 -->
+            <div style="display: flex; justify-content: center; align-items: center; height: 5vh;">
+                <div style="display: flex; align-items: center;">
+                    <span class="badge bg-secondary">예상 요금</span>
+                    <div style="margin: 0 0 0 10px; display: flex; align-items: center;">
+                        <div id="expectedprice">12</div>
+                        <div>,000 원</div>
+                    </div>
+                </div>
+            </div>
 
-    
-    <script>
-        //Map 컨트롤 script
-        $(document).ready(function(){
-            getLocation();
-            
-        })
+            <!-- 버튼 섹션 -->
+            <div class="row btn-row justify-content-evenly">
+                <div class="col-10 align">
+                    <button id="postorder" type="button" class="btn btn-block btn-custom mt-2 mb-2 text-white"
+                        style="background-color: #5472d3;">접수 요청</button>
+                </div>
+            </div>
 
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
 
-                    console.log("위도: " + latitude + ", 경도: " + longitude);
-                    sessionStorage.setItem('current_x', longitude);
-                    sessionStorage.setItem('current_y', latitude);
+            <script>
+                //Map 컨트롤 script
+                $(document).ready(function () {
+                    getLocation();
 
-                    SetCurrentMap();
+                })
 
-                }, function (error) {
-                    // 위치 정보를 얻지 못한 경우 또는 오류가 발생한 경우
-                    console.error("위치 정보를 얻을 수 없습니다.");
-                    SetCurrentMap();
-                });
-            } else {
-                // Geolocation API를 지원하지 않는 경우
-                console.error("Geolocation API를 지원하지 않습니다.");
-                SetCurrentMap();
-            }
-        }
+                function getLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            var latitude = position.coords.latitude;
+                            var longitude = position.coords.longitude;
 
-        var map;
-        var currentmarker;
-        var currentcustomOverlay;
+                            console.log("위도: " + latitude + ", 경도: " + longitude);
+                            sessionStorage.setItem('current_x', longitude);
+                            sessionStorage.setItem('current_y', latitude);
 
-        function SetCurrentMap(){
-            console.log("맵생성완료");
-            const current_x = sessionStorage.getItem('current_x')
-            const current_y = sessionStorage.getItem('current_y')
-    
-            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-                mapOption = {
-                    center: new kakao.maps.LatLng(current_y, current_x), // 지도의 중심좌표
-                    level: 4, // 지도의 확대 레벨
-                    mapTypeId : kakao.maps.MapTypeId.ROADMAP
-                }; 
-    
-            // 지도를 생성한다 
-            map = new kakao.maps.Map(mapContainer, mapOption); 
-            //map.setDraggable(false);
-    
-            // 지도에 마커를 생성하고 표시한다
-            currentmarker = new kakao.maps.Marker({
-                position: new kakao.maps.LatLng(current_y, current_x), // 마커의 좌표
-                map: map // 마커를 표시할 지도 객체
-            });
-    
-            // 커스텀 오버레이를 생성하고 지도에 표시한다
-            currentcustomOverlay = new kakao.maps.CustomOverlay({
-                map: map,
-                content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">현재위치</div>', 
-                position: new kakao.maps.LatLng(current_y, current_x), // 커스텀 오버레이를 표시할 좌표
-                xAnchor: 0.5, // 컨텐츠의 x 위치
-                yAnchor: 2.7 // 컨텐츠의 y 위치
-            });
+                            SetCurrentMap();
 
-        }
-
-        var startpoint
-        var endpoint
-        // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
-        var bounds = new kakao.maps.LatLngBounds();
-        function setBound(){
-            if (startpoint != null){
-                bounds.extend(startpoint);
-            }
-            if (endpoint != null){
-                bounds.extend(endpoint);
-            }
-        }
-        
-        
-        var startmarker
-        var startcustomOverlay
-        function addstartmarker(x,y){
-            if (startmarker != null || startcustomOverlay != null){
-                hideMarkers(startmarker, startcustomOverlay);
-            }
-            // 출발지 마커를 생성합니다
-            startmarker = new kakao.maps.Marker({
-                position: new kakao.maps.LatLng(y, x),
-            });
-            startcustomOverlay = new kakao.maps.CustomOverlay({
-                content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">출발지</div>', 
-                position: new kakao.maps.LatLng(y, x), // 커스텀 오버레이를 표시할 좌표
-                xAnchor: 0.5, // 컨텐츠의 x 위치
-                yAnchor: 2.7 // 컨텐츠의 y 위치
-            });
-
-            // 마커가 지도 위에 표시되도록 설정합니다
-            startmarker.setMap(map);
-            startcustomOverlay.setMap(map);
-            hideMarkers(currentmarker, currentcustomOverlay);
-            setCenter(x,y);
-            startpoint = new kakao.maps.LatLng(y, x);
-            if(startpoint != null || endpoint != null){
-                setBound();
-                map.setBounds(bounds);
-            }
-        }
-        var endmarker
-        var endcustomOverlay
-        function addendmarker(x,y){
-            if (endmarker != null || endcustomOverlay != null){
-                hideMarkers(endmarker, endcustomOverlay);
-            }
-            // 도착지 마커를 생성합니다
-            endmarker = new kakao.maps.Marker({
-                position: new kakao.maps.LatLng(y, x),
-            });
-            endcustomOverlay = new kakao.maps.CustomOverlay({
-                content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">목적지</div>', 
-                position: new kakao.maps.LatLng(y, x), // 커스텀 오버레이를 표시할 좌표
-                xAnchor: 0.5, // 컨텐츠의 x 위치
-                yAnchor: 2.7 // 컨텐츠의 y 위치
-            });
-
-            // 마커가 지도 위에 표시되도록 설정합니다
-            endmarker.setMap(map);
-            endcustomOverlay.setMap(map);
-            hideMarkers(currentmarker, currentcustomOverlay);
-            setCenter(x,y);
-            endpoint = new kakao.maps.LatLng(y, x);
-            if(startpoint != null || endpoint != null){
-                setBound();
-                map.setBounds(bounds);
-                setCenter(((startpoint.getLng()+endpoint.getLng())/2),((startpoint.getLat()+endpoint.getLat())/2));
-            }
-        }
-
-        function setCenter(x,y) {            
-            // 이동할 위도 경도 위치를 생성합니다 
-            var moveLatLon = new kakao.maps.LatLng(y, x);
-            
-            // 지도 중심을 이동 시킵니다
-            map.setCenter(moveLatLon);
-        }
-
-        function hideMarkers(marker, CustomOverlay) {
-            marker.setMap(null);  
-            CustomOverlay.setMap(null);
-        }
-
-    
-        //오더 관련 js
-        var address_type = ''
-
-        $(document).ready(function () {
-            keepDesiredValueOnly();
-            calculatePrice();
-
-            //출발지 서치바 클릭
-            $('#search-start-point').click(function (event) {
-                initSearchModal();
-                openModal();
-                address_type = 'start'
-            });
-
-            //도착지 서치바 클릭
-            $('#search-end-point').click(function (event) {
-                initSearchModal();
-                openModal();
-                address_type = 'end'
-            });
-        });
-
-        function openModal() {
-            $('#addressModal').css('display', 'block');
-        }
-
-        // 모달 닫기
-        function closeModal() {
-            $('#addressModal').css('display', 'none');
-            hideHistory();
-        }
-
-        function setValueStart(value) {
-            // 출발지 인풋 박스에 값을 설정
-            document.getElementById('search-start-point').value = value;
-        }
-
-        function setValueEnd(value) {
-            // 도착지 인풋 박스에 값을 설정
-            document.getElementById('search-end-point').value = value;
-        }
-
-        function uploadStartSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName) {
-            // 세션에 받아온 값들 저장(출발지)
-            sessionStorage.setItem('start_address_name', addressName);
-            sessionStorage.setItem('start_road_address_name', roadAddressName);
-            sessionStorage.setItem('start_place_name', placeName);
-            sessionStorage.setItem('start_category_group_name', categoryGroupName);
-            sessionStorage.setItem('start_x', x);
-            sessionStorage.setItem('start_y', y);
-            sessionStorage.setItem('start_sectionName', sectionName);
-        }
-
-        function uploadEndSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName) {
-            // 세션에 받아온 값들 저장(도착지)
-            sessionStorage.setItem('end_address_name', addressName);
-            sessionStorage.setItem('end_road_address_name', roadAddressName);
-            sessionStorage.setItem('end_place_name', placeName);
-            sessionStorage.setItem('end_category_group_name', categoryGroupName);
-            sessionStorage.setItem('end_x', x);
-            sessionStorage.setItem('end_y', y);
-            sessionStorage.setItem('end_sectionName', sectionName);
-        }
-
-        // 모달 컨트롤 js
-        function searchPlaces(keyword) {
-            var apiUrl = "https://dapi.kakao.com/v2/local/search/keyword";
-            var apiKey = "03822d0904427e2e6efef1126ac76f2e"; // 발급받은 카카오 API 키를 넣으세요.
-
-            $.ajax({
-                url: apiUrl,
-                method: "GET",
-                headers: {
-                    "Authorization": "KakaoAK " + apiKey,
-                },
-                data: {
-                    query: keyword,
-                    size: 7,
-                    x: sessionStorage.getItem("current_x") || null,
-                    y: sessionStorage.getItem("current_y") || null,
-                    rect: "126.1665,33.5858,126.9019,33.2846"
-                },
-                success: function (response) {
-                    // AJAX 요청이 성공하면 실행될 콜백 함수
-                    displayResults(response);
-                    hideHistory();
-                },
-                error: function (error) {
-                    // AJAX 요청이 실패하면 실행될 콜백 함수
-                    console.error("에러 발생:", error);
+                        }, function (error) {
+                            // 위치 정보를 얻지 못한 경우 또는 오류가 발생한 경우
+                            console.error("위치 정보를 얻을 수 없습니다.");
+                            SetCurrentMap();
+                        });
+                    } else {
+                        // Geolocation API를 지원하지 않는 경우
+                        console.error("Geolocation API를 지원하지 않습니다.");
+                        SetCurrentMap();
+                    }
                 }
-            });
-        }
 
-        // 검색 창 모달을 초기화 하는 함수
-        function initSearchModal() {
-            var resultsDiv = $("#searchResults");
-            resultsDiv.empty(); // 이전 검색 결과 지우기
-            $("#keywordInput").val("");
-        }
+                var map;
+                var currentmarker;
+                var currentcustomOverlay;
+
+                function SetCurrentMap() {
+                    console.log("맵생성완료");
+                    const current_x = sessionStorage.getItem('current_x')
+                    const current_y = sessionStorage.getItem('current_y')
+
+                    var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                        mapOption = {
+                            center: new kakao.maps.LatLng(current_y, current_x), // 지도의 중심좌표
+                            level: 4, // 지도의 확대 레벨
+                            mapTypeId: kakao.maps.MapTypeId.ROADMAP
+                        };
+
+                    // 지도를 생성한다 
+                    map = new kakao.maps.Map(mapContainer, mapOption);
+                    //map.setDraggable(false);
+
+                    // 지도에 마커를 생성하고 표시한다
+                    currentmarker = new kakao.maps.Marker({
+                        position: new kakao.maps.LatLng(current_y, current_x), // 마커의 좌표
+                        map: map // 마커를 표시할 지도 객체
+                    });
+
+                    // 커스텀 오버레이를 생성하고 지도에 표시한다
+                    currentcustomOverlay = new kakao.maps.CustomOverlay({
+                        map: map,
+                        content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">현재위치</div>',
+                        position: new kakao.maps.LatLng(current_y, current_x), // 커스텀 오버레이를 표시할 좌표
+                        xAnchor: 0.5, // 컨텐츠의 x 위치
+                        yAnchor: 2.7 // 컨텐츠의 y 위치
+                    });
+
+                }
+
+                var startpoint
+                var endpoint
+                // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성합니다
+                var bounds = new kakao.maps.LatLngBounds();
+                function setBound() {
+                    if (startpoint != null) {
+                        bounds.extend(startpoint);
+                    }
+                    if (endpoint != null) {
+                        bounds.extend(endpoint);
+                    }
+                }
 
 
-        // 검색 결과를 화면에 표시하는 함수
-        function displayResults(data) {
-            var resultsDiv = $("#searchResults");
-            resultsDiv.empty(); // 이전 검색 결과 지우기
-            if (data.documents.length === 0) {
-                resultsDiv.append(`<div class = "m-2">서비스 지역이 아니거나 해당 키워드의 검색 결과가 없습니다.</div>
+                var startmarker
+                var startcustomOverlay
+                function addstartmarker(x, y) {
+                    if (startmarker != null || startcustomOverlay != null) {
+                        hideMarkers(startmarker, startcustomOverlay);
+                    }
+                    // 출발지 마커를 생성합니다
+                    startmarker = new kakao.maps.Marker({
+                        position: new kakao.maps.LatLng(y, x),
+                    });
+                    startcustomOverlay = new kakao.maps.CustomOverlay({
+                        content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">출발지</div>',
+                        position: new kakao.maps.LatLng(y, x), // 커스텀 오버레이를 표시할 좌표
+                        xAnchor: 0.5, // 컨텐츠의 x 위치
+                        yAnchor: 2.7 // 컨텐츠의 y 위치
+                    });
+
+                    // 마커가 지도 위에 표시되도록 설정합니다
+                    startmarker.setMap(map);
+                    startcustomOverlay.setMap(map);
+                    hideMarkers(currentmarker, currentcustomOverlay);
+                    setCenter(x, y);
+                    startpoint = new kakao.maps.LatLng(y, x);
+                    if (startpoint != null || endpoint != null) {
+                        setBound();
+                        map.setBounds(bounds);
+                    }
+                }
+                var endmarker
+                var endcustomOverlay
+                function addendmarker(x, y) {
+                    if (endmarker != null || endcustomOverlay != null) {
+                        hideMarkers(endmarker, endcustomOverlay);
+                    }
+                    // 도착지 마커를 생성합니다
+                    endmarker = new kakao.maps.Marker({
+                        position: new kakao.maps.LatLng(y, x),
+                    });
+                    endcustomOverlay = new kakao.maps.CustomOverlay({
+                        content: '<div style="padding:0 5px;" class="bg-primary rounded-3 text-white text-center">목적지</div>',
+                        position: new kakao.maps.LatLng(y, x), // 커스텀 오버레이를 표시할 좌표
+                        xAnchor: 0.5, // 컨텐츠의 x 위치
+                        yAnchor: 2.7 // 컨텐츠의 y 위치
+                    });
+
+                    // 마커가 지도 위에 표시되도록 설정합니다
+                    endmarker.setMap(map);
+                    endcustomOverlay.setMap(map);
+                    hideMarkers(currentmarker, currentcustomOverlay);
+                    setCenter(x, y);
+                    endpoint = new kakao.maps.LatLng(y, x);
+                    if (startpoint != null || endpoint != null) {
+                        setBound();
+                        map.setBounds(bounds);
+                        setCenter(((startpoint.getLng() + endpoint.getLng()) / 2), ((startpoint.getLat() + endpoint.getLat()) / 2));
+                    }
+                }
+
+                function setCenter(x, y) {
+                    // 이동할 위도 경도 위치를 생성합니다 
+                    var moveLatLon = new kakao.maps.LatLng(y, x);
+
+                    // 지도 중심을 이동 시킵니다
+                    map.setCenter(moveLatLon);
+                }
+
+                function hideMarkers(marker, CustomOverlay) {
+                    marker.setMap(null);
+                    CustomOverlay.setMap(null);
+                }
+
+
+                //오더 관련 js
+                var address_type = ''
+
+                $(document).ready(function () {
+                    keepDesiredValueOnly();
+                    calculatePrice();
+
+                    //출발지 서치바 클릭
+                    $('#search-start-point').click(function (event) {
+                        initSearchModal();
+                        openModal();
+                        address_type = 'start'
+                    });
+
+                    //도착지 서치바 클릭
+                    $('#search-end-point').click(function (event) {
+                        initSearchModal();
+                        openModal();
+                        address_type = 'end'
+                    });
+                });
+
+                function openModal() {
+                    $('#addressModal').css('display', 'block');
+                }
+
+                // 모달 닫기
+                function closeModal() {
+                    $('#addressModal').css('display', 'none');
+                    hideHistory();
+                }
+
+                function setValueStart(value) {
+                    // 출발지 인풋 박스에 값을 설정
+                    document.getElementById('search-start-point').value = value;
+                }
+
+                function setValueEnd(value) {
+                    // 도착지 인풋 박스에 값을 설정
+                    document.getElementById('search-end-point').value = value;
+                }
+
+                function uploadStartSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName) {
+                    // 세션에 받아온 값들 저장(출발지)
+                    sessionStorage.setItem('start_address_name', addressName);
+                    sessionStorage.setItem('start_road_address_name', roadAddressName);
+                    sessionStorage.setItem('start_place_name', placeName);
+                    sessionStorage.setItem('start_category_group_name', categoryGroupName);
+                    sessionStorage.setItem('start_x', x);
+                    sessionStorage.setItem('start_y', y);
+                    sessionStorage.setItem('start_sectionName', sectionName);
+                }
+
+                function uploadEndSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName) {
+                    // 세션에 받아온 값들 저장(도착지)
+                    sessionStorage.setItem('end_address_name', addressName);
+                    sessionStorage.setItem('end_road_address_name', roadAddressName);
+                    sessionStorage.setItem('end_place_name', placeName);
+                    sessionStorage.setItem('end_category_group_name', categoryGroupName);
+                    sessionStorage.setItem('end_x', x);
+                    sessionStorage.setItem('end_y', y);
+                    sessionStorage.setItem('end_sectionName', sectionName);
+                }
+
+                // 모달 컨트롤 js
+                function searchPlaces(keyword) {
+                    var apiUrl = "https://dapi.kakao.com/v2/local/search/keyword";
+                    var apiKey = "03822d0904427e2e6efef1126ac76f2e"; // 발급받은 카카오 API 키를 넣으세요.
+
+                    $.ajax({
+                        url: apiUrl,
+                        method: "GET",
+                        headers: {
+                            "Authorization": "KakaoAK " + apiKey,
+                        },
+                        data: {
+                            query: keyword,
+                            size: 7,
+                            x: sessionStorage.getItem("current_x") || null,
+                            y: sessionStorage.getItem("current_y") || null,
+                            rect: "126.1665,33.5858,126.9019,33.2846"
+                        },
+                        success: function (response) {
+                            // AJAX 요청이 성공하면 실행될 콜백 함수
+                            displayResults(response);
+                            hideHistory();
+                        },
+                        error: function (error) {
+                            // AJAX 요청이 실패하면 실행될 콜백 함수
+                            console.error("에러 발생:", error);
+                        }
+                    });
+                }
+
+                // 검색 창 모달을 초기화 하는 함수
+                function initSearchModal() {
+                    var resultsDiv = $("#searchResults");
+                    resultsDiv.empty(); // 이전 검색 결과 지우기
+                    $("#keywordInput").val("");
+                }
+
+
+                // 검색 결과를 화면에 표시하는 함수
+                function displayResults(data) {
+                    var resultsDiv = $("#searchResults");
+                    resultsDiv.empty(); // 이전 검색 결과 지우기
+                    if (data.documents.length === 0) {
+                        resultsDiv.append(`<div class = "m-2">서비스 지역이 아니거나 해당 키워드의 검색 결과가 없습니다.</div>
                 <div class = "m-2">다시 검색해주세요.</div>
                 <div class = "m-2">서비스 지역은 화면 아래에 있는 "요금안내"를 참고해주세요.</div>`)
-            } else {
-                // 검색 결과를 반복문을 통해 표시
-                data.documents.forEach(function (place) {
-                    var addressName = place.address_name;
-                    var roadAddressName = place.road_address_name;
-                    var placeName = place.place_name;
-                    var categoryGroupName = place.category_group_name;
-                    var address_x = place.x;
-                    var address_y = place.y;
+                    } else {
+                        // 검색 결과를 반복문을 통해 표시
+                        data.documents.forEach(function (place) {
+                            var addressName = place.address_name;
+                            var roadAddressName = place.road_address_name;
+                            var placeName = place.place_name;
+                            var categoryGroupName = place.category_group_name;
+                            var address_x = place.x;
+                            var address_y = place.y;
 
-                    resultsDiv.append(
-                        `<a class="list-group-item list-group-item-action" aria-current="true">
+                            resultsDiv.append(
+                                `<a class="list-group-item list-group-item-action" aria-current="true">
                     <div class="d-flex w-100 justify-content-between">
                     <h6 class="mb-1" id="placeName">${placeName}</h6>
                     <small id="categoryGroupName">${categoryGroupName}</small>
@@ -386,191 +385,191 @@
                     <input type="hidden" style="display:none;" id="address_x" value="${address_x}"></input>
                     <input type="hidden" style="display:none;" id="address_y" value="${address_y}"></input>
                     </a>`
-                    );
+                            );
+                        });
+                    }
+                }
+
+
+                $(document).ready(function () {
+                    // 검색 버튼을 클릭하면 검색 수행
+                    $("#searchButton").click(function () {
+                        if ($("#keywordInput").val() == "") {
+                            alert("주소를 입력해주세요.");
+                        } else {
+                            var keyword = $("#keywordInput").val();
+                            searchPlaces(keyword);
+                            hideHistory();
+                        }
+                    });
+
+
+                    // 검색 결과의 각 주소를 클릭
+                    $("#searchResults").on("click", "a.list-group-item", function () {
+                        var addressName = $(this).find("#addressName").attr('value');
+                        var roadAddressName = $(this).find("#roadAddressName").attr('value');
+                        var placeName = $(this).find("#placeName").text();
+                        var categoryGroupName = $(this).find("#categoryGroupName").text();
+                        var x = $(this).find("#address_x").attr('value');
+                        var y = $(this).find("#address_y").attr('value');
+                        var sectionName = "";
+
+                        var roadname = roadAddressName.split(" ")[2]
+                        var roadnumber = parseInt(roadAddressName.split(" ")[3])
+                        if (roadname == "노형로") {
+                            if (roadnumber >= 177 && roadnumber <= 278) {
+                                sectionName = "월산"
+                            } else {
+                                sectionName = addressName.split(" ")[2].substr(0, 2);
+                            }
+                        } else if (roadname == "월산남길") {
+                            if (roadnumber >= 1 && roadnumber <= 110) {
+                                sectionName = "월산"
+                            } else {
+                                sectionName = addressName.split(" ")[2].substr(0, 2);
+                            }
+                        } else if (roadname == "월산북길") {
+                            if (roadnumber >= 1 && roadnumber <= 77) {
+                                sectionName = "월산"
+                            } else {
+                                sectionName = addressName.split(" ")[2].substr(0, 2);
+                            }
+                        } else {
+                            sectionName = addressName.split(" ")[2].substr(0, 2);
+                        }
+
+                        if (address_type == 'start') {
+                            uploadStartSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
+                            setValueAndCloseStart(placeName);
+                            addstartmarker(x, y);
+                        } else if (address_type == 'end') {
+                            uploadEndSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
+                            setValueAndCloseEnd(placeName);
+                            addendmarker(x, y);
+                        }
+                    });
                 });
-            }
-        }
 
-
-        $(document).ready(function () {
-            // 검색 버튼을 클릭하면 검색 수행
-            $("#searchButton").click(function () {
-                if ($("#keywordInput").val() == "") {
-                    alert("주소를 입력해주세요.");
-                } else {
-                    var keyword = $("#keywordInput").val();
-                    searchPlaces(keyword);
-                    hideHistory();
+                function setValueAndCloseStart(value) {
+                    setValueStart(value);
+                    closeModal();
+                    calculatePrice();
                 }
-            });
 
+                function setValueAndCloseEnd(value) {
+                    setValueEnd(value);
+                    closeModal();
+                    calculatePrice();
+                }
 
-            // 검색 결과의 각 주소를 클릭
-            $("#searchResults").on("click", "a.list-group-item", function () {
-                var addressName = $(this).find("#addressName").attr('value');
-                var roadAddressName = $(this).find("#roadAddressName").attr('value');
-                var placeName = $(this).find("#placeName").text();
-                var categoryGroupName = $(this).find("#categoryGroupName").text();
-                var x = $(this).find("#address_x").attr('value');
-                var y = $(this).find("#address_y").attr('value');
-                var sectionName = "";
-                
-                var roadname = roadAddressName.split(" ")[2]
-                var roadnumber = parseInt(roadAddressName.split(" ")[3])
-                if (roadname=="노형로"){
-                    if(roadnumber >= 177 && roadnumber <= 278){
-                        sectionName = "월산"
-                    }else{
-                        sectionName = addressName.split(" ")[2].substr(0, 2);
+                var historyselected_start = false;
+                var historyselected_end = false;
+
+                //AddressHistory 관련 js
+                $('#keywordInput').click(function () {
+                    if (address_type == "start") {
+                        getstarthistorylist();
+                    } else {
+                        getendhistorylist();
                     }
-                }else if(roadname=="월산남길"){
-                    if(roadnumber >= 1 && roadnumber <= 110){
-                        sectionName = "월산"
-                    }else{
-                        sectionName = addressName.split(" ")[2].substr(0, 2);
-                    }
-                }else if(roadname=="월산북길"){
-                    if(roadnumber >= 1 && roadnumber <= 77){
-                        sectionName = "월산"
-                    }else{
-                        sectionName = addressName.split(" ")[2].substr(0, 2);
-                    }
-                }else{
-                    sectionName = addressName.split(" ")[2].substr(0, 2);
+                    // History 검색 결과의 각 주소를 클릭
+                    $("#searchHistory").on("click", "a.list-group-item", function () {
+                        var raw_address = $(this).text();
+                        var trans_address = $(this).find("#trans_address").attr('value');
+                        var road_address = $(this).find("#road_address").attr('value');
+                        var category_name = $(this).find("#category_name").attr('value');
+                        var section_name = $(this).find("#section_name").attr('value');
+                        var x = $(this).find("#location_x").attr('value');
+                        var y = $(this).find("#location_y").attr('value');
+
+                        if (address_type == 'start') {
+                            uploadStartSession(trans_address, road_address, raw_address, category_name, x, y, section_name);
+                            setValueAndCloseStart(raw_address);
+                            addstartmarker(x, y);
+                            historyselected_start = true;
+                        } else if (address_type == 'end') {
+                            uploadEndSession(trans_address, road_address, raw_address, category_name, x, y, section_name);
+                            setValueAndCloseEnd(raw_address);
+                            addendmarker(x, y);
+                            historyselected_end = true;
+                        }
+                    });
+                });
+
+                function showHistory() {
+                    $('#searchHistory').css('display', 'block');
+                }
+                function hideHistory() {
+                    $('#searchHistory').css('display', 'none');
                 }
 
-                if (address_type == 'start') {
-                    uploadStartSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
-                    setValueAndCloseStart(placeName);
-                    addstartmarker(x,y);
-                } else if (address_type == 'end') {
-                    uploadEndSession(addressName, roadAddressName, placeName, categoryGroupName, x, y, sectionName);
-                    setValueAndCloseEnd(placeName);
-                    addendmarker(x,y);
+                function getstarthistorylist() {
+                    const customer_id = sessionStorage.getItem('user_id');
+                    $.ajax({
+                        url: `/customer/addresshistory/start/${customer_id}/`,
+                        method: 'GET'
+                    })
+                        .done(function (response) {
+                            displayhistorylist(response);
+                            showHistory();
+                        })
+                        .fail(function (response) {
+                            console.log('기록 없음');
+                            hideHistory();
+                        })
                 }
-            });
-        });
+                function getendhistorylist() {
+                    const customer_id = sessionStorage.getItem('user_id');
 
-        function setValueAndCloseStart(value) {
-            setValueStart(value);
-            closeModal();
-            calculatePrice();
-        }
-
-        function setValueAndCloseEnd(value) {
-            setValueEnd(value);
-            closeModal();
-            calculatePrice();
-        }
-        
-        var historyselected_start = false;
-        var historyselected_end = false;
-
-        //AddressHistory 관련 js
-        $('#keywordInput').click(function(){
-            if (address_type == "start"){
-                getstarthistorylist();
-            }else{
-                getendhistorylist();
-            }
-            // History 검색 결과의 각 주소를 클릭
-            $("#searchHistory").on("click", "a.list-group-item", function () {
-                var raw_address = $(this).text();
-                var trans_address = $(this).find("#trans_address").attr('value');
-                var road_address = $(this).find("#road_address").attr('value');
-                var category_name = $(this).find("#category_name").attr('value');
-                var section_name = $(this).find("#section_name").attr('value');
-                var x = $(this).find("#location_x").attr('value');
-                var y = $(this).find("#location_y").attr('value');
-
-                if (address_type == 'start') {
-                    uploadStartSession(trans_address, road_address, raw_address, category_name, x, y, section_name);
-                    setValueAndCloseStart(raw_address);
-                    addstartmarker(x,y);
-                    historyselected_start = true;
-                } else if (address_type == 'end') {
-                    uploadEndSession(trans_address, road_address, raw_address, category_name, x, y, section_name);
-                    setValueAndCloseEnd(raw_address);
-                    addendmarker(x,y);
-                    historyselected_end = true;
+                    $.ajax({
+                        url: `/customer/addresshistory/end/${customer_id}/`,
+                        method: 'GET'
+                    })
+                        .done(function (response) {
+                            console.log(response);
+                            displayhistorylist(response);
+                            showHistory();
+                        })
+                        .fail(function (response) {
+                            console.log('기록 없음');
+                            hideHistory();
+                        })
                 }
-            });
-        });
 
-        function showHistory(){
-            $('#searchHistory').css('display', 'block');
-        }
-        function hideHistory(){
-            $('#searchHistory').css('display', 'none');
-        }
-
-        function getstarthistorylist() {
-            const customer_id = sessionStorage.getItem('user_id');
-            $.ajax({
-              url: `/customer/addresshistory/start/${customer_id}/`,
-              method: 'GET'
-            })
-              .done(function (response) {
-                displayhistorylist(response);
-                showHistory();
-              })
-              .fail(function (response) {
-                console.log('기록 없음');
-                hideHistory();
-              })
-          }
-        function getendhistorylist() {
-            const customer_id = sessionStorage.getItem('user_id');
-
-            $.ajax({
-              url: `/customer/addresshistory/end/${customer_id}/`,
-              method: 'GET'
-            })
-              .done(function (response) {
-                console.log(response);
-                displayhistorylist(response);
-                showHistory();
-              })
-              .fail(function (response) {
-                console.log('기록 없음');
-                hideHistory();
-              })
-          }
-        
-        function DeletHistory(historyid){
-            $.ajax({
-                url: `/customer/addresshistory/delete/${historyid}/`,
-                method: 'PUT'
-              }).done(function(response){
-                console.log("삭제 완료");
-                if (address_type == "start"){
-                    getstarthistorylist();
-                }else{
-                    getendhistorylist();
+                function DeletHistory(historyid) {
+                    $.ajax({
+                        url: `/customer/addresshistory/delete/${historyid}/`,
+                        method: 'PUT'
+                    }).done(function (response) {
+                        console.log("삭제 완료");
+                        if (address_type == "start") {
+                            getstarthistorylist();
+                        } else {
+                            getendhistorylist();
+                        }
+                    })
+                        .fail(function (response) {
+                            console.log('해당 기록 없음');
+                        })
                 }
-              })
-              .fail(function (response) {
-                console.log('해당 기록 없음');
-              })
-        }
 
-        function displayhistorylist(data){
-            var resultsDiv = $("#searchHistory");
-            resultsDiv.empty(); // 이전 검색 결과 지우기
+                function displayhistorylist(data) {
+                    var resultsDiv = $("#searchHistory");
+                    resultsDiv.empty(); // 이전 검색 결과 지우기
 
-            // 검색 결과를 반복문을 통해 표시
-            data.forEach(function (data) {
-                var historyid = data.id;
-                var raw_address = data.raw_address;
-                var trans_address = data.trans_address;
-                var road_address = data.road_address;
-                var category_name = data.category_name;
-                var section_name = data.section_name;
-                var location_x = data.location_x;
-                var location_y = data.location_y;
+                    // 검색 결과를 반복문을 통해 표시
+                    data.forEach(function (data) {
+                        var historyid = data.id;
+                        var raw_address = data.raw_address;
+                        var trans_address = data.trans_address;
+                        var road_address = data.road_address;
+                        var category_name = data.category_name;
+                        var section_name = data.section_name;
+                        var location_x = data.location_x;
+                        var location_y = data.location_y;
 
-                resultsDiv.append(
-                `<div class="row">
+                        resultsDiv.append(
+                            `<div class="row">
                     <div class="col-10 br-0 pr-0 border-end-0">
                         <a class="list-group-item list-group-item-action border-end-0" id="raw_address">${raw_address}
                             <input type="hidden" style="display:none;" id="trans_address" value="${trans_address}"></input>
@@ -585,150 +584,152 @@
                         <button id ="historydelbtn" type="button" class="btn btn-danger mt-1" onclick="DeletHistory(${historyid});">X</button>
                     </div>
                 </div>`
-                );
-            })
-        }
-
-        //접수 요청 버튼 관련 js
-        $('#postorder').click(function (e) {
-            const start_address = sessionStorage.getItem("start_place_name")
-            const end_address = sessionStorage.getItem("end_place_name")
-            const start_section = sessionStorage.getItem("start_sectionName")
-            const end_section = sessionStorage.getItem("end_sectionName")
-            const calculated_price = sessionStorage.getItem("calculated_price")
-            const customer_id = sessionStorage.getItem("user_id")
-            const start_point_x = sessionStorage.getItem("start_x")
-            const start_point_y = sessionStorage.getItem("start_y")
-            const end_point_x = sessionStorage.getItem("end_x")
-            const end_point_y = sessionStorage.getItem("end_y")
-            
-            const start_trans_address = sessionStorage.getItem("start_address_name")
-            const start_road_address = sessionStorage.getItem("start_road_address_name")
-            const start_category_name = sessionStorage.getItem("start_category_group_name")
-
-            const end_trans_address = sessionStorage.getItem("end_address_name")
-            const end_road_address = sessionStorage.getItem("end_road_address_name")
-            const end_category_name = sessionStorage.getItem("end_category_group_name")
-            
-            //AddressHistory 포스트
-            if(historyselected_start == false){
-            $.ajax({
-                url: `/customer/addresshistory/${customer_id}/`,
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    raw_address: start_address,
-                    trans_address: start_trans_address,
-                    road_address: start_road_address,
-                    category_name: start_category_name,
-                    section_name: start_section,
-                    location_x: start_point_x,
-                    location_y: start_point_y,
-                    address_type: "start",
-                })
-            })
-            }
-            
-            if(historyselected_end == false){
-                $.ajax({
-                    url: `/customer/addresshistory/${customer_id}/`,
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        raw_address: end_address,
-                        trans_address: end_trans_address,
-                        road_address: end_road_address,
-                        category_name: end_category_name,
-                        section_name: end_section,
-                        location_x: end_point_x,
-                        location_y: end_point_y,
-                        address_type: "end"
+                        );
                     })
+                }
+
+                //접수 요청 버튼 관련 js
+                $('#postorder').click(function (e) {
+                    const start_address = sessionStorage.getItem("start_place_name")
+                    const end_address = sessionStorage.getItem("end_place_name")
+                    const start_section = sessionStorage.getItem("start_sectionName")
+                    const end_section = sessionStorage.getItem("end_sectionName")
+                    const calculated_price = sessionStorage.getItem("calculated_price")
+                    const customer_id = sessionStorage.getItem("user_id")
+                    const start_point_x = sessionStorage.getItem("start_x")
+                    const start_point_y = sessionStorage.getItem("start_y")
+                    const end_point_x = sessionStorage.getItem("end_x")
+                    const end_point_y = sessionStorage.getItem("end_y")
+
+                    const start_trans_address = sessionStorage.getItem("start_address_name")
+                    const start_road_address = sessionStorage.getItem("start_road_address_name")
+                    const start_category_name = sessionStorage.getItem("start_category_group_name")
+
+                    const end_trans_address = sessionStorage.getItem("end_address_name")
+                    const end_road_address = sessionStorage.getItem("end_road_address_name")
+                    const end_category_name = sessionStorage.getItem("end_category_group_name")
+
+                    //AddressHistory 포스트
+                    if (historyselected_start == false) {
+                        $.ajax({
+                            url: `/customer/addresshistory/${customer_id}/`,
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                raw_address: start_address,
+                                trans_address: start_trans_address,
+                                road_address: start_road_address,
+                                category_name: start_category_name,
+                                section_name: start_section,
+                                location_x: start_point_x,
+                                location_y: start_point_y,
+                                address_type: "start",
+                            })
+                        })
+                    }
+
+                    if (historyselected_end == false) {
+                        $.ajax({
+                            url: `/customer/addresshistory/${customer_id}/`,
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                raw_address: end_address,
+                                trans_address: end_trans_address,
+                                road_address: end_road_address,
+                                category_name: end_category_name,
+                                section_name: end_section,
+                                location_x: end_point_x,
+                                location_y: end_point_y,
+                                address_type: "end"
+                            })
+                        })
+                    }
+
+                    //오더 데이터 포스트
+                    $.ajax({
+                        url: '/customer/orderdata/',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            start_address: start_address,
+                            end_address: end_address,
+                            start_section: start_section,
+                            end_section: end_section,
+                            calculated_price: calculated_price,
+                            customer_id: customer_id,
+                            start_x: start_point_x,
+                            start_y: start_point_y,
+                            end_x: end_point_x,
+                            end_y: end_point_y,
+                        })
+                    })
+                        .done(function (response) {
+                            console.log('저장성공')
+                            e.preventDefault();
+                            keepDesiredValueOnly();
+                            location.href = "/customer/orderdetail/"
+                        })
+                        .fail(function (response) {
+                            console.log('저장실패')
+                            alert("주소를 모두 입력해주세요.")
+                        })
+                        .always(function (response) {
+                            console.log(response);
+                        })
                 })
-            }
-            
-            //오더 데이터 포스트
-            $.ajax({
-                url: '/customer/orderdata/',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    start_address: start_address,
-                    end_address: end_address,
-                    start_section: start_section,
-                    end_section: end_section,
-                    calculated_price: calculated_price,
-                    customer_id: customer_id,
-                    start_x: start_point_x,
-                    start_y: start_point_y,
-                    end_x: end_point_x,
-                    end_y: end_point_y,
-                })
-            })
-                .done(function (response) {
-                    console.log('저장성공')
+
+                $('#homebtn').click(function (e) {
                     e.preventDefault();
                     keepDesiredValueOnly();
-                    location.href = "/customer/orderdetail/"
+                    location.href = "/customer/home/"
                 })
-                .fail(function (response) {
-                    console.log('저장실패')
-                    alert("주소를 모두 입력해주세요.")
-                })
-                .always(function (response) {
-                    console.log(response);
-                })
-        })
 
-        $('#homebtn').click(function (e) {
-            e.preventDefault();
-            keepDesiredValueOnly();
-            location.href = "/customer/home/"
-        })
+                //세션스토리지 비우기(user_id, user_name 제외하고)
+                function keepDesiredValueOnly() {
+                    var desiredKeyList = ["user_id", "user_name", "current_x", "current_y"];
 
-        //세션스토리지 비우기(user_id, user_name 제외하고)
-        function keepDesiredValueOnly() {
-            var desiredKeyList = ["user_id", "user_name", "current_x", "current_y"];
-
-            for (var key in sessionStorage) {
-                if (desiredKeyList.includes(key)) {
-                } else {
-                    sessionStorage.removeItem(key);
+                    for (var key in sessionStorage) {
+                        if (desiredKeyList.includes(key)) {
+                        } else {
+                            sessionStorage.removeItem(key);
+                        }
+                    }
                 }
-            }
-        }
 
-        function calculatePrice() {
-            const ss = sessionStorage.getItem('start_sectionName')
-            const es = sessionStorage.getItem('end_sectionName')
-            if (ss == null || es == null) {
-                console.log("출발지 또는 도착지 입력 안됨");
-                $('#expectedprice').text("12")
-            } else {
-                getcalculatedPrice(ss,es);
-            }
+                function calculatePrice() {
+                    const ss = sessionStorage.getItem('start_sectionName')
+                    const es = sessionStorage.getItem('end_sectionName')
+                    if (ss == null || es == null) {
+                        console.log("출발지 또는 도착지 입력 안됨");
+                        $('#expectedprice').text("12")
+                    } else {
+                        getcalculatedPrice(ss, es);
+                    }
 
-        }
+                }
 
-        function getcalculatedPrice(ss,es) {
-            $.ajax({
-                url: `/customer/pricecalculate/${ss}/${es}/`,
-                method: 'GET'
-            })
-                .done(function (response) {
-                    console.log(response);
-                    $('#expectedprice').text(response.calculated_price);
-                    sessionStorage.setItem('calculated_price', response.calculated_price)
-                    console.log("계산완료")
-                })
-                .fail(function (response) {
-                    console.log('불러오기 실패');
-                    $('#expectedprice').text("12");
-                    alert("예상요금을 알 수 없습니다. 서비스지역이 아닐 수 있으니, 고객센터로 문의 부탁드립니다.");
-                })
-        }
+                function getcalculatedPrice(ss, es) {
+                    $.ajax({
+                        url: `/customer/pricecalculate/${ss}/${es}/`,
+                        method: 'GET'
+                    })
+                        .done(function (response) {
+                            console.log(response);
+                            $('#expectedprice').text(response.calculated_price);
+                            sessionStorage.setItem('calculated_price', response.calculated_price)
+                            console.log("계산완료")
+                        })
+                        .fail(function (response) {
+                            console.log('불러오기 실패');
+                            $('#expectedprice').text("12");
+                            alert("예상요금을 알 수 없습니다. 서비스지역이 아닐 수 있으니, 고객센터로 문의 부탁드립니다.");
+                        })
+                }
 
-    </script>
+            </script>
+        </div>
+    </div>
 
     {% include 'customer/layout/footer.html' %}
 </body>

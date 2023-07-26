@@ -29,12 +29,12 @@
         .person {
             display: block;
             margin: 30px;
-            color: orange;
+            color: #5472d3;
         }
 
         a,
         p {
-            color: green;
+            color: #5472d3;
             text-decoration: none;
             font-weight: 600;
         }
@@ -54,6 +54,10 @@
             height: calc(100vh - 100px);
             justify-content: center;
             gap:2.5rem;
+        }
+        .flex {
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -79,7 +83,8 @@
                     </td>
                 </tr>
             </table>
-                <div>
+                <div class="flex">
+                    <div></div>
                     <a id="in_change" href="">
                         <p>회원정보 수정</p>
                     </a>
