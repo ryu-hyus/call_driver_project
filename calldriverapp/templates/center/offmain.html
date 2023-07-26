@@ -132,6 +132,16 @@
         }).fail(function (xhr, status, error) {
           alert('실패: ' + error);
         });
+
+        $.ajax({
+          url: '/center/operationdayset/',
+          method: 'PUT',
+        }).done(function (response) {
+          location.href = '/center/realtimeorder/'
+          console.log("response")
+        }).fail(function (xhr, status, error) {
+          alert('실패: ' + error);
+        });
         
       } else {
 

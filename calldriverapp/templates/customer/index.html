@@ -34,21 +34,21 @@
 
                 <button type="button" id="order" class="btn btn-block btn-custom btn-outline-primary">접수하기</button>
                 {% else %}
-                <button type="button" class="btn btn-block btn-custom btn-outline-primary" disabled>접수하기</button>
+                <button type="button" id = "order" class="btn btn-block btn-custom btn-outline-primary" disabled>접수하기</button>
                 {% endif %}
             </div>
             <div class="align btn2">
                 {% if disable_button %}
                 <button type="button" id="modify" class="btn btn-block btn-custom btn-outline-success">접수확인</button>
                 {% else %}
-                <button type="button" class="btn btn-block btn-custom btn-outline-success" disabled>접수확인</button>
+                <button type="button" id = "modify" class="btn btn-block btn-custom btn-outline-success" disabled>접수확인</button>
                 {% endif %}
             </div>
             <div class="align btn3">
                 {% if disable_button %}
                 <button type="button" id="cancel" class="btn btn-block btn-custom btn-outline-danger">변경/취소</button>
                 {% else %}
-                <button type="button" class="btn btn-block btn-custom btn-outline-danger" disabled>변경/취소</button>
+                <button type="button" id="cancel" class="btn btn-block btn-custom btn-outline-danger" disabled>변경/취소</button>
                 {% endif %}
             </div>
         </div>
@@ -56,18 +56,35 @@
 
     {% include 'customer/layout/footer.html' %}
     <script>
+        userID = sessionStorage.getItem('user_id')
         $('#order').on('click', (e) => {
             e.preventDefault();
-            location.href = "/customer/ordermain/"
+            if(userID == null){
+                alert("로그인이 필요합니다.");
+                location.href = "/customer/login/"
+            } else {
+                location.href = "/customer/ordermain/"
+            }
         })
         $('#modify').on('click', (e) => {
             e.preventDefault();
-            location.href = "/customer/orderdetail/"
+            if(userID == null){
+                alert("로그인이 필요합니다.");
+                location.href = "/customer/login/"
+            } else {
+                location.href = "/customer/orderdetail/"
+            }
         })
         $('#cancel').on('click', (e) => {
             e.preventDefault();
-            location.href = "/customer/orderdetail/"
+            if(userID == null){
+                alert("로그인이 필요합니다.");
+                location.href = "/customer/login/"
+            } else {
+                location.href = "/customer/orderdetail/"
+            }
         })
+
     </script>
 </body>
 
