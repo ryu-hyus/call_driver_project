@@ -7,7 +7,6 @@
 
   {% include 'center/layout/head.html' %}
 
-
   <style>
     /* content*/
     .content {
@@ -57,34 +56,37 @@
 
       function getRealtimeOrderList() {
         $.ajax({
-          url: "http://localhost:8000/center/realtimeorder/get/",
+          url: "/center/realtimeorder/get/",
           method: "GET",
         }).done(function (response) {
           console.log(response);
+
+          // 시간별로 정렬
+          response.sort(function (a, b) {
+            const realdatetimeA = a.order_kind === "order" ? a.created_at : a.updated_at;
+            const realdatetimeB = b.order_kind === "order" ? b.created_at : b.updated_at;
+            return new Date(realdatetimeA) - new Date(realdatetimeB);
+          });
 
           const tr_array = response.map((getrealtimeorder, index) => {
 
             let orderKindText = "";
             let orderButtonColor = "";
             let ordertime = "";
-            let realdatetime = '';
 
             // order_kind에 따라 다른 값을 할당
             if (getrealtimeorder.order_kind === "order") {
               orderKindText = "주문";
               orderButtonColor = "danger";
               ordertime = getrealtimeorder.created_at.slice(11, 19);
-              realdatetime = getrealtimeorder.created_at;
             } else if (getrealtimeorder.order_kind === "change") {
               orderKindText = "변경";
               orderButtonColor = "warning";
               ordertime = getrealtimeorder.updated_at.slice(11, 19);
-              realdatetime = getrealtimeorder.updated_at;
             } else if (getrealtimeorder.order_kind === "cancel") {
               orderKindText = "취소";
               orderButtonColor = "success";
               ordertime = getrealtimeorder.updated_at.slice(11, 19);
-              realdatetime = getrealtimeorder.updated_at;
             }
 
             let actionElement;
@@ -110,11 +112,6 @@
 
             }
 
-            // realdatetime 최근 것이 맨 아래로
-            response.sort(function (a, b) {
-              return new Date(a.realdatetime) - new Date(b.realdatetime);
-            });
-
             return $(
               `<tr>
           <td>${index + 1}</td>
@@ -138,7 +135,7 @@
           $("#data_table > tbody").append(tr_array);
         });
       }
-      
+
       getRealtimeOrderList();
       setInterval(getRealtimeOrderList, 5000);
 

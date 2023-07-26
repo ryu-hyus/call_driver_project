@@ -34,8 +34,10 @@
 
       function getOrderdoneList() {
         $.ajax({
+
           url: "/center/todayorder/get/",
           method: "GET",
+          
         }).done(function (response) {
           console.log(response);
 
@@ -49,11 +51,20 @@
                 { title: '출발지', data: 'start_address', className: 'dt-head-center' },
                 { title: '도착지', data: 'end_address', className: 'dt-head-center' },
                 {
-                  title: '주문시간',
-                  data: 'updated_at',
+                  title: '접수시간',
+                  data: null,
                   className: 'dt-head-center',
-                  render: function (data) {
-                    const date = new Date(data);
+                  render: function (data, type, row) {
+                    let datetime;
+
+                    if (row.order_kind === "order") {
+                      datetime = row.created_at;
+                    } else if (row.order_kind === "change" || row.order_kind === "cancel") {
+                      datetime = row.updated_at;
+                    } else {                  
+                      datetime = ""; 
+                    }
+                    const date = new Date(datetime);
                     return date.toLocaleString('ko-KR', { hour12: true, hour: 'numeric', minute: 'numeric', second: 'numeric' });
                   }
                 },
@@ -68,7 +79,8 @@
 
                     return `
               <select class="form-select orderStatus" aria-label="Default select example" 
-                      onchange="updateOrderStatus(${pkKey}, this.value)">
+                      onchange="updateOrderStatus(${pkKey}, this.value)"
+                      style="text-align-last: center;">
                 <option selected>${orderKindText}${orderTypeText}</option>
                 <option value="1">주문요청</option>
                 <option value="2">주문완료</option>
@@ -142,13 +154,6 @@
     });
 
 
-
-    // // // 5초(5000ms)마다 페이지를 다시 로드하는 함수
-    // function reloadPage() {
-    //   location.reload();
-    // }
-
-
     function updateOrderStatus(pkKey, selectedValue) {
 
       let order_kind = "";
@@ -198,7 +203,6 @@
       });
     }
 
-// setInterval(reloadPage, 5000);
   </script>
 
 </head>

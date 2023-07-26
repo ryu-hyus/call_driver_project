@@ -40,6 +40,7 @@
         }).done(function (response) {
 
           console.log(response);
+
           $('#data_table').DataTable({
 
             data: response,
@@ -52,11 +53,20 @@
               { title: '도착지', data: 'end_address', className: 'dt-head-center' },
               { title: '운영일', data: 'operation_day', className: 'dt-head-center' },
               {
-                title: '주문시간',
-                data: 'updated_at',
+                title: '접수시간',
+                data: null,
                 className: 'dt-head-center',
-                render: function (data) {
-                  const date = new Date(data);
+                render: function (data, type, row) {
+                  let datetime;
+
+                  if (row.order_kind === "order") {
+                    datetime = row.created_at;
+                  } else if (row.order_kind === "change" || row.order_kind === "cancel") {
+                    datetime = row.updated_at;
+                  } else {
+                    datetime = ""; 
+                  }
+                  const date = new Date(datetime);
                   return date.toLocaleString('ko-KR', { hour12: true, hour: 'numeric', minute: 'numeric', second: 'numeric' });
                 }
               },
@@ -84,7 +94,7 @@
 </head>
 
 <body>
-  
+
   <div class="container-fluid">
     <div class="row">
       {% include 'center/layout/base.html' %}
