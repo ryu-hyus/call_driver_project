@@ -4,7 +4,7 @@ from calldriverapp.views.customer import HomeTemplateView, OrderDetailTemplateVi
 
 from calldriverapp.views.customer import OrderMainTemplateView
 from calldriverapp.views.member_info import CustomerLoignView, FindIdView, Customer_Logout, MyPageView, SignUpView, check_username, update_profile
-from calldriverapp.views.customer import OrderMainTemplateView, OrderChangeTemplateView, PricePageView
+from calldriverapp.views.customer import OrderMainTemplateView, OrderChangeTemplateView, PricePageView, TermsView
 from calldriverapp.views.orderdataCRUD import OrderdataView, CustomerOrderView
 from calldriverapp.views.pricecaculate import PriceTableView
 from calldriverapp.views.myuserCRUD import CustomerInfoView
@@ -33,4 +33,5 @@ urlpatterns = [
     path("addresshistory/delete/<int:pk>/", AddresshistorydeleteView.as_view(), name= "addresshistory_delete"), #히스토리 id로 삭제
     path("pricecalculate/<str:ss>/<str:es>/", PriceTableView.as_view(), name= "calculate_price"), # 요금 계산 url / ss: 출발지, es: 도착지로 검색
     path("pricepage/", PricePageView.as_view(), name= "pricepage"), #요금표 페이지
+    path("terms/", TermsView.as_view(), name= "terms"), #개인정보방침, 위치기록 페이지
 ]

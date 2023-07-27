@@ -40,3 +40,6 @@ class SigUpView(TemplateView):
 
 class PricePageView(TemplateView):
     template_name = "customer/pricepage.html"
+
+class TermsView(TemplateView):
+    template_name = "customer/terms.html"
