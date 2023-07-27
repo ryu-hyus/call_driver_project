@@ -121,7 +121,7 @@
         sessionStorage.setItem('user_id', response.id);
         sessionStorage.setItem('user_name', response.username);
         sessionStorage.setItem('name', response.name);
-        alert('로그인 성공했습니다!' + response.name + '님 반갑습니다!');
+        alert('로그인 성공! ' + response.name + '님 반갑습니다!');
         location.href = "/customer/home/";
         if ($('#username_keep').prop('checked')) {
           localStorage.setItem('user_id', response.id);

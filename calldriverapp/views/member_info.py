@@ -101,8 +101,8 @@ class FindIdView(View):
         phone_number = f"{first_number}-{second_number}-{third_number}"
 
         try:
-            user = MyUser.objects.get(name=name, phone_number=phone_number)
-            return JsonResponse({ "username" : user.username })
+            user_list = MyUser.objects.filter(name=name, phone_number=phone_number).values()
+            return JsonResponse(list(user_list), safe=False)
         except MyUser.DoesNotExist:
             return JsonResponse({ "error" : "아이디를 찾을 수 없습니다."}, status=400 )
 

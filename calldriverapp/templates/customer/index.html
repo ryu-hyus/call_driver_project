@@ -24,43 +24,27 @@
             justify-content: center;
             gap: 3rem;
         }
+
         footer {
             position: fixed;
             bottom: 0;
-            width:100%;
+            width: 100%;
         }
     </style>
-    <script>
-        $(document).ready(function() {
-            // 서버로부터 온오프 상태 값을 받아옵니다.
-            $.ajax({
-                url: "/center/operationonoff/",
-                method: "GET",
-                dataType: 'json',
-            }).done(function(response) {
-                // 서버에서 받은 온오프 상태 값에 따라 메시지를 변경합니다.
-                if (response.operation_onoff === true) {
-                    $('#business_hours p').css('display', 'none');
-                } else {
-                    $('#business_hours p').css('display', 'block');
-                }
-            }).fail(function(response) {
-            });
-        });
-    </script>
-    
 </head>
 
 <body>
     {% include 'customer/layout/header.html' %}
-        <div class="container" id="business_hours">
-            <div class="row text-center">
-                <div class="col-12">
-                    <p>영업시간이 아닙니다.</p>
-                </div>
+    <div class="container">
+        {% if disable_button %}
+        {% else %}
+        <div class="row text-center">
+            <div class="col-12">
+                <p>영업시간이 아닙니다.</p>
             </div>
         </div>
-    
+        {% endif %}
+
 
         <div class="container">
             <div class="content_container d-flex flex-column">
