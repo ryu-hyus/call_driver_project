@@ -35,8 +35,8 @@ class OrderdataView(View):
         orderdata.start_section = data.get("start_section") or orderdata.start_section
         orderdata.end_section = data.get("end_section") or orderdata.end_section
         orderdata.order_kind = data.get("order_kind") or orderdata.order_kind
-        orderdata.order_type = data.get("order_type") or orderdata.order_type
-        orderdata.is_hide = data.get("is_hide") or orderdata.is_hide
+        orderdata.order_type = data.get("order_type",orderdata.order_type)
+        orderdata.is_hide = data.get("is_hide", orderdata.is_hide)
         orderdata.calculated_price = data.get("calculated_price") or orderdata.calculated_price
         orderdata.start_x = data.get("start_x") or orderdata.start_x
         orderdata.start_y = data.get("start_y") or orderdata.start_y
