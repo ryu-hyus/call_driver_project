@@ -236,7 +236,6 @@
                             method: 'GET'
                         })
                             .done(function (response) {
-                                console.log(response);
                                 setValueStart(response.start_address);
                                 setValueEnd(response.end_address);
                                 sessionStorage.setItem('start_sectionName', response.start_section);
@@ -252,7 +251,6 @@
                                 addendmarker(response.end_x, response.end_y);
                             })
                             .fail(function (response) {
-                                console.log('불러오기 실패');
                             })
                     }
                     getidorderdata();
@@ -516,7 +514,6 @@
                             showHistory();
                         })
                         .fail(function (response) {
-                            console.log('기록 없음');
                             hideHistory();
                         })
                 }
@@ -528,12 +525,10 @@
                         method: 'GET'
                     })
                         .done(function (response) {
-                            console.log(response);
                             displayhistorylist(response);
                             showHistory();
                         })
                         .fail(function (response) {
-                            console.log('기록 없음');
                             hideHistory();
                         })
                 }
@@ -543,7 +538,6 @@
                         url: `/customer/addresshistory/delete/${historyid}/`,
                         method: 'PUT'
                     }).done(function (response) {
-                        console.log("삭제 완료");
                         if (address_type == "start") {
                             getstarthistorylist();
                         } else {
@@ -551,7 +545,6 @@
                         }
                     })
                         .fail(function (response) {
-                            console.log('해당 기록 없음');
                         })
                 }
 
@@ -683,14 +676,12 @@
                     }
                     //변경 관련 메세지, 링크 함수
                     function changeComplete() {
-                        console.log('변경성공')
                         e.preventDefault();
                         keepDesiredValueOnly();
                         location.href = "/customer/orderdetail/"
                     }
                     function changeFail() {
-                        console.log('변경실패')
-                        alert("변경된 내용이 없습니다.")
+                        alert("변경된 내용이 없습니다.");
                     }
                     //AddressHistory 포스트 함수
                     function startHistoryPost() {
@@ -749,7 +740,6 @@
                                 is_hide: false
                             })
                         })
-                        console.log('취소요청성공')
                         e.preventDefault();
                         keepDesiredValueOnly();
                         location.href = "/customer/orderdetail/"
@@ -773,7 +763,6 @@
                     const ss = sessionStorage.getItem('start_sectionName')
                     const es = sessionStorage.getItem('end_sectionName')
                     if (ss == null || es == null) {
-                        console.log("출발지 또는 도착지 입력 안됨");
                         $('#expectedprice').text("12")
                     } else {
                         getcalculatedPrice(ss, es);
@@ -787,13 +776,10 @@
                         method: 'GET'
                     })
                         .done(function (response) {
-                            console.log(response);
                             $('#expectedprice').text(response.calculated_price);
                             sessionStorage.setItem('calculated_price', response.calculated_price)
-                            console.log("계산완료")
                         })
                         .fail(function (response) {
-                            console.log('불러오기 실패');
                             $('#expectedprice').text("12");
                             alert("예상요금을 알 수 없습니다. 서비스지역이 아닐 수 있으니, 고객센터로 문의 부탁드립니다.");
                         })

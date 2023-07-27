@@ -141,15 +141,12 @@
                     const endAddressId = $('#end_address option:selected').attr("id");
                     {#const startAddress = $('#' + startAddressId).text();#}
                     {#const endAddress = $('#' + endAddressId).text();#}
-                    console.log(startAddressId);
-                    console.log(endAddressId);
                     // Send the startAddressId and endAddressId to the server for fare price calculation
                     $.ajax({
                         url: `/customer/pricecalculate/${startAddressId}/${endAddressId}/`,
                         type: 'GET',
                         dataType: 'json',
                     }).done(function (response) {
-                        console.log(response);
                         $('#showprice').text('예상요금은' + " " + JSON.stringify(response).slice(-3, -1) + ',000원');
 
                     })
