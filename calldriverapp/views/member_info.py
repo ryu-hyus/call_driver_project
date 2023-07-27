@@ -29,7 +29,8 @@ class CustomerLoignView(View):
                 if check_password(password, user.password):
                     return JsonResponse({
                         "id" : user.id,
-                        "username" : user.username
+                        "username" : user.username,
+                        "name" : user.name
                     })     
             return HttpResponse("유저가 없습니다", status=500)
         else:
@@ -94,7 +95,10 @@ class FindIdView(View):
     
     def post(self, request):
         name = request.POST.get('name')
-        phone_number = request.POST.get('phone_number')
+        first_number = request.POST.get('first_number')
+        second_number = request.POST.get('second_number')
+        third_number = request.POST.get('third_number')
+        phone_number = f"{first_number}-{second_number}-{third_number}"
 
         try:
             user = MyUser.objects.get(name=name, phone_number=phone_number)
