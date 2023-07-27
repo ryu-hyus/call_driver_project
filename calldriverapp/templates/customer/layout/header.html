@@ -6,7 +6,7 @@
         class="d-flex text-white text-decoration-none bi logo text-white">
       <ul class="nav col-12 col-lg-auto justify-content-end text-small">
         <li>
-          <a href="/customer/home/" class="nav-link">
+          <a id = "headerhomebtn" href="/customer/home/" class="nav-link">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
               class="bi d-block mx-auto mb-1 icon" viewBox="0 0 16 16">
               <path
@@ -51,4 +51,31 @@
     sessionStorage.clear();
     localStorage.clear();
   })
+
+  $('#headerhomebtn').on('click', (e) => {
+    e.preventDefault();
+
+    location.href="/customer/home/";
+    keepDesiredValueOnly();
+  })
+
+  $('#my_page').on('click', (e) => {
+    e.preventDefault();
+
+    location.href="/customer/mypage/";
+    keepDesiredValueOnly();
+  })
+  
+  //세션스토리지 비우기(user_id, user_name 제외하고)
+  function keepDesiredValueOnly() {
+    var desiredKeyList = ["user_id", "user_name", "current_x", "current_y"];
+
+    for (var key in sessionStorage) {
+      if (desiredKeyList.includes(key)) {
+      } else {
+        sessionStorage.removeItem(key);
+      }
+    }
+  }
 </script>
+
