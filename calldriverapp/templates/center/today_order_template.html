@@ -39,13 +39,13 @@
           method: "GET",
 
         }).done(function (response) {
-          console.log(response);
+          
 
           if (!table) {
             table = $('#data_table').DataTable({
               data: response,
               columns: [
-                { title: 'ID', data: 'id', className: 'dt-head-center' },
+                { title: '주문번호', data: 'id', className: 'dt-head-center' },
                 { title: '전화번호', data: 'phone_number', className: 'dt-head-center' },
                 { title: '기어', data: 'gear_type', className: 'dt-head-center' },
                 { title: '출발지', data: 'start_address', className: 'dt-head-center' },
@@ -142,11 +142,9 @@
           contentType: 'application/json',
           data: JSON.stringify(dataToSend),
           success: function (response) {
-            console.log(response);
             alert("접수상황을 변경합니다.");
           },
           error: function (xhr, status, error) {
-            console.error(xhr.responseText);
           }
         });
       }
@@ -194,7 +192,6 @@
         contentType: 'application/json',
         data: JSON.stringify(dataToSend),
         success: function (response) {
-          console.log(response);
           alert("접수상황을 변경합니다.");
         },
         error: function (xhr, status, error) {

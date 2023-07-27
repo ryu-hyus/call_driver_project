@@ -61,9 +61,9 @@
 
         }).done(function (response) {
 
-          console.log(response);
-          $('#data_table').DataTable({
 
+    $('#data_table').DataTable({
+      
             data: response,
             columns: [
               { title: 'NO', data: 'id', className: 'dt-head-center' },

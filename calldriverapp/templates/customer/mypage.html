@@ -166,7 +166,6 @@
             method: "GET",
             dataType: 'json',
         }).done(function (response) {
-            console.log(response);
             $('#customer_name').text(response.name);
             $('#check_name').val(response.name);
             $('#name').val(response.name);

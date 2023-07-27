@@ -50,15 +50,13 @@
 
       function getuserorderlist() {
         $.ajax({
-          url: `http://localhost:8000/customer/userorder/${customer_id}/`,
+          url: `/customer/userorder/${customer_id}/`,
           method: 'GET'
         })
           .done(function (response) {
-            console.log(response);
             displayorderlist(response);
           })
           .fail(function (response) {
-            console.log('불러오기 실패');
             nonedata();
           })
       }
@@ -143,9 +141,7 @@
         }
 
         if (sessionStorage.getItem(`ordertype${orderid}`) === null) {
-          console.log("변동없음");
         } else if (order_type.toString() == sessionStorage.getItem(`ordertype${orderid}`)) {
-          console.log("변동없음");
         } else if (order_type.toString() != sessionStorage.getItem(`ordertype${orderid}`)) {
           alert(`${orderid}번 주문의 상태가 업데이트되었습니다!`);
           $(`#order-status${i}`).addClass('fw-bold text-danger');
