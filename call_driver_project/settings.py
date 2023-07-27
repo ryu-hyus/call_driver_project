@@ -28,6 +28,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["localhost","127.0.0.1","jejuemo.com"]
 
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 # Application definition
 
