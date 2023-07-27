@@ -53,13 +53,15 @@
   <script>
 
     $(function () {
+      getRealtimeOrderList();
+      setInterval(getRealtimeOrderList, 5000);
+    });
 
-      function getRealtimeOrderList() {
+    function getRealtimeOrderList() {
         $.ajax({
           url: "/center/realtimeorder/get/",
           method: "GET",
         }).done(function (response) {
-          console.log(response);
 
           // 시간별로 정렬
           response.sort(function (a, b) {
@@ -95,11 +97,11 @@
 
               // If order_type === true, 버튼
               actionElement = $(`
-          <button id="${getrealtimeorder.id}" class="btn btn-${orderButtonColor} btn-sm btn-detail-ask"
-            data-toggle="tooltip" title="클릭 시 고객님께 정보가 전송">
-            ${orderKindText}요청
-          </button>
-        `);
+                <button id="${getrealtimeorder.id}" class="btn btn-${orderButtonColor} btn-sm btn-detail-ask"
+                  data-toggle="tooltip" title="클릭 시 고객님께 정보가 전송">
+                  ${orderKindText}요청
+                </button>
+              `);
 
             } else {
 
@@ -112,34 +114,53 @@
 
             }
 
-            return $(
-              `<tr>
-          <td>${index + 1}</td>
-          <td>${getrealtimeorder.phone_number}</td>
-          <td>${getrealtimeorder.gear_type}</td>
-          <td>${getrealtimeorder.start_address}</td>
-          <td>${getrealtimeorder.end_address}</td>
-          <td>${ordertime}</td>
-          <td>
-            ${actionElement.prop('outerHTML')}
-          </td>
-          <td>
-            <input class="form-check-input" type="checkbox" value="" id="${getrealtimeorder.id}hide" 
-              data-toggle="tooltip" title="클릭 시 오늘 접수 목록으로 이동"
-              data-pkkey="${getrealtimeorder.id}" data-ordertype="${getrealtimeorder.order_type}">
-          </td>
-        </tr>`
+            const tdCheckButton = $('<td>');
+            const orderCheckButton = $(`<input class="form-check-input" type="checkbox" value="" id="${getrealtimeorder.id}hide" 
+                    data-toggle="tooltip" title="클릭 시 오늘 접수 목록으로 이동"
+                    data-pkkey="${getrealtimeorder.id}" data-ordertype="${getrealtimeorder.order_type}">`);
+            orderCheckButton.click(function () {
+              //alert('REMOVE!!!!!');
+              const orderType = $(this).attr('data-ordertype');
+              const pkKey = $(this).attr('data-pkkey');
+
+              if (orderType === 'false') {
+                $.ajax({
+                  url: `/center/realtimeorder/get/${pkKey}/`,
+                  method: 'PUT',
+                  contentType: 'application/json',
+                  data: JSON.stringify({ is_hide: true }),
+                  success: function (response) {
+                    $('#row_' + pkKey).remove()
+                  },
+                  error: function (xhr, status, error) {   
+                  }
+                });
+              } else {
+                // alert("Can't remove!!!")
+              }
+            })
+            tdCheckButton.append(orderCheckButton);
+
+            const resultRow = $(
+              `<tr id='row_${getrealtimeorder.id}'>
+                <td>${getrealtimeorder.id}</td>
+                <td>${getrealtimeorder.phone_number}</td>
+                <td>${getrealtimeorder.gear_type}</td>
+                <td>${getrealtimeorder.start_address}</td>
+                <td>${getrealtimeorder.end_address}</td>
+                <td>${ordertime}</td>
+                <td>
+                  ${actionElement.prop('outerHTML')}
+                </td>
+              </tr>`
             );
+            resultRow.append(tdCheckButton)
+            return resultRow;
           });
           $("#data_table > tbody").empty();
           $("#data_table > tbody").append(tr_array);
         });
       }
-
-      getRealtimeOrderList();
-      setInterval(getRealtimeOrderList, 5000);
-
-    });
 
 
     // 접수, 변경, 취소 요청 시 (버튼 처리)
@@ -163,6 +184,7 @@
       const pkKey = button.attr("id");
 
 
+
       // PUT - 접수 상태 변경 요청
       $.ajax({
 
@@ -172,61 +194,12 @@
         data: JSON.stringify({ order_type: false }),
 
         success: function (response) {
-          console.log(response);
-
-          // 체크박스 클릭
-          $(document).on("click", `${pkKey}hide`, function () {
-
-            const isChecked = $(this).prop("checked");
-            const pkKey = $(this).data("pkkey");
-
-            if (isChecked) {
-              $.ajax({
-                url: `/center/realtimeorder/get/${pkKey}/`,
-                method: 'PUT',
-                contentType: 'application/json',
-                data: JSON.stringify({ is_hide: true }),
-                success: function (response) {
-                  console.log(response);
-                },
-                error: function (xhr, status, error) {
-                  console.error(xhr.responseText);
-                }
-              });
-
-            }
-          });
+          getRealtimeOrderList();
         },
 
         error: function (xhr, status, error) {
-          console.error(xhr.responseText);
         }
       });
-    });
-
-
-    // 체크박스 클릭
-    $(document).on("click", ".form-check-input", function () {
-
-      const isChecked = $(this).prop("checked");
-      const pkKey = $(this).data("pkkey");
-      const orderType = $(this).data("ordertype");
-
-      if (isChecked && orderType == false) {
-        $.ajax({
-          url: `/center/realtimeorder/get/${pkKey}/`,
-          method: 'PUT',
-          contentType: 'application/json',
-          data: JSON.stringify({ is_hide: true }),
-          success: function (response) {
-            console.log(response);
-          },
-          error: function (xhr, status, error) {
-            console.error(xhr.responseText);
-          }
-        });
-
-      }
     });
 
 
@@ -250,7 +223,7 @@
           <table class="table table-striped table-sm" id="data_table">
             <thead>
               <tr>
-                <th scope="col"></th>
+                <th scope="col">주문번호</th>
                 <th scope="col">전화번호</th>
                 <th scope="col">기어</th>
                 <th scope="col">출발지</th>

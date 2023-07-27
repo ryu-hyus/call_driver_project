@@ -86,7 +86,7 @@
     function loginstaff(id, pw) {
       let username = id;
       let password = pw;
-      console.log('아이디 : ' + username + ', 비밀번호 : ' + password);
+      
       $.ajax({
         method: "POST",
         url: "/center/login/",
