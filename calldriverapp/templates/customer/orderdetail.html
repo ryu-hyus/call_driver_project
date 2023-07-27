@@ -156,6 +156,7 @@
 
     function nonedata() {
       var resultsDiv = $("#order-list");
+      resultsDiv.empty();
       resultsDiv.append(`<table style="height: 50vh;" class="table text-center m-0">
       <tbody>
         <tr>
@@ -163,11 +164,6 @@
         </tr>
       </tbody>
     </table>`)
-
-      var nonedata_confirm = confirm("현재 주문이 없습니다. 홈으로 이동하시겠습니까?")
-      if (nonedata_confirm == true) {
-        location.href = "/customer/home/"
-      }
     }
 
     $('#homebtn').click(function (e) {
