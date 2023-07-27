@@ -18,9 +18,16 @@
         }
 
         .content_container {
-            height: calc(100vh - 245px);
+
+            height: calc(100vh - 320px);
+
             justify-content: center;
-            gap: 4rem;
+            gap: 3rem;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width:100%;
         }
     </style>
     <script>
@@ -47,15 +54,6 @@
 
 <body>
     {% include 'customer/layout/header.html' %}
-    <!-- <div class="container">
-        {% if disable_button %}
-        {% else %}
-        <div class="row text-center">
-            <div class="col-12">
-                <p>영업시간이 아닙니다.</p>
-            </div>
-        </div>
-        {% endif %} -->
         <div class="container" id="business_hours">
             <div class="row text-center">
                 <div class="col-12">

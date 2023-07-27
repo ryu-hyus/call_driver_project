@@ -11,6 +11,7 @@ from django.contrib.auth import login as login
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CustomerLoignView(View):
@@ -28,7 +29,8 @@ class CustomerLoignView(View):
                 if check_password(password, user.password):
                     return JsonResponse({
                         "id" : user.id,
-                        "username" : user.username
+                        "username" : user.username,
+                        "name" : user.name
                     })     
             return HttpResponse("유저가 없습니다", status=500)
         else:
@@ -93,7 +95,10 @@ class FindIdView(View):
     
     def post(self, request):
         name = request.POST.get('name')
-        phone_number = request.POST.get('phone_number')
+        first_number = request.POST.get('first_number')
+        second_number = request.POST.get('second_number')
+        third_number = request.POST.get('third_number')
+        phone_number = f"{first_number}-{second_number}-{third_number}"
 
         try:
             user = MyUser.objects.get(name=name, phone_number=phone_number)
@@ -102,7 +107,9 @@ class FindIdView(View):
             return JsonResponse({ "error" : "아이디를 찾을 수 없습니다."}, status=400 )
 
 @method_decorator(csrf_exempt, name='dispatch')
-class MyPageView(View):
+class MyPageView(LoginRequiredMixin, View):
+
+    login_url = "/customer/login/"
 
     def get(self, request):
         return render(request, 'customer/mypage.html')

@@ -92,7 +92,7 @@
     $("#signup").on('click', (e) => {
       e.preventDefault();
       console.log('회원가입창으로 이동');
-      location.href = "/customer/signup/";
+      location.href = "/customer/terms/";
     });
     $('#find_id').on('click', (e) => {
       e.preventDefault();
@@ -122,8 +122,8 @@
       }).done(function (response) {
         sessionStorage.setItem('user_id', response.id);
         sessionStorage.setItem('user_name', response.username);
-        alert('로그인 성공');
-        alert(username + '님 반갑습니다!');
+        sessionStorage.setItem('name', response.name);
+        alert('로그인 성공했습니다!' + response.name + '님 반갑습니다!');
         location.href = "/customer/home/";
         if ($('#username_keep').prop('checked')) {
           localStorage.setItem('user_id', response.id);

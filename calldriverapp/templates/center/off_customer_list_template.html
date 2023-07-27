@@ -5,83 +5,84 @@
   <meta charset="UTF-8">
   <title>전체 회원 목록</title>
   {% include 'center/layout/head.html' %}
-  
-  <link
-  href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css"
-  rel="stylesheet"
-  crossorigin="anonymous"/>
+
+  <link href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css" rel="stylesheet"
+    crossorigin="anonymous" />
 
 
-<style>
-/* content */
-.content {
-width: 83%;
-height: 80%;
-float: left;
-color: black;
-padding-top: 17px;
-padding-right: 30px;
-font-size: 18px;
-font-family: 'Noto Sans KR', sans-serif;
-}
+  <style>
+    /* content */
+    .content {
+      width: 83%;
+      height: 80%;
+      float: left;
+      color: black;
+      padding-top: 17px;
+      padding-right: 30px;
+      font-size: 18px;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
 
-.table {
-border: 1.6px solid black;
-text-align: center;
-}
-</style>
+    .table {
+      border: 1.6px solid black;
+      text-align: center;
+    }
+  </style>
 
 </head>
 
 <body>
 
-<div class="container-fluid">
-<div class="row">
-{% include 'center/offmain.html' %}
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-3">
-  <h3>회원 목록</h3>
-  <div class="table-responsive">
-    <table class="table table-striped table-sm" id="data_table">
-      <thead></thead>
-      <tbody></tbody>
-    </table>
+  <div class="container-fluid">
+    <div class="row">
+      {% include 'center/offmain.html' %}
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-3">
+        <h3>회원 목록</h3>
+        <div class="table-responsive">
+          <table class="table table-striped table-sm" id="data_table">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </main>
+    </div>
   </div>
-</main>
-</div>
-</div>
 
-<script>
+  <script>
 
-$(function () {
+    $(function () {
 
-function getCustomerList() {
+      function getCustomerList() {
 
-  $.ajax({
+        $.ajax({
 
-    url: "/customer/customer_info/",
-    method: "GET",
+          url: "/customer/customer_info/",
+          method: "GET",
 
-  }).done(function (response) {
+        }).done(function (response) {
+
 
     $('#data_table').DataTable({
+      
+            data: response,
+            columns: [
+              { title: 'NO', data: 'id', className: 'dt-head-center' },
+              { title: '이름', data: 'name', className: 'dt-head-center' },
+              { title: '아이디', data: 'username', className: 'dt-head-center' },
+              { title: '전화번호', data: 'phone_number', className: 'dt-head-center' },
+              { title: '기어', data: 'gear_type', className: 'dt-head-center' }
+            ]
 
-      data: response,
-      columns: [
-        { title: 'ID', data: 'id', className : 'dt-head-center' },
-        { title: 'USERNAME', data: 'username', className : 'dt-head-center'},
-        { title: '기어', data: 'gear_type',className : 'dt-head-center' }
-      ]
+          });
 
+        });
+      }
+
+      getCustomerList();
     });
 
-  });
-}
 
-getCustomerList();
-});
-
-
-</script>
+  </script>
 
 </body>
 
