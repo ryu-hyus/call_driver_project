@@ -94,14 +94,21 @@
                     "third_number": third_number,
                 }),
             }).done(function (response) {
-                if (response.username) {
-                    alert('성공');
-                    $('#memo').text(`${name}님의 아이디는 ${response.username}입니다.`);
-                }
-            }).fail(function (response) {
-                alert(' 실패')
-                $('#memo').text('아이디를 찾을 수 없습니다.')
-            });
+            if (response.length === 1) {
+                alert('성공');
+                let usernameText = response[0].username;
+                $('#memo').text(`${name}님의 아이디는 ${usernameText}입니다.`);
+            } else if (response.length > 1){
+                alert('성공');
+                let usernameTexts = response.map(user => {
+                    return ` ${user.username}`
+                })
+                $('#memo').text(usernameTexts.join(', '));
+            }
+        }).fail(function () {
+            alert('실패');
+            $('#memo').text('아이디를 찾을 수 없습니다.');
+        });
         })
 
         $("#login").on('click', (e) => {
