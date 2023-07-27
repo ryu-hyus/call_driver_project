@@ -131,7 +131,7 @@
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="auto" value="auto">
                             <label class="form-check-label" for="auto">
-                                자동
+                                오토
                             </label>
                         </div>
                         <div class="form-check">
@@ -176,12 +176,12 @@
             $('#first_number').val(response.phone_number.slice(0, 3));
             $('#second_number').val(response.phone_number.slice(4, 8));
             $('#third_number').val(response.phone_number.slice(9));
-
+            const kor_gear = response.gear_type === 'auto' ? '오토' : '수동'
             if (response.gear_type === 'auto') {
-                $('#check_gear').val(response.gear_type);
+                $('#check_gear').val(kor_gear);
                 $('#auto').prop('checked', true);
             } else if (response.gear_type === 'manual') {
-                $('#check_gear').val(response.gear_type);
+                $('#check_gear').val(kor_gear);
                 $('#manual').prop('checked', true);
             }
         });

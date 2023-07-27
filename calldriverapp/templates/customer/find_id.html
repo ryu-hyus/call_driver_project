@@ -56,9 +56,13 @@
                         <input type="text" class="form-control" id="name" placeholder="이름을 입력해주세요">
                         <label for="name">이름</label>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="phone_number" placeholder="전화번호를 입력해주세요">
-                        <label for="phone_number">전화번호</label>
+                    <div class="form-floating mb-3 phone" style="display: flex;">
+                        <input type="text" name="first_number" id="first_number" class="form-control tel"
+                            style="margin-right:10px;" maxlength="3">
+                        <input type="text" name="second_number" id="second_number" class="form-control tel"
+                            style="margin-right:10px;" maxlength="4">
+                        <input type="text" name="third_number" id="third_number" class="form-control tel" maxlength="4">
+                        <label>전화번호</label>
                     </div>
                     <small class="text-muted" id="memo"></small>
                     <hr class="my-4">
@@ -76,15 +80,18 @@
         $('#find').on('click', (e) => {
             e.preventDefault();
             let name = $('#name').val();
-            let phone_number = $('#phone_number').val();
-            console.log('이름 : ' + name + ', 전화번호 : ' + phone_number);
+            let first_number = $('#first_number').val();
+            let second_number = $('#second_number').val();
+            let third_number = $('#third_number').val();
 
             $.ajax({
                 method: "POST",
                 url: "/customer/find_id/",
                 data: ({
                     "name": name,
-                    "phone_number": phone_number
+                    "first_number": first_number,
+                    "second_number": second_number,
+                    "third_number": third_number,
                 }),
             }).done(function (response) {
                 if (response.username) {
