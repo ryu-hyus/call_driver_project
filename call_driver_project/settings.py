@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-w&*^rpy#alj$0c+_@)ec%n7ht(n98j=ka81)a!t=77xldim#f*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["localhost","127.0.0.1","jejuemo.com"]
 
@@ -77,7 +77,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'call_driver_project.wsgi.application'
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost","http://127.0.0.1","http://jejuemo.com"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost","http://127.0.0.1","http://jejuemo.com", "https://jejuemo.com"]
 CSRF_COOKIE_HTTPONLY = False
 
 # Database
