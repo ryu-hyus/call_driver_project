@@ -95,15 +95,15 @@
                 }),
             }).done(function (response) {
             if (response.length === 1) {
-                alert('성공');
+                alert('아이디를 찾았습니다.');
                 let usernameText = response[0].username;
                 $('#memo').text(`${name}님의 아이디는 ${usernameText}입니다.`);
             } else if (response.length > 1){
-                alert('성공');
+                alert('아이디를 찾았습니다.');
                 let usernameTexts = response.map(user => {
                     return ` ${user.username}`
                 })
-                $('#memo').text(usernameTexts.join(', '));
+                $('#memo').text(`${name}님의 아이디는 ${usernameTexts.join(', ')}입니다.`);
             }
         }).fail(function () {
             alert('실패');

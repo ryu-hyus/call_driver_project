@@ -1,115 +1,129 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>로그인 페이지</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-    crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-  <style>
-    h2 {
-      margin: 0 auto;
-    }
-
-    #login:hover {
-      background-color: #ffa040;
-    }
-
-    .blue {
-      background-color: #5472d3;
-    }
-
-    a {
-      text-decoration: none;
-      color: #000;
-    }
-
-    /*태블릿, 브라우저 창 width가 768px보다 커지는 순간부터 적용*/
-    @media all and (min-width: 768px) {
-      .outerbox {
-        width: 50%;
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>로그인 페이지</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <style>
+      h2 {
+        margin: 0 auto;
       }
-    }
-  </style>
-</head>
+      
+      #login:hover {
+        background-color: #ffa040;
+      }
+      
+      .blue {
+        background-color: #5472d3;
+      }
+      
+      a {
+        text-decoration: none;
+        color: #000;
+      }
+      
+      /*태블릿, 브라우저 창 width가 768px보다 커지는 순간부터 적용*/
+      @media all and (min-width: 768px) {
+        .outerbox {
+          width: 50%;
+        }
+      }
+    </style>
+  </head>
 
-<body>
-  <div class="modal-dialog outerbox" role="document">
-    <div class="modal-content">
-      <div class="modal-header p-5 pb-4 border-bottom-0">
-        <h2 class="fw-bold mb-0">로그인</h2>
-      </div>
-      <div class="modal-body p-5 pt-0">
-        <form class="">
-          {% csrf_token %}
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control rounded-4" id="username" placeholder="아이디를 입력해주세요">
-            <label for="username">아이디</label>
-          </div>
-          <div class="form-floating mb-3">
-            <input type="password" class="form-control rounded-4" id="password" placeholder="비밀번호를 입력해주세요">
-            <label for="password">비밀번호</label>
-          </div>
-          <div class="checkbox mb-3">
-            <label>
-              <input type="checkbox" value="remember-me" id="username_keep"> 로그인 상태 유지
-            </label>
-          </div>
-          <hr class="my-4">
-          <button id="login" class="w-100 mb-2 btn btn-lg text-white blue" type="submit">
-            로그인
-          </button>
-        </form>
+  <body>
+    <div class="modal-dialog outerbox" role="document">
+      <div class="modal-content">
+        <div class="modal-header p-5 pb-4 border-bottom-0">
+          <h2 class="fw-bold mb-0">로그인</h2>
+        </div>
+        <div class="modal-body p-5 pt-0">
+          <form class="">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control rounded-4" id="username" placeholder="아이디를 입력해주세요" />
+              <label for="username">아이디</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control rounded-4" id="password" placeholder="비밀번호를 입력해주세요" />
+              <label for="password">비밀번호</label>
+            </div>
+            <div class="checkbox mb-3">
+              <label><input type="checkbox" value="remember-me" id="username_keep" />로그인 상태 유지</label>
+            </div>
+            <hr class="my-4" />
+            <button id="login" class="w-100 mb-2 btn btn-lg text-white blue" type="submit">로그인</button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  <script>
-    $('#login').on('click', (e) => {
-      e.preventDefault();
-      loginstaff($('#username').val(), $('#password').val());
-    })
-
-    $(document).ready(function() {
+    <script>
+      var operOnOff
       const stored_id = localStorage.getItem('user_id')
       const stored_username = localStorage.getItem('user_name')
+      $(document).ready(function () {
+        $.ajax({
+          url: '/center/operationonoff/',
+          method: 'GET'
+          })
+          .done(function (response) {
+            operOnOff = response.operation_onoff
 
-      if (stored_id != null && stored_username != null) {
-        location.href='/center/offmain/';
-      }
-    })
+            if (stored_id != null && stored_username != null) {
+              if(operOnOff === true){
+                location.href = '/center/realtimeorder/'
+              }else if(operOnOff === false){
+                location.href = '/center/offmain/'
+              }
+            }
+          })
+          .fail(function (response) {
+          })
 
-    function loginstaff(id, pw) {
-      let username = id;
-      let password = pw;
+      })
       
-      $.ajax({
-        method: "POST",
-        url: "/center/login/",
-        contentType: "application/json",
-        data: JSON.stringify({
-          "username": username,
-          "password": password
-        }),
-      }).done(function (response) {
-        alert('로그인 성공');
-        alert(username + '님 반갑습니다!');
-        location.href = "/center/offmain/";
-        if ($('#username_keep').prop('checked')) {
-          localStorage.setItem('user_id', response.id);
-          localStorage.setItem('user_name', response.username);
-          localStorage.setItem('user_password', response.password);
-        }
-      }).fail(function (response) {
-        alert('로그인 실패');
-        location.reload();
-      });
-    }
-  </script>
-</body>
+      $('#login').on('click', (e) => {
+        e.preventDefault()
+        loginstaff($('#username').val(), $('#password').val())
+      })
+      
+      function loginstaff(id, pw) {
+        let username = id
+        let password = pw
+      
+        $.ajax({
+          method: 'POST',
+          url: '/center/login/',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            username: username,
+            password: password
+          })
+        })
+          .done(function (response) {
+            alert('로그인 성공')
+            alert(username + '님 반갑습니다!')
+            
+            if ($('#username_keep').prop('checked')) {
+              localStorage.setItem('user_id', response.id)
+              localStorage.setItem('user_name', response.username)
+              localStorage.setItem('user_password', response.password)
+            }
 
+            if(operOnOff === true){
+              location.href = '/center/realtimeorder/'
+            }else if(operOnOff === false){
+              location.href = '/center/offmain/'
+            }
+          })
+          .fail(function (response) {
+            alert('로그인 실패')
+            location.reload()
+          })
+      }
+    </script>
+  </body>
 </html>
