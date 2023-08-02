@@ -38,14 +38,14 @@
         <div class="content_container d-flex flex-column">
             <div id="map" style="height:350px;"></div>
 
-            <div class="container">
+            <div class="container mb-0">
                 <div class=" input-group mb-3">
                     <span class="input-group-text" id="inputGroup-sizing-default">출발지</span>
                     <input type="text" class="form-control" id="search-start-point" placeholder="출발지를 검색하여 입력하세요"
                         readonly>
                 </div>
 
-                <div class=" input-group mb-3">
+                <div class=" input-group mb-1">
                     <span class="input-group-text" id="inputGroup-sizing-default">목적지</span>
                     <input type="text" class="form-control" id="search-end-point" placeholder="목적지를 검색하여 입력하세요"
                         readonly>
@@ -81,13 +81,28 @@
             </div>
 
             <!-- 예상 요금 섹션 -->
-            <div style="display: flex; justify-content: center; align-items: center; height: 5vh;">
+            <div style="display: flex; justify-content: center; align-items: center; height: 5vh;" class="mb-1">
                 <div style="display: flex; align-items: center;">
                     <span class="badge bg-secondary">예상 요금</span>
                     <div style="margin: 0 0 0 10px; display: flex; align-items: center;">
                         <div id="expectedprice">12</div>
                         <div>,000 원</div>
                     </div>
+                </div>
+            </div>
+            
+            <!-- 추가 요금 섹션 -->
+            <div class="row g-3 align-items-center mb-2 justify-content-center">
+                <div class="col-auto">
+                  <label class="col-form-label">추가 요금 신청</label>
+                </div>
+                <div class="col-2 pr-1 pl-0">
+                  <input type="number" id="biddingprice" class="form-control text-end fs-6" aria-describedby="bidpriceHelp" min=0>
+                </div>
+                <div class="col-auto pl-0">
+                    <span class="form-text text-start fs-6">
+                      ,000 원
+                    </span>
                 </div>
             </div>
 
@@ -99,12 +114,10 @@
                 </div>
             </div>
 
-
             <script>
                 //Map 컨트롤 script
                 $(document).ready(function () {
                     getLocation();
-
                 })
 
                 function getLocation() {
@@ -595,6 +608,7 @@
                     const start_point_y = sessionStorage.getItem("start_y")
                     const end_point_x = sessionStorage.getItem("end_x")
                     const end_point_y = sessionStorage.getItem("end_y")
+                    const bidding_price = document.getElementById("biddingprice").value
 
                     const start_trans_address = sessionStorage.getItem("start_address_name")
                     const start_road_address = sessionStorage.getItem("start_road_address_name")
@@ -657,6 +671,7 @@
                             start_y: start_point_y,
                             end_x: end_point_x,
                             end_y: end_point_y,
+                            bidding_price : bidding_price,
                         })
                     })
                         .done(function (response) {

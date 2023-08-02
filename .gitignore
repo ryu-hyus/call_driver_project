@@ -1,6 +1,6 @@
-migrations
 __pycache__
 .vscode
 .DS_store
 /venv
 db.sqlite3
+collectedstatic
