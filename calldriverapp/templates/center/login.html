@@ -62,8 +62,8 @@
     </div>
     <script>
       var operOnOff
-      const stored_id = localStorage.getItem('user_id')
-      const stored_username = localStorage.getItem('user_name')
+      const stored_id = localStorage.getItem('staff_id')
+      const stored_username = localStorage.getItem('staff_name')
       $(document).ready(function () {
         $.ajax({
           url: '/center/operationonoff/',
@@ -108,9 +108,9 @@
             alert(username + '님 반갑습니다!')
             
             if ($('#username_keep').prop('checked')) {
-              localStorage.setItem('user_id', response.id)
-              localStorage.setItem('user_name', response.username)
-              localStorage.setItem('user_password', response.password)
+              localStorage.setItem('staff_id', response.id)
+              localStorage.setItem('staff_name', response.username)
+              localStorage.setItem('staff_password', response.password)
             }
 
             if(operOnOff === true){
