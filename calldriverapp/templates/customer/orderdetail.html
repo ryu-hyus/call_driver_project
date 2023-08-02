@@ -78,8 +78,10 @@
         var order_kind = order.order_kind;
         var order_type = order.order_type;
         var calculated_price = order.calculated_price;
+        var bidding_price = order.bidding_price;
 
-        resultsDiv.append(
+        if(bidding_price == 0){
+          resultsDiv.append(
           `<!-- 접수확인 창 -->
               <div class="border m-2">
                 <!-- 주문번호 -->
@@ -112,7 +114,7 @@
                   <div style="display: flex; align-items: center;">
                     <span class="badge bg-secondary">예상 요금</span>
                     <div style="margin: 0 0 0 10px; display: flex; align-items: center;">
-                      <div id="expected price">${calculated_price}</div>
+                      <div id="expected price">${calculated_price + bidding_price}</div>
                       <div>,000 원</div>
                     </div>
                   </div>
@@ -128,6 +130,58 @@
                 </div>
               </div>`
         );
+        }else{
+          resultsDiv.append(
+          `<!-- 접수확인 창 -->
+              <div class="border m-2">
+                <!-- 주문번호 -->
+                <div style="display: flex; justify-content: left; align-items: center; height: 3vh;" class="mt-2 ml-3">
+                  <div style="display: flex; align-items: center;">
+                    <span class="badge bg-secondary">주문 번호</span>
+                    <div style="margin: 0 0 0 10px; display: flex; align-items: center;">
+                      <div id="expected price">${orderid}</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 주문 주소내역 및 변경/취소버튼 -->
+                <div style="align-items: center; display: flex;">
+                  <div class="container mt-1 mb-2">
+                    <div class="search-bar input-group mb-3">
+                      <span class="input-group-text" id="inputGroup-sizing-default">출발지</span>
+                      <input type="text" class="form-control" id="search-input-top" value="${start_address}" disabled>
+                    </div>
+                    <div class="search-bar input-group">
+                      <span class="input-group-text" id="inputGroup-sizing-default">목적지</span>
+                      <input type="text" class="form-control" id="search-input-bottom" value="${end_address}" disabled>
+                    </div>
+                  </div>
+                  <div>
+                    <button class="btn mr-3 text-white" id="changeorderbutton" style="background-color: #c43e00;" onclick="location.href='/customer/orderchange/?id=${orderid}'">변경/취소</button>
+                  </div>
+                </div>
+                <!-- 예상 요금 -->
+                <div style="display: flex; justify-content: left; align-items: center; height: 3vh;" class="ml-3 mb-2">
+                  <div style="display: flex; align-items: center;">
+                    <span class="badge bg-secondary">예상 요금</span>
+                    <div style="margin: 0 0 0 10px; display: flex; align-items: center;">
+                      <div id="expected price">${calculated_price + bidding_price}</div>
+                      <div>,000 원 (추가요금 : ${bidding_price},000원)</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 주문 상태 -->  
+                <div style="display: flex; justify-content: left; align-items: center; height: 3vh;" class="ml-3 mb-2">
+                  <div style="display: flex; align-items: center;">
+                    <span class="badge bg-primary">주문 상태</span>
+                    <div style="margin: 0 0 0 10px; display: flex; align-items: center;">
+                      <div id="order-status${i}"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>`
+        );
+        }
+
 
         if ((order_kind == 'order') && (order_type == true)) {
           $(`#order-status${i}`).text("주문 접수 중입니다.");

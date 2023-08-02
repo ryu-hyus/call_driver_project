@@ -22,6 +22,7 @@ class OrderData(BaseModel):
     order_type = models.BooleanField(default=True)
     is_hide = models.BooleanField(default=False)
     calculated_price = models.IntegerField(default=12)
+    bidding_price = models.IntegerField(default=0)
     start_x = models.CharField(max_length=255, default='')
     start_y = models.CharField(max_length=255, default='')
     end_x = models.CharField(max_length=255, default='')

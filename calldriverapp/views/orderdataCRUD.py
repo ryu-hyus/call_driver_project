@@ -42,6 +42,7 @@ class OrderdataView(View):
         orderdata.start_y = data.get("start_y") or orderdata.start_y
         orderdata.end_x = data.get("end_x") or orderdata.end_x
         orderdata.end_y = data.get("end_y") or orderdata.end_y
+        orderdata.bidding_price = data.get("bidding_price") or orderdata.bidding_price
 
         orderdata.save()
         return JsonResponse(data)
@@ -63,6 +64,7 @@ class OrderdataView(View):
             end_x = data.get("end_x"),
             end_y = data.get("end_y"),
             operation_day = center_day,
+            bidding_price = data.get("bidding_price")
         )
         p.save()
         return HttpResponse(status=200)

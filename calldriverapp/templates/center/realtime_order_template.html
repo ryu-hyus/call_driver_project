@@ -140,7 +140,7 @@
               }
             })
             tdCheckButton.append(orderCheckButton);
-
+            
             const resultRow = $(
               `<tr id='row_${getrealtimeorder.id}'>
                 <td>${getrealtimeorder.id}</td>
@@ -149,6 +149,8 @@
                 <td>${getrealtimeorder.start_address}</td>
                 <td>${getrealtimeorder.end_address}</td>
                 <td>${ordertime}</td>
+                <td>${getrealtimeorder.calculated_price+getrealtimeorder.bidding_price},000원</td>
+                <td>${getrealtimeorder.bidding_price},000원</td>
                 <td>
                   ${actionElement.prop('outerHTML')}
                 </td>
@@ -229,6 +231,8 @@
                 <th scope="col">출발지</th>
                 <th scope="col">목적지</th>
                 <th scope="col">등록시간</th>
+                <th scope="col">요금</th>
+                <th scope="col">추가요금</th>
                 <th scope="col">접수상황</th>
                 <th scope="col">최종확인</th>
               </tr>
