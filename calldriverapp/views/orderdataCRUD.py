@@ -64,7 +64,7 @@ class OrderdataView(View):
             end_x = data.get("end_x"),
             end_y = data.get("end_y"),
             operation_day = center_day,
-            bidding_price = data.get("bidding_price")
+            bidding_price = data.get("bidding_price") or 0
         )
         p.save()
         return HttpResponse(status=200)
