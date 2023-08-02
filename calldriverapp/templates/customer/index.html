@@ -81,8 +81,10 @@
 
         {% include 'customer/layout/footer.html' %}
         <script>
-            sessionStorage.setItem('user_id',localStorage.getItem('user_id'))
-            sessionStorage.setItem('user_name',localStorage.getItem('user_name'))
+            if(localStorage.getItem('user_id')!=null && localStorage.getItem('user_name')!=null){
+                sessionStorage.setItem('user_id',localStorage.getItem('user_id'))
+                sessionStorage.setItem('user_name',localStorage.getItem('user_name'))
+            }          
             userID = sessionStorage.getItem('user_id')
             $('#order').on('click', (e) => {
                 e.preventDefault();
