@@ -44,7 +44,8 @@
   </div>
   {% include 'customer/layout/footer.html' %}
 
-  <script>
+  <script type="text/javascript">
+    const sessionStorage = window.sessionStorage;
     $(function () {
       const customer_id = sessionStorage.getItem('user_id')
 
